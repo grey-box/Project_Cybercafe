@@ -1,23 +1,47 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" >
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
     <title>Users</title>
-    <style>
-        .container{
-            height: 200px;
-            width: 500px;
-            border: 2px solid black;
-            margin-top: 30px;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
+<!--Add php to import data from database.-->
+    <table style="text-align:center;">
+        <tr>
+          <th>Name</th>
+          <th>Data Left</th>
+          <th>User Level</th>
+        </tr>
+        <tr>
+            
+            <td><!--Will link to an individual users settings page-->
+                <a href="Default.html">Bob</a>
+            </td>
+          <td>2 GB</td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <td>Ted</td>
+          <td>2 GB</td>
+          <td>2</td>
+        </tr>
+        <tr>
+            <td>Frank</td>
+            <td>2 GB</td>
+            <td>3</td>
+          </tr>
+      </table>
+
+
+
+
+
     <div class="container">
-        <h1 style="text-align:center;">Simple Html Button</h1>
-        <a href=".html">
-            <button class="btn btn-primary btn-lg">Click</button>
+        
+        <a href="MainMenu.html">
+            <button class="btn btn-primary btn-lg">Back</button>
         </a>
     </div>
 </body>
