@@ -1,6 +1,0 @@
-Steps for backend
-1. How to disconect a given IP from router on demand.
-2. get router to scan blacklist for ip adresses, then kick those when trying to connect or already connected.
-3. Add adress to blacklist when over allocated data limit - Theory, no need to add in actuall functionality - Make it a hard cap that can't be changed to start with.
-4. Add abillity to change data settings
-4. Link Ip adresses to accounts, then blacklist all IP based on the accounts associated with them.
