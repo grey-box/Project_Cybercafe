@@ -3,12 +3,37 @@ function prompt_for_validation() {
 	require 'login_form_inc.html';
 }
 
+/*
+Notes:
+- Currently running under the assumption that the session_id is already set. 
+- Admin status is just a COOKIE value.
+
+Needed functions:
+	1. Put the session into session_details.
+	2. Check to make sure that the session limit has not been reached (stop session elsewise).
+	3. End the session (in database and also the connection).
+	4. Add website to blocklist. (admin)
+	5. Make sure that a url that the user is trying to visit is not in the blocklist.
+	6. CUD session types.(admin)
+	7. CD blocked websites.
+	8. CD website access groups.
+*/
+
+
+// Put session details into session_details at start of session.
+function insert_session_details() {
+
+}
+
+
+
+// Checks the Cookies and database to make sure that the session is valid (captive portal has been pased.)
 function check_for_validation() {
-	if(isset($_COOKIE['user_id']) && isset($_COOKIE['wsess_id'])) {
+	if(isset($_COOKIE['session_id'])) {
 		$cc_db = new SQLite3('../CyberCafe.db');
 		$check_user_query = $cc_db->prepare("
-			SELECT 1 AS wsess_exists FROM website_sessions
-			WHERE	wsess_id = :value1 AND
+			SELECT 1 AS session_id FROM session_details
+			WHERE	session_id = :value1 AND
 				user_id = :value2 AND
 				expr_datetime > datetime('now')");
 		$check_user_query->bindValue(":value1", $_COOKIE['wsess_id']);
