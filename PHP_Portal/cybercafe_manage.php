@@ -3,6 +3,7 @@
 Notes:
 - Currently running under the assumption that the session_details entry for the session is already complete.
 - Admin status is just a COOKIE value.
+- At the moment the functions just return true or false (might need to change this).
 
 Needed functions:
 J: 2-5,8
@@ -20,7 +21,8 @@ T: 6,7,9
 $db_path = './CyberCafeTest.db';
 
 // Updates session limit and returns wether the session can keep going
-function update_session($bytes) {
+// Tested
+function updateSession($bytes) {
 	global $db_path;
     $session_id = $_COOKIE['session_id'];
     $cc_db = new SQLite3($db_path);
@@ -60,7 +62,6 @@ function update_session($bytes) {
         // Rollback the transaction if any error occurs
         $cc_db->exec('ROLLBACK');
         
-        // Handle the error (e.g., log it, return false, etc.)
         return false; // Update failed
     } finally {
         // Close the database connection
@@ -68,6 +69,30 @@ function update_session($bytes) {
     }
 }
 
+// Untested
+function endSession() {
+	global $db_path;
+    $session_id = $_COOKIE['session_id'];
+    $cc_db = new SQLite3($db_path);
+    
+    try {
+		$end_session_query = $cc_db->prepare("
+		UPDATE session_details
+		SET session_end = datetime('now')
+		WHERE session_id = :session_id");
+
+		$end_session_query->bindValue(":session_id", $session_id);
+
+		$end_session_query->execute();
+
+		return true;
+
+	} catch (Exception $e) {
+		return false; // Update failed.
+	} finally {
+		$cc_db->close();
+	}
+}
 
 // // Checks the Cookies and database to make sure that the session is valid (captive portal has been pased.)
 // function check_for_validation() {
