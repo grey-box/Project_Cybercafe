@@ -7,12 +7,11 @@ Notes:
 - At the moment the functions just return true or false (might need to change this).
 
 Needed functions:
-J: 1, 2-5,8
+J: 1-5,8
 T: 6,7,9
 	1. Insert the session details at the start of the session.
 	2. Check to make sure that the session limit has not been reached (stop session elsewise).
 	3. End the session (in database and also the connection).
-	4. Add website to blocklist. (admin)
 	5. Make sure that a url that the user is trying to visit is not in the blocklist.
 	6. CUD session types.(admin)
 	7. CD blocked websites.
@@ -23,7 +22,7 @@ T: 6,7,9
 $db_path = './CyberCafeTest.db';
 
 // Start the session 
-// Untested
+// Tested
 function startSession($session_code, $mac_address) {
 	global $db_path;
 	$cc_db = new SQLite3($db_path);
@@ -38,6 +37,10 @@ function startSession($session_code, $mac_address) {
 		$session_type_query->bindValue(":session_code",$session_code);
 		$session_type = $session_type_query->execute()->fetchArray(SQLITE3_ASSOC);
 
+		if (empty($session_type)) {
+			throw new Exception("Session code not found: $session_code \n");
+		}
+
 		// Insert a session with session_start...
 		// 		from session_types: group_id and bytes_remaining
 		$start_session_query = $cc_db->prepare("
@@ -48,7 +51,7 @@ function startSession($session_code, $mac_address) {
 
 		$start_session_query->bindValue(":group_id",$session_type['group_id']);
 		$start_session_query->bindValue(':mac_address',$mac_address);
-		$start_session_query->bindValue('bytes_remaining',$session_type['bytes_remaining']);
+		$start_session_query->bindValue(':bytes_remaining',$session_type['bytes_limit']);
 
 		$start_session_query->execute();
 
@@ -135,6 +138,38 @@ function endSession() {
 
 	} catch (Exception $e) {
 		return false; // Update failed.
+	} finally {
+		$cc_db->close();
+	}
+}
+
+// Check if the session can visit the current site (not in the blocklist for group id.)
+// Untested 
+function canSessionVisitSite($url) {
+	global $db_path;
+	$cc_db = new SQLite3($db_path);
+
+	try {
+		$is_blocked_query = $cc_db->prepare("
+		SELECT s.group_id, wbu.website_url FROM 
+		session_details s 
+		JOIN website_blocking_groups_url wbu ON s.group_id = wbu.group_id
+		WHERE session_id = :session_id
+		AND wbu.website_url = :url");
+
+		$is_blocked_query->bindValue("session_id", $_COOKIE["sessoin_id"]);
+		$is_blocked_query->bindValue("url", $url);
+
+		$is_blocked = $is_blocked_query->execute()->fetchArray(SQLITE3_ASSOC);
+
+		if ($is_blocked) {
+			return false;
+		} else {
+			return true;
+		}
+
+	} catch (Exception $e) {
+		return false;
 	} finally {
 		$cc_db->close();
 	}
