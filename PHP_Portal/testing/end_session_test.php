@@ -17,13 +17,18 @@ $session_id = $session_id_query->execute()->fetchArray(SQLITE3_ASSOC)['session_i
 
 $_COOKIE['session_id'] = $session_id;
 
-$endSession();
+endSession();
 
 $check_session_end = $cc_db->prepare("
     SELECT session_end
     FROM session_details
     WHERE session_id = :session_id");
-$check_end_session->bindValue(":session_id", $session_id);
+$check_session_end->bindValue(":session_id", $session_id);
 
-$session_end = $check_session_end->execute()->fetchArray(SQLITE3_ASSOC)['sessoin_end'];
+$session_end = $check_session_end->execute()->fetchArray(SQLITE3_ASSOC)['session_end'];
+
+$cc_db->close();
+
+echo $session_end;
+
 ?>

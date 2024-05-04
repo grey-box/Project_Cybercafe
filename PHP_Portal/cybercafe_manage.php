@@ -1,13 +1,15 @@
 <?php
 /*
 Notes:
-- Currently running under the assumption that the session_details entry for the session is already complete.
+- Will need the daemon to get the mac address to start the session.
+- At the moment the start session does not try to validate that the mac address is not blocked.
 - Admin status is just a COOKIE value.
 - At the moment the functions just return true or false (might need to change this).
 
 Needed functions:
-J: 2-5,8
+J: 1, 2-5,8
 T: 6,7,9
+	1. Insert the session details at the start of the session.
 	2. Check to make sure that the session limit has not been reached (stop session elsewise).
 	3. End the session (in database and also the connection).
 	4. Add website to blocklist. (admin)
@@ -19,6 +21,50 @@ T: 6,7,9
 */
 
 $db_path = './CyberCafeTest.db';
+
+// Start the session 
+// Untested
+function startSession($session_code, $mac_address) {
+	global $db_path;
+	$cc_db = new SQLite3($db_path);
+
+	$cc_db->exec('BEGIN TRANSACTION');
+
+	try {
+		// Get details from session_types
+		$session_type_query = $cc_db->prepare("
+			SELECT * FROM session_types
+			WHERE session_code = :session_code");
+		$session_type_query->bindValue(":session_code",$session_code);
+		$session_type = $session_type_query->execute()->fetchArray(SQLITE3_ASSOC);
+
+		// Insert a session with session_start...
+		// 		from session_types: group_id and bytes_remaining
+		$start_session_query = $cc_db->prepare("
+			INSERT INTO session_details
+				(session_start, group_id, mac_address, bytes_remaining)
+			VALUES 
+				(DATETIME('now'), :group_id, :mac_address, :bytes_remaining)");
+
+		$start_session_query->bindValue(":group_id",$session_type['group_id']);
+		$start_session_query->bindValue(':mac_address',$mac_address);
+		$start_session_query->bindValue('bytes_remaining',$session_type['bytes_remaining']);
+
+		$start_session_query->execute();
+
+		// Set the session_id cookie
+		$get_session_id_query = $cc_db->prepare('
+			SELECT MAX(session_id) as session_id FROM session_details');
+
+		$session_id = $get_session_id_query->execute()->fetchArray(SQLITE3_ASSOC)['session_id'];
+		$_COOKIE['session_id'] = $session_id;
+
+		$cc_db->exec("COMMIT");
+	} catch (Exception $e) {
+		$cc_db->exec("ROLLBACK");
+		echo "Error: " . $e->getMessage();
+	}
+}
 
 // Updates session limit and returns wether the session can keep going
 // Tested
@@ -69,7 +115,7 @@ function updateSession($bytes) {
     }
 }
 
-// Untested
+// Tested
 function endSession() {
 	global $db_path;
     $session_id = $_COOKIE['session_id'];
