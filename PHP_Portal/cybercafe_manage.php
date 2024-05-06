@@ -7,6 +7,8 @@ Notes:
 - At the moment the functions just return true or false (might need to change this).
 - There is no parameter validation.
 - There are not good error-throwing practices implemented.
+- Should probably implement the testing using php unit tests rather than the current set up.
+- Should make sure that the group name is unique for website blocking groups.
 
 Needed functions:
 J: 1-5,8
@@ -176,5 +178,59 @@ function canSessionVisitSite($url) {
 		$cc_db->close();
 	}
 }
+
+// Tested
+function createWebsiteBlockingGroup($group_name, $group_id) {
+	global $db_path;
+	$cc_db = new SQLite3($db_path);
+
+	try {
+		$create_group_query = $cc_db->prepare("
+			INSERT INTO website_blocking_groups
+				(group_id, group_name)
+			VALUES 
+				(:group_id, :group_name)");
+		$create_group_query->bindValue(":group_name", $group_name);
+		$create_group_query->bindValue(":group_id", $group_id);
+
+		$create_group_query->execute();
+
+	} catch (Exception $e) {
+		return "Error: " . $e->getMessage();
+	} finally {
+		$cc_db->close();
+	}
+}
+
+// Tested
+function deleteWebsiteBlockingGroup($group_id) {
+	global $db_path;
+	$cc_db = new SQLite3($db_path);
+
+	try {
+		$delete_group_query = $cc_db->prepare("
+			DELETE FROM website_blocking_groups
+			WHERE group_id = :group_id");
+		$delete_group_query->bindValue(":group_id", $group_id);
+		$result = $delete_group_query->execute();
+
+		if ($result === false) {
+			throw new Exception("Failed to delete group.");
+		} else {
+			$affected_rows = $cc_db->changes();
+			if ($affected_rows > 0) {
+				return "Group deleted successfully.";
+			} else {
+				return "Group not found.";
+			}
+		}
+
+	} catch (Exception $e) {
+		return "Error: " . $e->getMessage();
+	} finally {
+		$cc_db->close();
+	}
+}
+
 
 ?>
