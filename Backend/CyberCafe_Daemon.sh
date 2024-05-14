@@ -100,7 +100,8 @@ function setup_infra {
 		iptables -t nat -A PREROUTING -j DNAT --to-destination ${LOCAL_IP}
 	fi
 
-	# Traffic Control
+	# Traffic Control speeds
+    # Was for different speed queues but will most likely only need one for slower tier once data limit is exhausted.
 	tc qdisc show dev wlan0 | grep htb > /dev/null
 	if [[ $? -ne 0 ]]; then
 		echo "Creating tc qdisc HTB queues"
