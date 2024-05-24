@@ -118,6 +118,10 @@ function setup_infra {
 	if ! pgrep lighttpd > /dev/null; then
         start_captive_webserver
     fi
+
+    if ! pgrep Data_Usage_Accounting.sh > /dev/null; then
+        start_accounting_script
+    fi
 }
 
 
@@ -125,6 +129,9 @@ function shutdown_infra {
     printf "%s" "$(date +%T)" && echo ": Shutdown, I suppose"
     echo "Stopping captive portal webserver"
     pkill lighttpd
+
+    echo "Stopping accounting script"
+    pkill Data_Usage_Accounting.sh
 
     echo "Putting variables back to default values"
     LOCAL_IP=''
@@ -172,6 +179,10 @@ function start_captive_webserver {
     set -o allexport
     source /data/data/com.android.myapplication/files/conf/lighttpd.env
     /data/data/com.android.myapplication/files/bin/lighttpd -f /data/data/com.android.myapplication/files/conf/lighttpd.conf
+}
+
+function start_accounting_script {
+    ./Data_Usage_Accounting.sh
 }
 
 ### START OF PROGRAM EXECUTION ###
