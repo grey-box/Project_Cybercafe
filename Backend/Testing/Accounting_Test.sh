@@ -1,3 +1,4 @@
+# Tests if the Data_Usage_Accounting.sh script updates the database correctly for a user that exists.
 #!/bin/bash
 
 # Create a temporary SQLite database for testing
