@@ -22,13 +22,8 @@ while true; do
         
         # Process the iptables output line by line
         echo "$iptables_output" | grep "MAC" | while read -r line; do
-            echo "Debug: Processing line -> $line"
-            # Parse the line to get the MAC address and bytes used
             bytes=$(echo $line | awk '{print $2}')
             mac=$(echo $line | awk '{print $10}')
-
-            # Print debug information
-            echo "Parsed bytes: $bytes, MAC: $mac"
 
             # Update the database
             update_usage $mac $bytes

@@ -3,8 +3,15 @@
 
 # Create a temporary SQLite database for testing
 TEST_DB_PATH="/tmp/test_database.db"
-touch /tmp/test_database.db
-chmod 666 /tmp/test_database.db
+
+# Clean up existing database file
+if [ -f "$TEST_DB_PATH" ]; then
+    rm "$TEST_DB_PATH"
+fi
+
+# Create a new database file
+touch "$TEST_DB_PATH"
+chmod 666 "$TEST_DB_PATH"
 
 sqlite3 $TEST_DB_PATH <<EOF
 CREATE TABLE IF NOT EXISTS session_details (
@@ -46,24 +53,21 @@ export -f iptables
 
 # Run the Data_Usage_Accounting.sh script with the test database in the background
 DB_PATH=$TEST_DB_PATH source ./Backend/Data_Usage_Accounting.sh &
+SCRIPT_PID=$!
 
 # Give the script some time to process 
 sleep 5
 
-# Find the process ID of the Data_Usage_Accounting.sh script
-PID=$(pgrep -f "./Backend/Data_Usage_Accounting.sh")
+# Ensure the database is synced to disk
+sync
 
-# Kill the script if it's running
-if [[ -n "$PID" ]]; then
-    kill "$PID"
-    echo "Debug: Killed Data_Usage_Accounting.sh with PID $PID"
-else
-    echo "Debug: Data_Usage_Accounting.sh not running"
+# Kill the script using the captured PID
+if kill -0 "$SCRIPT_PID" 2>/dev/null; then
+    kill "$SCRIPT_PID"
 fi
 
 # Check the database to see if the bytes_remaining was updated correctly
 RESULT=$(sqlite3 $TEST_DB_PATH "SELECT bytes_remaining FROM session_details WHERE mac_address = '00:11:22:33:44:55';")
-
 
 # Expected result is 200 (1000 - 500 - 300)
 if [[ $RESULT -eq 200 ]]; then
@@ -71,6 +75,3 @@ if [[ $RESULT -eq 200 ]]; then
 else
     echo "Test failed: bytes_remaining is $RESULT"
 fi
-
-# Clean up
-rm $TEST_DB_PATH

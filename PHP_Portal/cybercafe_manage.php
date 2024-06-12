@@ -9,19 +9,8 @@ Notes:
 - There are not good error-throwing practices implemented.
 - Should probably implement the testing using php unit tests rather than the current set up.
 - Should make sure that the group name is unique for website blocking groups.
-
-Needed functions:
-J: 1-5,8
-T: 6,7,9
-	1. Insert the session details at the start of the session.
-	2. Check to make sure that the session limit has not been reached (stop session elsewise).
-	3. End the session (in database and also the connection).
-	5. Make sure that a url that the user is trying to visit is not in the blocklist.
-	6. CUD session types.(admin)
-	7. CD blocked websites.
-	8. CD website access groups.
-	9. R admin
 */
+
 
 $db_path = './CyberCafeTest.db';
 
