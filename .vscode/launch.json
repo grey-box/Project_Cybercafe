@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        
+        {
+            "type": "bashdb",
+            "request": "launch",
+            "name": "Debug Accounting_Test.sh",
+            "program": "${workspaceFolder}/Backend/Testing/Accounting_Test.sh",
+            "args": [],
+            "env": {
+                "DB_PATH": "/tmp/test_database.db"
+            },
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
