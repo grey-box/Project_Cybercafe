@@ -1,0 +1,67 @@
+/* General styles */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+/* Container setup */
+.container {
+    width: 100%;
+    max-width: 384px; /* Set to the maximum used for consistency */
+    margin: 20px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px; /* Consistent border radius */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    color: #333; /* Consistent text color across container */
+    overflow: hidden;
+}
+
+/* Header styles */
+header h1, .container h1 {
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    padding: 10px 20px;
+    font-size: 18px; /* Standardized font size */
+}
+
+/* Form group styling */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+/* Input and Select styles */
+.container input[type="text"], .container select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Button styling for actions and form submissions */
+.container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.container button:hover {
+    background-color: #0056b3;
+}
