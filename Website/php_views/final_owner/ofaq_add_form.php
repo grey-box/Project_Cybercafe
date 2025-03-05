@@ -1,9 +1,11 @@
 <?php
 // Set the page title dynamically
-$pageTitle = "O - FAQ Add"; 
+$pageTitle = "A - FAQ Add";
+
+
 
 // Include the header
-include('../asset_for_pages/header.php');
+include('../asset_for_pages/owner_header.php');
 
 // Sample FAQ data for demo purposes (this would come from your database in a real application)
 $faq = [
@@ -48,7 +50,7 @@ $faq = [
             <div class="card-title" id="formTitle">Add New / Edit Q&A</div>
           </div>
           <div class="card-body">
-            <form id="qaForm" onsubmit="saveFaq(event)">
+            <form id="qaForm">
               <input type="hidden" id="faqId">
               
               <!-- Question Field -->
@@ -78,3 +80,41 @@ $faq = [
 // Include the footer
 include('../asset_for_pages/footer.php');
 ?>
+
+
+<script>
+// Form validation and submission
+$(document).ready(function () {
+    $("#qaForm").on("submit", function (event) {
+        event.preventDefault();
+        
+        showNotification("FAQ added successfully!", "success");
+        $("#qaForm")[0].reset();
+    });
+});
+
+// Function to show notification
+function showNotification(message, type) {
+    $.notify({
+        title: "Notification",
+        message: message,
+        icon: "fa fa-bell"
+    }, {
+        type: type,
+        placement: {
+            from: "top",
+            align: "center"
+        },
+        animate: {
+            enter: "animated fadeInDown",
+            exit: "animated fadeOutUp"
+        },
+        delay: 4000
+    });
+}
+</script>
+
+<script src="../assets/js/core/jquery-3.7.1.min.js"></script>
+<script src="../assets/js/core/popper.min.js"></script>
+<script src="../assets/js/core/bootstrap.min.js"></script>
+<script src="../assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>

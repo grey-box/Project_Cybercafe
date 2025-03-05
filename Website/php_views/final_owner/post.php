@@ -3,7 +3,7 @@
 $pageTitle = "Broadcast Message - CyberCafe"; 
 
 // Include the header
-include('../asset_for_pages/header.php');
+include('../asset_for_pages/owner_header.php');
 ?>
 
 <div class="container">
@@ -17,7 +17,7 @@ include('../asset_for_pages/header.php');
                     <div class="card-title">Post a Message</div>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="">
+                    <form method="POST" action="" id="broadcast">
 
                         <!-- Title Input Field -->
                         <div class="form-group row">
@@ -53,3 +53,41 @@ include('../asset_for_pages/header.php');
 // Include the footer
 include('../asset_for_pages/footer.php');
 ?>
+
+
+<script>
+// Form validation and submission
+$(document).ready(function () {
+    $("#broadcast").on("submit", function (event) {
+        event.preventDefault();
+        
+        showNotification("Message Broadcasted successfully!", "success");
+        $("#broadcast")[0].reset();
+    });
+});
+
+// Function to show notification
+function showNotification(message, type) {
+    $.notify({
+        title: "Notification",
+        message: message,
+        icon: "fa fa-bell"
+    }, {
+        type: type,
+        placement: {
+            from: "top",
+            align: "center"
+        },
+        animate: {
+            enter: "animated fadeInDown",
+            exit: "animated fadeOutUp"
+        },
+        delay: 4000
+    });
+}
+</script>
+
+<script src="../assets/js/core/jquery-3.7.1.min.js"></script>
+<script src="../assets/js/core/popper.min.js"></script>
+<script src="../assets/js/core/bootstrap.min.js"></script>
+<script src="../assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>

@@ -1,204 +1,87 @@
+
 <?php
 // Set the page title dynamically
-$pageTitle = "User Profile"; 
+$pageTitle = "Detailed Instructions"; 
 
 // Include the header
-include('../asset_for_pages/header.php');
+include('../asset_for_pages/user_header.php');
 ?>
 
-
 <div class="container">
-          <div class="page-inner">
-            <div class="page-header">
-              <h3 class="fw-bold mb-3">Instructions</h3>
-              <ul class="breadcrumbs mb-3">
+    <div class="page-inner">
+        <div class="page-header">
+            <h3 class="fw-bold mb-3">Instructions</h3>
+            <ul class="breadcrumbs mb-3">
                 <li class="nav-home">
-                  <a href="#">
-                    <i class="icon-home"></i>
-                  </a>
+                    <a href="#">
+                        <i class="icon-home"></i>
+                    </a>
                 </li>
                 <li class="separator">
-                  <i class="icon-arrow-right"></i>
+                    <i class="icon-chevron-right"></i>
                 </li>
-                <!-- <li class="nav-item">
-                  <a href="#">User Tables</a>
-                </li>
-                <li class="separator">
-                  <i class="icon-arrow-right"></i>
-                </li> -->
                 <li class="nav-item">
                     <a href="#">Instructions</a>
                 </li>
-                <li class="separator">
-                    <i class="icon-arrow-right"></i>
-                </li>
-              </ul>
-            </div>
-            <div class="row"></div>
-            </div>
+            </ul>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Important Usage Guidelines</div>
                     </div>
-                    <!-- User Information along with Data table Start -->
-                    <title>Instructions</title>
-                    <style>
-                        /* Add some basic styling to make the page look decent */
-                        body {
-                            font-family: 'Arial', sans-serif;
-                            margin: 0;
-                            padding: 0;
-                            background-color: #f4f4f4;
-                            color: #333;
-                        }
-
-                        .container {
-                            max-width: 800px;
-                            margin: 0 auto;
-                            padding: 20px;
-                            background: white;
-                            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                            border-radius: 8px;
-                        }
-
-                        .header {
-                            text-align: center;
-                            padding: 20px;
-                            background: #007BFF;
-                            color: white;
-                            border-radius: 8px 8px 0 0;
-                        }
-
-                        .navigation {
-                            margin: 20px 0;
-                        }
-
-                        .navigation ul {
-                            list-style: none;
-                            padding: 0;
-                        }
-
-                        .navigation li {
-                            display: inline;
-                            margin-right: 15px;
-                        }
-
-                        .navigation a {
-                            text-decoration: none;
-                            color: #007BFF;
-                        }
-
-                        .navigation a:hover {
-                            text-decoration: underline;
-                        }
-
-                        .section {
-                            margin: 20px 0;
-                            padding: 15px;
-                            border: 1px solid #ddd;
-                            border-radius: 5px;
-                            background-color: #f9f9f9;
-                        }
-
-                        .section h2 {
-                            color: #007BFF;
-                        }
-                        .faq-categories {
-                            display: flex;
-                            justify-content: center;
-                            flex-wrap: wrap;
-                            margin: 20px 0;
-                        }
-
-                        .category-card {
-                            background-color: white;
-                            border: 1px solid #ccc;
-                            border-radius: 10px;
-                            padding: 20px;
-                            margin: 10px;
-                            width: 150px;
-                            text-align: center;
-                            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-                            cursor: pointer;
-                        }
-
-                        .faq-section {
-                            max-width: 800px;
-                            margin: auto;
-                            padding: 20px;
-                        }
-
-                        .faq-item {
-                            background-color: white;
-                            margin: 10px 0;
-                            padding: 15px;
-                            border-radius: 5px;
-                            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-                        }
-
-                        .faq-question {
-                            font-weight: bold;
-                            cursor: pointer;
-                        }
-
-                        .faq-answer {
-                            display: none; /* Initially hide answers */
-                            padding-top: 10px;
-                        }
-
-                        .social-media a {
-                            margin: 0 10
-                        }    
-                    </style>
-                    <div class="container">
-                        <header class="header">
-                            <h1>Welcome to Our Service</h1>
-                            <p>Your Guide to Navigating Our Features</p>
-                        </header>
-                
-                        <nav class="navigation">
-                            <ul>
-                                <li><a href="#account">Creating an Account</a></li>
-                                <li><a href="#login">Logging In</a></li>
-                                <li><a href="#dashboard">Navigating the Dashboard</a></li>
-                                <li><a href="#support">Contact Support</a></li>
-                            </ul>
-                        </nav>
-                
-                        <section id="account" class="section">
-                            <h2>Creating an Account</h2>
-                            <ol>
-                                <!-- <li>Click on the "Sign Up" button located at the top right corner.</li> -->
-                                <li>Fill in the required fields (Userame, Password or Passcode).</li>
-                                <li>Click "Submit" to create your account.</li>
-                                <li>Check your email for a confirmation link to activate your account.</li>
-                            </ol>
-                        </section>
-                
-                        <section id="login" class="section">
-                            <h2>Logging In</h2>
-                            <ol>
-                                <li>Click on the "Login" button.</li>
-                                <li>Enter your registered username and password or passcode.</li>
-                                <li>Click "Login" to access your dashboard.</li>
-                                <li>If you forget your password/passcode, click on "Forgot Password?" to request the administrator for resetting the password.</li>
-                            </ol>
-                        </section>
-                
-                        <section id="dashboard" class="section">
-                            <h2>Navigating the Dashboard</h2>
-                            <p>Overview of Features:</p>
-                            <ul>
-                                <li><strong>Quick Links:</strong> Access frequently used features directly from the dashboard.</li>
-                                <li><strong>Notifications:</strong> Stay updated with alerts and messages.</li>
-                                <li><strong>Search Bar:</strong> Use the search function to find specific resources quickly.</li>
-                            </ul>
-                        </section>
-
-                            <h3>Need Help?</h3>
-                            <p>Contact our support team via the <a href="#support">Support</a> section.</p>
-                            <p>Email: <a href="mailto:support@greybox.com">support@yourportal.com</a></p>
-                            <p>Phone: (123) 456-7890</p>
-                        
+                    <div class="card-body">
+                        <p class="text-muted">Below are detailed instructions for using the system effectively. Follow these steps to avoid any issues.</p>
+                        <table class="table table-striped table-responsive">
+                            <thead>
+                                <tr>
+                                    <th>SN</th>
+                                    <th>Instruction</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Ensure that your device is connected to the network before accessing the system. Check your internet connection if necessary.</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Log in to your account with your username and password. If you have forgotten your credentials, use the 'Forgot Password' option to reset them.</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>On your dashboard, you will see a summary of your account. Review this information for accuracy.</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>If you face any issues, click on the Help and Support section. Here, you will find FAQs and guides to resolve common issues.</td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>Ensure you log out of your account after using the system, especially on public or shared devices, to protect your information.</td>
+                                </tr>
+                                <tr>
+                                    <td>6</td>
+                                    <td>Contact customer support for assistance if you encounter an issue that is not addressed in the Help section. Use the provided email or phone number.</td>
+                                </tr>
+                                <tr>
+                                    <td>7</td>
+                                    <td>Regularly update your profile information to keep your account secure and up to date. Go to the Profile Management section to make changes.</td>
+                                </tr>
+                                <tr>
+                                    <td>8</td>
+                                    <td>Abide by the terms of service to avoid penalties or suspension of your account. Read the terms carefully when registering or updating your account.</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <?php
 // Include the footer

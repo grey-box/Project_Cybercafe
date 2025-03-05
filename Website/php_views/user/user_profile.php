@@ -3,131 +3,221 @@
 $pageTitle = "User Profile"; 
 
 // Include the header
-include('../asset_for_pages/header.php');
+include('../asset_for_pages/user_header.php');
+
+// Sample device data (you can fetch this from a database)
+$devices = [
+    ['device_name' => 'Device 2', 'data_used' => '3 GB'],
+    ['device_name' => 'Device 3', 'data_used' => '1 GB']
+];
 ?>
 
+<div class="page-header">
+    <ul class="breadcrumbs mb-3">
+        <li class="nav-home">
+            <a href="#">
+                <i class="icon-home"></i>
+            </a>
+        </li>
+        <li class="separator">
+            <i class="icon-arrow-right"></i>
+        </li>
+        <li class="nav-item">
+            <a href="#">User</a>
+        </li>
+        <li class="separator">
+            <i class="icon-arrow-right"></i>
+        </li>
+        <li class="nav-item">
+            <a href="#">User Profile</a>
+        </li>
+        <li class="separator">
+            <i class="icon-arrow-right"></i>
+        </li>
+    </ul>
+</div>
 
-<div class="container">
-          <div class="page-inner">
-            <div class="page-header">
-              <h3 class="fw-bold mb-3">User Profile</h3>
-              <ul class="breadcrumbs mb-3">
-                <li class="nav-home">
-                  <a href="#">
-                    <i class="icon-home"></i>
-                  </a>
-                </li>
-                <li class="separator">
-                  <i class="icon-arrow-right"></i>
-                </li>
-                <!-- <li class="nav-item">
-                  <a href="#">User Tables</a>
-                </li> -->
-                <!-- <li class="separator">
-                  <i class="icon-arrow-right"></i>
-                </li> -->
-                <li class="nav-item">
-                    <a href="#">User Info</a>
-                </li>
-                <li class="separator">
-                    <i class="icon-arrow-right"></i>
-                </li>
-              </ul>
+<!-- User Form Section -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Profile</div>
             </div>
-            <div class="row"></div>
-            </div>
-                    </div>
-                    <!-- User Information along with Data table Start -->
-                    <title>User Profile</title>
-                    <style>
-                        /* Add some basic styling to make the page look decent */
-                        body {
-                            font-family: Arial, sans-serif;
-                        }
-                        .user-info {
-                            width: 80%;
-                            margin: 40px auto;
-                            padding: 20px;
-                            border: 1px solid #ddd;
-                            border-radius: 10px;
-                            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                        }
-                        .user-image {
-                            width: 100px;
-                            height: 100px;
-                            border-radius: 50%;
-                            margin: 20px;
-                        }
-                        .user-data-table {
-                            border-collapse: collapse;
-                            width: 100%;
-                        }
-                        .user-data-table th, .user-data-table td {
-                            border: 1px solid #ddd;
-                            padding: 10px;
-                            text-align: left;
-                        }
-                        .user-data-table th {
-                            background-color: #f0f0f0;
-                        }
-                    </style>
-                    <div class="table-responsive">
-                        <div class="user-info">
-                            <h2>User Information</h2>
-                            <p>Name: Lionel Scaloni</p> 
-                            <p>Access Code: 123456</p>
-                            <!-- <textarea rows="5" cols="50" placeholder="Description"></textarea> -->
-                            <table class="user-data-table">
-                                <thead>
-                                    <tr>
-                                        <th>SN.</th>
-                                        <th>Devices</th>
-                                        <th>MAC Address</th>
-                                        <th>Bandwidth Allocated</th>
-                                        
-                                        <!-- <th>Edit</th> -->
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1.</td>
-                                        <td>Desktop</td>
-                                        <td>00:11:22:33:44:55</td>
-                                        <td>1 GB</td>
-                                        <!-- <td><a href="#" class="edit-btn">Edit</a></td> -->
-                                    </tr>
-                                    <tr>
-                                        <td>2.</td>
-                                        <td>Smartphone</td>
-                                        <td>66:77:88:99:12:07</td>
-                                        <td>50 MB</td>
-                                        <!-- <td><a href="#" class="edit-btn">Edit</a></td> -->
-                                    </tr>
-                                    <tr>
-                                      <td>3.</td>
-                                      <td>Laptop</td>
-                                      <td>00:11:22:33:55:77</td>
-                                      <td>10 GB</td>
-                                      <!-- <td><a href="#" class="edit-btn">Edit</a></td> -->
-                                  </tr>
-                                  <tr>
-                                    <td>4.</td>
-                                    <td>Tablet</td>
-                                    <td>00:11:22:33:55:88</td>
-                                    <td>100 MB</td>
-                                    <!-- <td><a href="#" class="edit-btn">Edit</a></td> -->
-                                </tr>
-                                </tbody>
-                            </table>
+            <div class="card-body">
+                <form method="POST" action="">
+                    <!-- Username Input -->
+                    <div class="form-group row">
+                        <label for="username" class="col-sm-2 col-form-label">Username:</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" id="username" name="username" value="Sudeep" readonly>
                         </div>
-                  </div>
-                </div>
-              </div>
+                    </div>
+
+                    <!-- Password Input -->
+                    <!-- <div class="form-group row">
+                        <label for="password" class="col-sm-2 col-form-label">Password:</label>
+                        <div class="col-sm-4">
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                    </div> -->
+
+                    <!-- Confirm Password Input -->
+                    <!-- <div class="form-group row">
+                        <label for="confirmPassword" class="col-sm-2 col-form-label">Confirm Password:</label>
+                        <div class="col-sm-4">
+                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                        </div>
+                    </div> -->
+
+                   
+
+                    <!-- Password Field -->
+
+                    <div class="form-group row">
+                        <label for="password" class="col-sm-2 col-form-label">Password:</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" id="password" name="password" readonly required>
+                        </div>
+                    </div>
+
+                    <!-- Bandwidth Select -->
+
+                    <div class="form-group row">
+                        <label for="bandwidth" class="col-sm-2 col-form-label">Bandwidth Allocated:</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" id="bandwidth" name="bandwidth" value="150" readonly>
+                        </div>
+                    </div>
+
+                    <!-- Data Transfer Rate Select -->
+
+                    <div class="form-group row">
+                        <label for="transferRate" class="col-sm-2 col-form-label">Data Transfer Rate:</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" id="transferRate" name="transferRate" value="Slow Lane" readonly>
+                        </div>
+                    </div>
+
+                    <!-- Save and Cancel Buttons -->
+                    <!-- <div class="form-group row">
+                        <div class="col-sm-12 text-right">
+                            <button type="button" class="btn btn-secondary">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </div> -->
+                </form>
             </div>
-          </div>
-        </div> 
+        </div>
+    </div>
+</div>
+
+<!-- Devices Table Section -->
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Assigned Devices</div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Device Name</th>
+                                <th>Data Used</th>
+                                <th>Remove</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Device 1</td>
+                                <td>2 GB</td>
+                                <td>Main Device</td>
+                            </tr>
+                             <?php foreach ($devices as $device) : ?>
+                                <tr>
+                                    <td><?php echo $device['device_name']; ?></td>
+                                    <td><?php echo $device['data_used']; ?></td>
+                                    <td><button class="btn btn-danger btn-sm" onclick="removeDevice(this)">Remove</button></td>
+                                </tr>
+                            <?php endforeach; ?> 
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <?php
 // Include the footer
 include('../asset_for_pages/footer.php');
 ?>
+
+<script>
+// JavaScript function to generate a random access code
+function generateAccessCode() {
+    var code = '';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    for (var i = 0; i < 10; i++) {
+        code += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    document.getElementById("accessCode").value = code;
+}
+
+function generatePassword() {
+    var words = ["Horse", "Battery", "Staple", "Cloud", "Secure", "Bridge", "River", "Table", "Laptop", "Coffee"];
+    var password = words[Math.floor(Math.random() * words.length)] + 
+                   words[Math.floor(Math.random() * words.length)] + 
+                   words[Math.floor(Math.random() * words.length)] + 
+                   Math.floor(Math.random() * 100);
+    document.getElementById("password").value = password;
+}
+
+// JavaScript function to remove a device with confirmation
+function removeDevice(button) {
+    const confirmation = confirm("Do you really want to remove this device?");
+    if (confirmation) {
+        const row = button.closest('tr');
+        row.parentNode.removeChild(row);
+    }
+}
+</script>
+
+<script>
+// Form validation and submission
+$(document).ready(function () {
+    $("#delete").on("submit", function (event) {
+        event.preventDefault();
+        
+        showNotification("Device deleted successfully!", "success");
+        $("#delete")[0].reset();
+    });
+});
+
+// Function to show notification
+function showNotification(message, type) {
+    $.notify({
+        title: "Notification",
+        message: message,
+        icon: "fa fa-bell"
+    }, {
+        type: type,
+        placement: {
+            from: "top",
+            align: "center"
+        },
+        animate: {
+            enter: "animated fadeInDown",
+            exit: "animated fadeOutUp"
+        },
+        delay: 4000
+    });
+}
+</script>
+
+<script src="../assets/js/core/jquery-3.7.1.min.js"></script>
+<script src="../assets/js/core/popper.min.js"></script>
+<script src="../assets/js/core/bootstrap.min.js"></script>
+<script src="../assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>

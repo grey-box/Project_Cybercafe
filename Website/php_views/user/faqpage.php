@@ -1,9 +1,9 @@
 <?php
 // Set the page title dynamically
-$pageTitle = "User Profile"; 
+$pageTitle = "FAQs Page"; 
 
 // Include the header
-include('../asset_for_pages/header.php');
+include('../asset_for_pages/user_header.php');
 ?>
 
 
@@ -104,65 +104,67 @@ include('../asset_for_pages/header.php');
                             max-height: 200px;
                         }
 
+                        
+
                     </style>
                     <div class="faq-section">
                         <h2>Frequently Asked Questions</h2>
                         <div class="faq-item">
-                          <button class="faq-question">1. How do I reset my password?</button>
+                          <button class="faq-question">How do I reset my password?</button>
                           <div class="faq-answer">
                             <p>Click on the "Forgot Password?" link on the login page. Enter your email address, and you will receive a password reset link in your inbox.</p>
                           </div>
                         </div>
                         <div class="faq-item">
-                          <button class="faq-question">2. What should I do if I don’t receive the confirmation email?</button>
+                          <button class="faq-question">What should I do if I don’t receive the confirmation email?</button>
                           <div class="faq-answer">
                             <p>Check your spam or junk folder. If it’s not there, try resending the confirmation email from the login page or contact support.</p>
                           </div>
                         </div>
                         <div class="faq-item">
-                          <button class="faq-question">3. Can I change my email address?</button>
+                          <button class="faq-question">Can I change my email address?</button>
                           <div class="faq-answer">
                             <p>Yes! Go to your Profile settings, and you’ll find an option to update your email address. Make sure to confirm the new email.</p>
                           </div>
                         </div>
                         <div class="faq-item">
-                            <button class="faq-question">4. How do I delete my account?</button>
+                            <button class="faq-question">How do I delete my account?</button>
                             <div class="faq-answer">
                                 <p>To delete your account, please contact our support team. They will guide you through the process and ensure that all your data is handled securely.</p>
                             </div>
                         </div>
                         <div class="faq-item">
-                            <button class="faq-question">5. Is my personal information safe?</button>
+                            <button class="faq-question">Is my personal information safe?</button>
                             <div class="faq-answer">
                                 <p>Absolutely! We take your privacy seriously and employ industry-standard security measures to protect your data. Please refer to our Privacy Policy for more details.</p>
                             </div>
                         </div>
                         <div class="faq-item">
-                            <button class="faq-question">6. What if I encounter a technical issue?</button>
+                            <button class="faq-question">What if I encounter a technical issue?</button>
                             <div class="faq-answer">
                                 <p>If you experience any technical difficulties, please visit our Help Center for troubleshooting tips or submit a ticket to our support team for further assistance.</p>
                             </div>
                         </div>
                         <div class="faq-item">
-                            <button class="faq-question">7. Are there any fees associated with using your service?</button>
+                            <button class="faq-question">Are there any fees associated with using your service?</button>
                             <div class="faq-answer">
                                 <p>Our service is free to use with optional premium features available for a fee. You can explore our pricing plans on the Payments page for more details.</p>
                             </div>
                         </div>
                         <div class="faq-item">
-                            <button class="faq-question">8. How can I contact customer support?</button>
+                            <button class="faq-question">How can I contact customer support?</button>
                             <div class="faq-answer">
                                 <p>You can reach our customer support team via the "Contact Us" section on our website. We are available through email, chat, and phone support during business hours.</p> 
                             </div>
                         </div>
                         <div class="faq-item">
-                            <button class="faq-question">9. Can I cancel my subscription at any time?</button>
+                            <button class="faq-question">Can I cancel my subscription at any time?</button>
                             <div class="faq-answer">
                                 <p>Yes, you can cancel your subscription at any time through your account settings. Please note that cancellation will take effect at the end of your current billing cycle.</p>
                             </div>
                         </div>
                         <div class="faq-item">
-                            <button class="faq-question">10. Do you offer a money-back guarantee?</button>
+                            <button class="faq-question">Do you offer a money-back guarantee?</button>
                             <div class="faq-answer">
                                 <p>Yes, we offer a 30-day money-back guarantee on our premium plans. If you are not satisfied with our service, you can request a refund within 30 days of your purchase.</p>
                             </div>
@@ -250,3 +252,5 @@ include('../asset_for_pages/header.php');
 // Include the footer
 include('../asset_for_pages/footer.php');
 ?>
+
+

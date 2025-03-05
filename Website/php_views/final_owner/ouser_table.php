@@ -14,10 +14,10 @@ $user_data = [
 ];
 
 // Set the page title dynamically
-$pageTitle = "A - Add User"; 
+$pageTitle = "O - Add User"; 
 
 // Include the header
-include('../asset_for_pages/admin_header.php');
+include('../asset_for_pages/owner_header.php');
 ?>
                 <div class="page-inner">
                 <div class="page-header">
@@ -80,7 +80,7 @@ include('../asset_for_pages/admin_header.php');
                                                         <td><?= $user[0] ?></td>
                                                         <td><?= $user[1] ?></td>
                                                         <td><?= $user[2] ?></td>
-                                                        <td><button id="deleteBtn" onclick="showNotification()" class="btn btn-danger btn-sm delete-btn">Delete</button></td>
+                                                        <td><button class="btn btn-danger btn-sm delete-btn">Delete</button></td>
                                                     </tr>
                                                 <?php endforeach; ?>
                                             </tbody>
@@ -131,41 +131,3 @@ include('../asset_for_pages/footer.php');
         });
       });
     </script>
-
-
-<script>
-// Form validation and submission
-$(document).ready(function () {
-    $("#deleteBtn").on("submit", function (event) {
-        event.preventDefault();
-        
-        showNotification("Record deleted successfully!", "danger");
-        $("#deleteBtn")[0].reset();
-    });
-});
-
-// Function to show notification
-function showNotification(message, type) {
-    $.notify({
-        title: "Notification",
-        message: message,
-        icon: "fa fa-bell"
-    }, {
-        type: type,
-        placement: {
-            from: "top",
-            align: "center"
-        },
-        animate: {
-            enter: "animated fadeInDown",
-            exit: "animated fadeOutUp"
-        },
-        delay: 4000
-    });
-}
-</script>
-
-<script src="../assets/js/core/jquery-3.7.1.min.js"></script>
-<script src="../assets/js/core/popper.min.js"></script>
-<script src="../assets/js/core/bootstrap.min.js"></script>
-<script src="../assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>

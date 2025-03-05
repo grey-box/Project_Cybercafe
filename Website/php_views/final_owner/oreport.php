@@ -3,7 +3,7 @@
 $pageTitle = "O - Report"; 
 
 // Include the header
-include('../asset_for_pages/header.php');
+include('../asset_for_pages/owner_header.php');
 
 ?>
 
@@ -110,7 +110,9 @@ include('../asset_for_pages/header.php');
               <div class="form-group row">
                 <div class="col-sm-12 text-right">
                   <button type="reset" class="btn btn-secondary">Reset</button>
-                  <button type="button" class="btn btn-primary" onclick="runReport()">Run Report</button>
+                  <a href="http://localhost/CCFBackup/php_views/final_owner/report_display.php">
+                    <button type="button" class="btn btn-primary">Run Report</button>
+                  </a>
                 </div>
               </div>
             </form>

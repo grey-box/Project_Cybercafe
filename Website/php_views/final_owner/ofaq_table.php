@@ -1,9 +1,9 @@
 <?php
 // Set the page title dynamically
-$pageTitle = "A - FAQ";
+$pageTitle = "O - FAQ"; 
 
 // Include the header
-include('../asset_for_pages/admin_header.php');
+include('../asset_for_pages/owner_header.php');
 
 // Sample data for the FAQ (in a real application, this data would come from a database)
 $faqData = [
@@ -44,7 +44,7 @@ $faqData = [
     <div class="card">
       <div class="card-header d-flex justify-content-between">
         <div class="card-title">Manage Q&A</div>
-        <button class="btn btn-primary" onclick="window.location.href='afaq_add_form.php'">Add New</button>
+        <button class="btn btn-primary" onclick="window.location.href='ofaq_add_form.php'">Add New</button> <!-- Updated to PHP -->
       </div>
       <div class="card-body">
         <div class="table-responsive">
@@ -61,7 +61,7 @@ $faqData = [
                 <tr>
                   <td><?php echo $faq['question']; ?></td>
                   <td><?php echo $faq['answer']; ?></td>
-                  <style>
+                    <style>
                           .btn-action {
                           margin-right: 8px;
                           margin-bottom: 5px; /* To avoid overlap in stacked view */
@@ -69,7 +69,7 @@ $faqData = [
                       </style>
 
                       <td>
-                        <button class="btn btn-warning btn-sm btn-action" onclick="window.location.href='afaq_add_form.php'">Edit</button>
+                        <button class="btn btn-warning btn-sm btn-action" onclick="window.location.href='ofaq_add_form.php'">Edit</button>
                         <button class="btn btn-danger btn-sm btn-action" onclick="removeRow(this)">Delete</button>
                       </td>
                 </tr>
@@ -82,16 +82,13 @@ $faqData = [
   </div>
 </div>
 
-<?php
-// Include the footer
-include('../asset_for_pages/footer.php');
-?>
+
 
 <script>
 // Function to remove a row from the table with confirmation
 function removeRow(button) {
     // Show a confirmation prompt
-    const confirmation = confirm("This change connot be recovered, do you really want to delete this?");
+    const confirmation = confirm("This change connot be recovered, do you really want to delete this??");
     if (confirmation) {
         // If confirmed, remove the row
         const row = button.closest('tr');
@@ -101,7 +98,14 @@ function removeRow(button) {
 }
 
 // Function to edit FAQ (redirect to the edit page with the FAQ ID)
-// function editFaq(id) {
-//     window.location.href = 'edit_faq.php?id=' + id;
+// function editFaq() {
+//     window.location.href = 'ofaq_add_form.php';
 // }
+// 
 </script>
+
+
+<?php
+// Include the footer
+include('../asset_for_pages/footer.php');
+?>
