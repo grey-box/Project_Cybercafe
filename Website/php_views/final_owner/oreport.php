@@ -110,7 +110,7 @@ include('../asset_for_pages/owner_header.php');
               <div class="form-group row">
                 <div class="col-sm-12 text-right">
                   <button type="reset" class="btn btn-secondary">Reset</button>
-                  <a href="http://localhost/CCFBackup/php_views/final_owner/report_display.php">
+                  <a href="report_display.php">
                     <button type="button" class="btn btn-primary">Run Report</button>
                   </a>
                 </div>

@@ -66,7 +66,7 @@
         <div class="sidebar-content">
           <ul class="nav nav-secondary">
             <li class="nav-item">
-              <a href="http://localhost/CCFBackup/php_views/final_owner/odashboard.php">
+              <a href="../final_owner/odashboard.php">
                 <i class="fas fa-home"></i>
                 <p>Dashboard</p>
               </a>
@@ -79,7 +79,7 @@
 
             <!-- <li class="nav-item">
               <a data-bs-toggle="collapse">
-              <a href="http://localhost/CyberCafe-Fleming-prototype/php_views/final_admin/admin_add_user.php">
+              <a href="..-prototype/php_views/final_admin/admin_add_user.php">
                 <i class="fas fa-layer-group"></i>
                 <p>Add User</p>
               </a>
@@ -88,7 +88,7 @@
 
             <!-- <li class="nav-item">
               <a data-bs-toggle="collapse">
-                <a href="http://localhost/CyberCafe-Fleming-prototype/php_views/final_admin/afaq_table.php">
+                <a href="..-prototype/php_views/final_admin/afaq_table.php">
                 <i class="fas fa-pen-square"></i>
                 <p>FAQs Page</p>
 
@@ -96,14 +96,14 @@
 
             <li class="nav-item">
               <a data-bs-toggle="collapse">
-              <a href="http://localhost/CyberCafe-Fleming-prototype/php_views/final_admin/afaq_add_form.php">
+              <a href="..-prototype/php_views/final_admin/afaq_add_form.php">
                 <i class="fas fa-table"></i>
                 <p>Add FAQs</p>
               </a>
             </li> -->
 
             <li class="nav-item">
-              <a href="http://localhost/CCFBackup/php_views/final_owner/ouser_table.php">
+              <a href="../final_owner/ouser_table.php">
                 <i class="far fa-chart-bar"></i>
                 <p>User Management</p>  
               </a>
@@ -111,7 +111,7 @@
 
 
             <li class="nav-item">
-              <a  href="http://localhost/CCFBackup/php_views/final_owner/ofaq_table.php">
+              <a  href="../final_owner/ofaq_table.php">
                 <i class="fas fa-layer-group"></i>
                 <p>FAQs Management</p>
               </a>
@@ -120,7 +120,7 @@
             
 
             <li class="nav-item">
-              <a href="http://localhost/CCFBackup/php_views/final_owner/ofeaturetoggle.php">
+              <a href="../final_owner/ofeaturetoggle.php">
                 <i class="fas fa-table"></i>
                 <p>Feature Toggle</p>
               </a>
@@ -128,7 +128,7 @@
 
 
             <li class="nav-item">
-              <a href="http://localhost/CCFBackup/php_views/final_owner/owner_restrictions.php">
+              <a href="../final_owner/owner_restrictions.php">
                 <i class="far fa-chart-bar"></i>
                 <p>Restrictions</p>
               </a>
@@ -136,21 +136,21 @@
 
 
             <li class="nav-item">
-              <a href="http://localhost/CCFBackup/php_views/final_owner/oreport.php">
+              <a href="../final_owner/oreport.php">
                 <i class="fas fa-table"></i>
                 <p>Reports</p>
               </a>
             </li>
 
             <li class="nav-item">
-              <a href="http://localhost/CCFBackup/php_views/final_owner/post.php">
+              <a href="../final_owner/post.php">
                 <i class="fas fa-pen-square"></i>
                 <p>Broadcast</p>
               </a>
             </li>
 
             <li class="nav-item">
-              <a href="http://localhost/CCFBackup/php_views/final_owner/support.php">
+              <a href="../final_owner/support.php">
                   <i class="far fa-question-circle"></i>
                   <p>Support</p>
                 </a>
@@ -440,7 +440,7 @@
                       <div class="dropdown-divider"></div>
                       <a class="dropdown-item" href="#">Account Setting</a>
                       <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="http://localhost/CCFBackup/captive_portal/captiveportal.php">Logout</a>
+                      <a class="dropdown-item" href="../captiveportal.php">Logout</a>
                     </li>
                   </div>
                 </ul>
