@@ -6,7 +6,7 @@
 ##INCLUDES##
 
 ##VARIABLES##
-DATABASE_PATH='../database/CyberCafe_Database.db'
+DATABASE_PATH='/data/data/com.termux/files/usr/var/www/database/CyberCafe_Database.db'
 
 function clear_internet_sessions
 {
@@ -27,8 +27,8 @@ function clear_internet_sessions
 function delete_user_iptable_rules
 {
 	# Argument1: $1 -> user_ip
-	iptables -t mangle -D iptmon_rx -d ${1} -i ${HS_INTERFACE} &> /dev/null # delete rules since this user is effectively logged out
-	iptables -t mangle -D iptmon_tx -s ${1} -i ${HS_INTERFACE} &> /dev/null
+	iptables -t mangle -D iptmon_rx -d ${1} &> /dev/null # delete rules since this user is effectively logged out
+	iptables -t mangle -D iptmon_tx -s ${1} &> /dev/null
 	iptables -t nat -D PREROUTING -p all -s ${1} -i ${HS_INTERFACE} -j RETURN &> /dev/null #delete access outside of the captive portal using iptables
 }
 
@@ -73,9 +73,9 @@ function remove_session
 		fi
 		
 		#2. Create entry
-		sqlite3 $DATABASE_PATH "INSERT INTO user_data_usage (user_id,session_number,session_entry_index,entry_datetime,interval_bytes_tx,interval_bytes_rx) VALUES (${USER_ID},${SESSION_NUMBER},${ENTRY_INDEX},'${DATETIME}',${INTERVAL_TX},${INTERVAL_RX})"
+		sqlite3 $DATABASE_PATH "INSERT INTO user_data_usage (user_id,session_number,session_entry_index,entry_datetime,interval_bytes_tx,interval_bytes_rx) VALUES (${USER_ID},${SESSION_NUMBER},${ENTRY_INDEX},'${DATETIME}',${INTERVAL_TX},${INTERVAL_RX})" &> /dev/null
 		#3. Delete internet session
-		sqlite3 $DATABASE_PATH "DELETE FROM internet_sessions WHERE table_index=${1}" # delete entry from internet_sessions so that the session doesn't exist anymore
+		sqlite3 $DATABASE_PATH "DELETE FROM internet_sessions WHERE table_index=${1}" &> /dev/null # delete entry from internet_sessions so that the session doesn't exist anymore
 		#4. Delete iptable rules
 		delete_user_iptable_rules $USER_IP
 	fi
@@ -101,7 +101,7 @@ function check_against_usage_limits
 		#2. Check the lane of the user
 		LANE_ID=$(sqlite3 $DATABASE_PATH "SELECT lane_id FROM users WHERE user_id=${USER_ID}")
 		if [[ $LANE_ID == '' ]]; then
-			LANE_ID=$((2))
+			LANE_ID=$((0))
 		fi
 		#SELECT lane_id FROM users WHERE user_id=${USER_ID};
 		#3. Do logical comparisions
@@ -131,11 +131,11 @@ function check_internet_sessions
 		
 		# 2. Check that a rule exists to record data usage (iptables)
 		USER_IP=$(echo $RESPONSE | cut -f 4 -d '|')
-		iptables -t mangle -C iptmon_rx -d ${USER_IP} -i ${HS_INTERFACE} &> /dev/null
+		iptables -t mangle -C iptmon_rx -d ${USER_IP} &> /dev/null
 		if [[ $? -eq 1 ]] && [[ $RESPONSE != '' ]]; then
 			#rule doesn't exist but should
-			iptables -t mangle -A iptmon_rx -d ${USER_IP} -i ${HS_INTERFACE} > /dev/null
-			iptables -t mangle -A iptmon_tx -s ${USER_IP} -i ${HS_INTERFACE} > /dev/null
+			iptables -t mangle -A iptmon_rx -d ${USER_IP} &> /dev/null
+			iptables -t mangle -A iptmon_tx -s ${USER_IP} &> /dev/null
 		fi
 		
 		# 3. Update data usage according to ip table onto internet_session table
@@ -143,21 +143,21 @@ function check_internet_sessions
 		if [[ $SESSION_ACCESS == '1' ]]; then
 			SESSION_TX=$(($(iptables -t mangle -L iptmon_tx -vxn | grep $USER_IP | awk '{print $2}')))
 			SESSION_RX=$(($(iptables -t mangle -L iptmon_rx -vxn | grep $USER_IP | awk '{print $2}')))
-			sqlite3 $DATABASE_PATH "UPDATE internet_sessions SET session_tx=${SESSION_TX},session_rx=${SESSION_RX} WHERE table_index=${I}"
+			sqlite3 $DATABASE_PATH "UPDATE internet_sessions SET session_tx=${SESSION_TX},session_rx=${SESSION_RX} WHERE table_index=${I}" &> /dev/null
 		fi
 		
-		# 4. update idle time based on metrics from user_data_usage table
+		# 4. update datetime since last request based on metrics from user_data_usage table
 		USER_ID=$(sqlite3 $DATABASE_PATH "SELECT user_id FROM internet_sessions WHERE table_index=${I}")
-		RESPONSE=$(sqlite3 $DATABASE_PATH "SELECT MAX(entry_datetime) FROM user_data_usage WHERE user_id=${USER_ID}")
+		RESPONSE=$(sqlite3 $DATABASE_PATH "SELECT MAX(entry_datetime) FROM user_data_usage WHERE user_id=${USER_ID} AND interval_bytes_tx+interval_bytes_rx!=0")
 		if [[ $RESPONSE != '' ]]; then
-			sqlite3 $DATABASE_PATH "UPDATE internet_sessions SET datetime_sinceLastRequest='${RESPONSE}' WHERE table_index=${I}"
+			sqlite3 $DATABASE_PATH "UPDATE internet_sessions SET datetime_sinceLastRequest='${RESPONSE}' WHERE table_index=${I}" &> /dev/null
 		fi
 		
 		# 5. If session age or session idle time becomes to great then save that sessions data and delete the session
 		RESPONSE=$(sqlite3 $DATABASE_PATH "SELECT timediff((SELECT datetime_created FROM internet_sessions WHERE table_index=${I}),datetime(datetime(),'localtime'))")
-		SESSION_AGE=$((86400*$(echo $RESPONSE | awk '{print $1}' | cut -f 4 -d '-')+3600*$(echo $RESPONSE | awk '{print $2}' | cut -f 1 -d ':')+60*$(echo $RESPONSE | awk '{print $2}' | cut -f 2 -d ':')+$(echo $RESPONSE | awk '{print $2}' | cut -f 3 -d ':' | cut -f 1 -d '.')))
+		SESSION_AGE=$((86400*$((10#$(echo $RESPONSE | awk '{print $1}' | cut -f 4 -d '-')))+3600*$((10#$(echo $RESPONSE | awk '{print $2}' | cut -f 1 -d ':')))+60*$((10#$(echo $RESPONSE | awk '{print $2}' | cut -f 2 -d ':')))+$((10#$(echo $RESPONSE | awk '{print $2}' | cut -f 3 -d ':' | cut -f 1 -d '.')))))
 		RESPONSE=$(sqlite3 $DATABASE_PATH "SELECT timediff((SELECT datetime_sinceLastRequest FROM internet_sessions WHERE table_index=${I}),datetime(datetime(),'localtime'))")
-		SESSION_IDLETIME=$((10#86400*$(echo $RESPONSE | awk '{print $1}' | cut -f 4 -d '-')+10#3600*$(echo $RESPONSE | awk '{print $2}' | cut -f 1 -d ':')+10#60*$(echo $RESPONSE | awk '{print $2}' | cut -f 2 -d ':')+$(echo $RESPONSE | awk '{print $2}' | cut -f 3 -d ':' | cut -f 1 -d '.')))
+		SESSION_IDLETIME=$((86400*$((10#$(echo $RESPONSE | awk '{print $1}' | cut -f 4 -d '-')))+3600*$((10#$(echo $RESPONSE | awk '{print $2}' | cut -f 1 -d ':')))+60*$((10#$(echo $RESPONSE | awk '{print $2}' | cut -f 2 -d ':')))+$((10#$(echo $RESPONSE | awk '{print $2}' | cut -f 3 -d ':' | cut -f 1 -d '.')))))
 		
 		if [[ ${SESSION_AGE} -gt 43200 ]] || [[ ${SESSION_IDLETIME} -gt 3600 ]]; then #if session is older than 12 hours or has been idle for more than 1hr then delete session
 			remove_session $I
@@ -196,22 +196,24 @@ function check_internet_sessions
 			INTERVAL_RX=$(($SESSION_RX-$RESPONSE)) #same as above
 		fi
 		#create entry for this check in database
-		sqlite3 $DATABASE_PATH "INSERT INTO user_data_usage (user_id,session_number,session_entry_index,entry_datetime,interval_bytes_tx,interval_bytes_rx) VALUES (${USER_ID},${SESSION_NUMBER},${ENTRY_INDEX},'${DATETIME}',${INTERVAL_TX},${INTERVAL_RX})"
+		sqlite3 $DATABASE_PATH "INSERT INTO user_data_usage (user_id,session_number,session_entry_index,entry_datetime,interval_bytes_tx,interval_bytes_rx) VALUES (${USER_ID},${SESSION_NUMBER},${ENTRY_INDEX},'${DATETIME}',${INTERVAL_TX},${INTERVAL_RX})" &> /dev/null
 		
 		#7. Calculate current usage and determine if given user is outside their limits
 		check_against_usage_limits $I
 		if [[ $? -eq 1 ]]; then #user is over limits, so do necessary updates
-			sqlite3 $DATABASE_PATH "UPDATE internet_sessions SET session_access='0' WHERE table_index=${I}"
+			sqlite3 $DATABASE_PATH "UPDATE internet_sessions SET session_access='0' WHERE table_index=${I}" &> /dev/null
+		else
+			sqlite3 $DATABASE_PATH "UPDATE internet_sessions SET session_access='1' WHERE table_index=${I}" &> /dev/null
 		fi
 		
-		#8. Check access bit associated with user to see if iptable rules need to be updated
+		#8. Check user access entry for user to see if PREROUTING iptable rules need to be updated for this user
 		iptables -t nat -C PREROUTING -s ${USER_IP} -i ${HS_INTERFACE} -j RETURN &> /dev/null
 		if [[ $? -eq 0 && $SESSION_ACCESS == '0' ]]; then #rule exists but shouldn't
-			iptables -t nat -D PREROUTING -p all -s ${USER_IP} -i ${HS_INTERFACE} -j RETURN > /dev/null
+			iptables -t nat -D PREROUTING -p all -s ${USER_IP} -i ${HS_INTERFACE} -j RETURN &> /dev/null
 		fi
 		iptables -t nat -C PREROUTING -s ${USER_IP} -i ${HS_INTERFACE} -j RETURN &> /dev/null
 		if [[ $? -eq 1 && $SESSION_ACCESS == '1' ]]; then #rule doesn't exist but should
-			iptables -t nat -I PREROUTING 2 -p all -s ${USER_IP} -i ${HS_INTERFACE} -j RETURN > /dev/null
+			iptables -t nat -I PREROUTING 2 -p all -s ${USER_IP} -i ${HS_INTERFACE} -j RETURN &> /dev/null
 		fi
 		
 		
