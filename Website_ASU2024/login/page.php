@@ -1,12 +1,14 @@
 <?php
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
+#error_reporting(E_ALL);
+$GLOBALS['database_path']='/data/data/com.termux/files/usr/var/www/database/CyberCafe_Database.db';
+$GLOBALS['internetSessionFunctionsShellScript_path']='/data/data/com.termux/files/usr/var/www/backend/Cybercafe_internetSessionFunctions.sh';
 
 function logIn($username,$password,$session_id)
 {
 	$password = hashPassword($password);
-	$db = new SQLite3('../../database/CyberCafe_Database.db');
+	$db = new SQLite3($GLOBALS['database_path']);
 	$response = $db->query("SELECT * FROM users WHERE username='".$username."'");
 	$responseArray = $response->fetchArray();
 	if($responseArray['password']==$password)
@@ -14,6 +16,16 @@ function logIn($username,$password,$session_id)
 		$user_level = (int)$responseArray['user_level'];
 		$user_id = (int)$responseArray['user_id'];
 		$lane_id = (int)$responseArray['lane_id'];
+		#check to see if there are any sessions already active with this user_id
+		$response2 = $db->query("SELECT * FROM internet_sessions WHERE user_id='".$user_id."'");
+		$responseArray2 = $response2->fetchArray();
+		if($responseArray2)
+		{
+			#Must close database temporarily so process write mutex lock for the database can be given to bash script
+			$db->close();
+			exec("bash '".$GLOBALS['internetSessionFunctionsShellScript_path']."' remove_session ".((int)$responseArray2['table_index']));
+			$db = new SQLite3($GLOBALS['database_path']);
+		}
 		if($user_level=='0')
 		{
 			$sessionAccessBit = 1;
@@ -22,27 +34,18 @@ function logIn($username,$password,$session_id)
 		{
 			$sessionAccessBit = 0;
 		}
-		#Create New Internet Session to write to database
 		$response = $db->query("SELECT MAX(table_index) FROM internet_sessions");
 		$responseArray = $response->fetchArray();
-		if($responseArray)
+		$response2 = $db->query("SELECT datetime_created FROM internet_sessions");
+		$responseArray2 = $response2->fetchArray();
+		if($responseArray2['datetime_created']==NULL)
 		{
-			$internetSessionIndex = (int)$responseArray['table_index']+1;
+			$internetSessionIndex=0;
 		}
 		else
 		{
-			$internetSessionIndex = 0;
+			$internetSessionIndex=((int)$responseArray[0])+1;
 		}
-		#check to see if there are any sessions already active with this user_id
-		$response = $db->query("SELECT * FROM internet_sessions WHERE user_id='".$user_id."'");
-		$responseArray = $response->fetchArray();
-		#remove the old session associated with this user_id if it exists.
-		if($responseArray)
-		{
-			shell_exec("bash ../../backend/Cybercafe_internetSessionFunctions.sh remove_session ".$responseArray['table_index']);
-		}
-		#TODO: create method to check if this new session will already be out of range of their data limits
-		#get datetime info
 		$datetimeObj = new DateTime();
 		$datetime = $datetimeObj->format('Y-m-d H:i:s');
 		$db->exec("INSERT INTO internet_sessions (
@@ -64,9 +67,6 @@ function logIn($username,$password,$session_id)
 		".$sessionAccessBit.",
 		'".$datetime."',
 		'".$datetime."')");
-		##DEBUG##
-		echo "<p>\$db->exec(\"INSERT INTO internet_sessions (<br>table_index,<br>user_id,<br>session_id,<br>ip,<br>session_tx,<br>session_rx,<br>session_access,<br>datetime_created,<br>datetime_sinceLastRequest)<br>VALUES(<br>".$internetSessionIndex.",<br>".$user_id.",<br>'".$session_id."',<br>'".$_SERVER['REMOTE_ADDR']."',<br>0,0,<br>".$sessionAccessBit.",<br>'".$datetime."',<br>'".$datetime."')\");<br></p>";
-		#
 		$db->close();
 		return true;
 	}
@@ -79,7 +79,7 @@ function hashPassword($passwordString)
 }
 function validSessionID($session_id)
 {
-	$db = new SQLite3('../../database/CyberCafe_Database.db');
+	$db = new SQLite3($GLOBALS['database_path']);
 	$response = $db->query("SELECT 1 FROM internet_sessions WHERE session_id='".$session_id."'");
 	$result = $response->fetchArray();
 	
@@ -107,7 +107,7 @@ else
 		$session_id = session_create_id();
 		if(logIn($_POST['username'],$_POST['password'],$session_id))
 		{
-			setcookie("session_id",$session_id,time()+(3600),"/");
+			setcookie("session_id",$session_id,time()+43200,"/");
 			header('Location: ../home');
 			die();
 		}
@@ -118,22 +118,51 @@ else
 	}
 	else
 	{
-		echo '
-		<!DOCTYPE html>
+		echo '<!DOCTYPE html>
 		<html>
 		<head>
-				<title>Cybercafe Demo - Log-In</title>
+				<title>Cybercafe Demo</title>
+				<meta charset="UTF-8">
+				<meta name="viewport" content="width=device-width, initial-scale=1">
 		</head>
+		<style>
+		ul {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+			overflow: hidden;
+			background-color: #e7e7e7;
+		}
+		li {
+			float: left;
+		}
+		li a {
+			display: block;
+			color: black;
+			text-align: center;
+			padding: 14px 16px;
+			text-decoration: none;
+		}
+		li a:hover {
+			background-color: #bfbfbf;
+		}
+		</style>
 		<body>
-
-				<h2>Log-In</h2>
-				<form method="post">
-						<label for="username">User Name:</label><br>
-						<input type="text" name="username" id="username" required><br>
-						<label for="password">Password:</label><br>
-						<input type="password" name="password" id="password" required><br>
-						<button type="submit">Submit</button><br>
-				</form>
+			<a><img src="/assets/CyberCafe_logo.png" width="100" height="100"></a>
+			<ul>
+				<li><a href="/">Home</a></li>
+				<li><a href="/login/">Login</a></li>
+				<li><a href="/createaccount">Create Account</a></li>
+				<li><a href="/about/">About</a></li>
+			</ul>
+			<h2>Log-In</h2>
+			<form method="post">
+					<label for="username">User Name:</label><br>
+					<input type="text" name="username" id="username" required><br>
+					<label for="password">Password:</label><br>
+					<input type="password" name="password" id="password" required><br>
+					<button type="submit">Submit</button><br>
+			</form>
 		</body>
 		</html>';
 	}
