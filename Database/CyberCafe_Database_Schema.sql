@@ -9,7 +9,7 @@ session_rx INTEGER NOT NULL,
 session_access INTEGER NOT NULL, 
 datetime_created TEXT NOT NULL, 
 datetime_sinceLastRequest TEXT NOT NULL, 
-PRIMARY KEY (table_index, user_id, session_id), 
+PRIMARY KEY (user_id), 
 FOREIGN KEY (user_id) REFERENCES users(user_id));
 
 -- Users --
@@ -22,7 +22,7 @@ username TEXT NOT NULL,
 password TEXT NOT NULL, 
 user_level INTEGER NOT NULL, 
 lane_id INTEGER NOT NULL, 
-PRIMARY KEY (user_id, username));
+PRIMARY KEY (user_id));
 
 -- User Data Usage --
 CREATE TABLE user_data_usage(
