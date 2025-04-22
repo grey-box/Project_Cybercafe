@@ -48,6 +48,7 @@ function setup_infrastructure
 	iptables -t mangle -C POSTROUTING -j iptmon_rx &> /dev/null
 	if [[ $? -ne 0 ]]; then
 		iptables -t mangle -N iptmon_rx &> /dev/null
+		iptables -t mangle -I iptmon_rx 1 -s ${LOCAL_IP} -j RETURN &> /dev/null #if data is coming from captive website then don't count it
 
 		iptables -t mangle -A POSTROUTING -j iptmon_rx &> /dev/null
 	fi
@@ -117,5 +118,5 @@ function shutdown_infrastructure
 function start_captive_webserver
 #starts the lighttpd webserver that acts as a captive web portal for sign in and such
 {
-    $APP_PATH/bin/lighttpd -f $APP_PATH/etc/lighttpd/lighttpd.conf &> /dev/null
+    lighttpd -f lighttpd.conf &> /dev/null
 }
