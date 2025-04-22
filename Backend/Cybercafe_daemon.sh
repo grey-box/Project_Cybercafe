@@ -38,5 +38,5 @@ while true; do
 		exit
 	fi
 	
-	sleep 2
+	sleep 10
 done
