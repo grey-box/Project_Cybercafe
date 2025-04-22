@@ -2,7 +2,7 @@
 ini_set('display_errors', '0');
 ini_set('display_startup_errors', '0');
 #error_reporting(E_ALL);
-$GLOBALS['database_path']='/data/data/com.termux/files/usr/var/www/database/CyberCafe_Database.db';
+require __DIR__ . '/../globalfunctions.php';
 
 function displayPage()
 {
@@ -39,37 +39,26 @@ function displayPage()
 	</style>
 	<body>
 		<a><img src="/assets/CyberCafe_logo.png" width="100" height="100"></a>
-		<ul>
-			<li><a href="/home">Home</a></li>
-			<li><a href="/login/">Login</a></li>
-			<li><a href="/createaccount">Create Account</a></li>
-			<li><a href="/about/">About</a></li>
-		</ul>
+		'.$GLOBALS['defaultNavHTML'].'
 		<h2>Create Account<h2>
 	</body>
 	</html>
 	';
 }
-if(isset($_COOKIE['session_id']))
+
+$userType = global_verifyUser($_COOKIE);
+if($userType=='admin')
 {
-	$db = new SQLite3($GLOBALS['database_path']);
-	$response = $db->query("SELECT user_id FROM internet_sessions WHERE session_id='".$_COOKIE['session_id']."'");
-	$responseArray = $response->fetchArray();
-	#if there is an internet session found matching the query then load respective page
-	if($responseArray)
-	{
-		header('Location: /home');
-	}
-	#if there is no internet session matching the cookie then return to login
-	else
-	{
-		setcookie('session_id', '', time()-3600, '/');
-		header('Location: /login');
-	}
-	$db->close();
+	header('Location: /home');
+}
+elseif($userType=='user')
+{
+	header('Location: /home');
+}
+elseif($userType=='default')
+{
+	displayPage();
 }
 else
-{
-        displayPage();
-}
+{}
 ?>

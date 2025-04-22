@@ -2,43 +2,46 @@
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 #error_reporting(E_ALL);
-$GLOBALS['database_path']='/data/data/com.termux/files/usr/var/www/database/CyberCafe_Database.db';
+require __DIR__ . '/../../globalfunctions.php';
 
 function banUser($user_id)
 {
-	$db = new SQLite3($GLOBALS['database_path']);
-	$db->exec("UPDATE users SET status='BANNED' WHERE user_id='".$user_id."'");
+	$db = global_createDatabaseObj();
+	if($db->query("SELECT user_level FROM users WHERE user_id='".$user_id."'")->fetchArray()[0]!=0)
+	{
+		$db->exec("UPDATE users SET status='BANNED' WHERE user_id='".$user_id."'");
+	}
 	$db->close();
 }
 function unbanUser($user_id)
 {
-	$db = new SQLite3($GLOBALS['database_path']);
+	$db = global_createDatabaseObj();
 	$db->exec("UPDATE users SET status='ACTIVE' WHERE user_id='".$user_id."'");
 	$db->close();
 }
 function disableUser($user_id)
 {
-	$db = new SQLite3($GLOBALS['database_path']);
+	$db = global_createDatabaseObj();
 	$db->exec("UPDATE users SET status='DISABLED' WHERE user_id='".$user_id."'");
 	$db->close();
 }
 function enableUser($user_id)
 {
-	$db = new SQLite3($GLOBALS['database_path']);
+	$db = global_createDatabaseObj();
 	$db->exec("UPDATE users SET status='ACTIVE' WHERE user_id='".$user_id."'");
 	$db->close();
 }
 
 function updateLaneID($user_id,$lane_id)
 {
-	$db = new SQLite3($GLOBALS['database_path']);
+	$db = global_createDatabaseObj();
 	$db->exec("UPDATE users SET lane_id=".$lane_id." WHERE user_id='".$user_id."'");
 	$db->close();
 }
 
 function displayPage()
 {
-	$db = new SQLite3($GLOBALS['database_path']);
+	$db = global_createDatabaseObj();
 	$response = $db->query("SELECT * FROM users");
 	$response2 = $db->query("SELECT COUNT(lane_id) FROM data_lanes");
 	$responseArray2=$response2->fetchArray(SQLITE3_NUM);
@@ -79,19 +82,20 @@ function displayPage()
 		{
 			$isAdmin='No';
 		}
+		$table_entries=$table_entries."<tr>
+			<td>".$responseArray['user_id']."</td>
+			<td>".$responseArray['username']."</td>
+			<td>".$responseArray['name']."</td>
+			<td>".$responseArray['email']."</td>
+			<td>".$responseArray['phone']."</td>
+			<td>".$responseArray['status']."</td>
+			<td>".$session_rx."</td>
+			<td>".$session_tx."</td>
+			<td>".$dataLaneFormHTML."</td>
+			<td>".$isAdmin."</td>";
 		if($responseArray['status']=="BANNED")
 		{
-			$table_entries=$table_entries."<tr>
-				<td>".$responseArray['user_id']."</td>
-				<td>".$responseArray['username']."</td>
-				<td>".$responseArray['name']."</td>
-				<td>".$responseArray['email']."</td>
-				<td>".$responseArray['phone']."</td>
-				<td>".$responseArray['status']."</td>
-				<td>".$session_rx."</td>
-				<td>".$session_tx."</td>
-				<td>".$dataLaneFormHTML."</td>
-				<td>".$isAdmin."</td>
+			$table_entries=$table_entries."
 				<td></td>
 				<td><form method='post'>
 					<input type='submit' name='button' class='button' value='unban'>
@@ -102,48 +106,51 @@ function displayPage()
 		{
 			if($responseArray['status']=="DISABLED")
 			{
-				$table_entries=$table_entries."<tr>
-					<td>".$responseArray['user_id']."</td>
-					<td>".$responseArray['username']."</td>
-					<td>".$responseArray['name']."</td>
-					<td>".$responseArray['email']."</td>
-					<td>".$responseArray['phone']."</td>
-					<td>".$responseArray['status']."</td>
-					<td>".$session_rx."</td>
-					<td>".$session_tx."</td>
-					<td>".$dataLaneFormHTML."</td>
-					<td>".$isAdmin."</td>
-					<td><form method='post'>
-						<input type='submit' name='button' class='button' value='enable'>
-						<input type='hidden' name='action_userID' value='".$user_id."'></form></td>
-					<td><form method='post'>
-						<input type='submit' name='button' class='button' value='ban'>
-						<input type='hidden' name='action_userID' value='".$user_id."'></form></td>
-				</tr>";
+				if($isAdmin=='Yes')
+				{
+					$table_entries=$table_entries."
+						<td><form method='post'>
+							<input type='submit' name='button' class='button' value='enable'>
+							<input type='hidden' name='action_userID' value='".$user_id."'></form></td>
+						<td></td>
+					</tr>";
+				}
+				else
+				{
+					$table_entries=$table_entries."
+						<td><form method='post'>
+							<input type='submit' name='button' class='button' value='enable'>
+							<input type='hidden' name='action_userID' value='".$user_id."'></form></td>
+						<td><form method='post'>
+							<input type='submit' name='button' class='button' value='ban'>
+							<input type='hidden' name='action_userID' value='".$user_id."'></form></td>
+					</tr>";
+				}
 			}
 			else
 			{
-				$table_entries=$table_entries."<tr>
-					<td>".$responseArray['user_id']."</td>
-					<td>".$responseArray['username']."</td>
-					<td>".$responseArray['name']."</td>
-					<td>".$responseArray['email']."</td>
-					<td>".$responseArray['phone']."</td>
-					<td>".$responseArray['status']."</td>
-					<td>".$session_rx."</td>
-					<td>".$session_tx."</td>
-					<td>".$dataLaneFormHTML."</td>
-					<td>".$isAdmin."</td>
-					<td><form name='form1".$i."' method='post'>
-						<input type='submit' name='button' class='button' value='disable'>
-						<input type='hidden' name='action_userID' value='".$user_id."'></form></td>
-					<td><form name='form2".$i."' method='post'>
-						<input type='submit' name='button' class='button' value='ban'>
-						<input type='hidden' name='action_userID' value='".$user_id."'></form></td>
-				</tr>";
+				if($isAdmin=='Yes')
+				{
+					$table_entries=$table_entries."
+						<td><form method='post'>
+							<input type='submit' name='button' class='button' value='disable'>
+							<input type='hidden' name='action_userID' value='".$user_id."'></form></td>
+						<td></td>
+					</tr>";
+				}
+				else
+				{
+					$table_entries=$table_entries."
+						<td><form method='post'>
+							<input type='submit' name='button' class='button' value='disable'>
+							<input type='hidden' name='action_userID' value='".$user_id."'></form></td>
+						<td><form method='post'>
+							<input type='submit' name='button' class='button' value='ban'>
+							<input type='hidden' name='action_userID' value='".$user_id."'></form></td>
+					</tr>";
+				}
 			}
 		}
-		$i=$i+1;
 	}
 	echo '<!DOCTYPE html>
 	<html>
@@ -201,14 +208,7 @@ function displayPage()
 	</style>
 	<body>
 		<a><img src="/assets/CyberCafe_logo.png" width="100" height="100"></a>
-		<ul>
-			<li><a href="/home">Home</a></li>
-			<li><a>Stats</a></li>
-			<li><a>Manage Users</a></li>
-			<li><a href="/home/ManageLanes">Manage Lanes</a></li>
-			<li><a href="/about/">About</a></li>
-			<li><a href="/logout">Logout</a></li>
-		</ul>
+		'.$GLOBALS['adminNavHTML'].'
 		<h2>Manage Users<h2>
 		<table style="width:100%">
 			<tr>
@@ -232,61 +232,42 @@ function displayPage()
 	$db->close();
 }
 
-if(isset($_COOKIE['session_id']))
+$userType = global_verifyUser($_COOKIE);
+if($userType=='admin')
 {
-	$db = new SQLite3($GLOBALS['database_path']);
-	$response = $db->query("SELECT user_id FROM internet_sessions WHERE session_id='".$_COOKIE['session_id']."'");
-	$responseArray = $response->fetchArray();
-	#if there is an internet session found matching the query then load respective page
-	if($responseArray)
+	if(array_key_exists('button', $_POST))
 	{
-		$user_id = (int)$responseArray['user_id'];
-		$response2 = $db->query("SELECT * FROM users WHERE user_id=".$user_id."");
-		$responseArray2 = $response2->fetchArray();
-		$user_level=$responseArray2['user_level'];
-		$db->close();
-		if($user_level==0)
+		if($_POST['button']=='disable')
 		{
-			if(array_key_exists('button', $_POST))
-			{
-				if($_POST['button']=='disable')
-				{
-					disableUser($_POST['action_userID']);
-				}
-				elseif($_POST['button']=='ban')
-				{
-					banUser($_POST['action_userID']);
-				}
-				elseif($_POST['button']=='enable')
-				{
-					enableUser($_POST['action_userID']);
-				}
-				elseif($_POST['button']=='unban')
-				{
-					unbanUser($_POST['action_userID']);
-				}
-			}
-			if(array_key_exists('laneID', $_POST))
-			{
-				updateLaneID($_POST['action_userID'],(int)$_POST['laneID']);
-			}
-			displayPage();
+			disableUser($_POST['action_userID']);
 		}
-		else if($user_level==1)
+		elseif($_POST['button']=='ban')
 		{
-			header('Location: /home');
+			banUser($_POST['action_userID']);
+		}
+		elseif($_POST['button']=='enable')
+		{
+			enableUser($_POST['action_userID']);
+		}
+		elseif($_POST['button']=='unban')
+		{
+			unbanUser($_POST['action_userID']);
 		}
 	}
-	#if there is no internet session matching the cookie then return to login
-	else
+	if(array_key_exists('laneID', $_POST))
 	{
-		setcookie('session_id', '', time()-3600, '/');
-		header('Location: /login');
+		updateLaneID($_POST['action_userID'],(int)$_POST['laneID']);
 	}
+	displayPage();
 }
-#if session_id is not set users should be redirected to login
-else
+elseif($userType=='user')
+{
+	header('Location: /home');
+}
+elseif($userType=='default')
 {
 	header('Location: /login');
 }
+else
+{}
 ?>

@@ -2,12 +2,12 @@
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 #error_reporting(E_ALL);
-$GLOBALS['database_path']='/data/data/com.termux/files/usr/var/www/database/CyberCafe_Database.db';
+require __DIR__ . '/../../globalfunctions.php';
 
 function updateByteLimitDaily($lane_id,$bytelimit)
 {
 	$bytelimit=$bytelimit*(10**6);
-	$db = new SQLite3($GLOBALS['database_path']);
+	$db = global_createDatabaseObj();
 	$db->exec("UPDATE data_lanes SET bytelimit_daily=".$bytelimit." WHERE lane_id=".$lane_id);
 	$db->close();
 }
@@ -15,7 +15,7 @@ function updateByteLimitDaily($lane_id,$bytelimit)
 function updateByteLimitWeekly($lane_id,$bytelimit)
 {
 	$bytelimit=$bytelimit*(10**6);
-	$db = new SQLite3($GLOBALS['database_path']);
+	$db = global_createDatabaseObj();
 	$db->exec("UPDATE data_lanes SET bytelimit_weekly=".$bytelimit." WHERE lane_id=".$lane_id);
 	$db->close();
 }
@@ -23,21 +23,21 @@ function updateByteLimitWeekly($lane_id,$bytelimit)
 function updateByteLimitMonthly($lane_id,$bytelimit)
 {
 	$bytelimit=$bytelimit*(10**6);
-	$db = new SQLite3($GLOBALS['database_path']);
+	$db = global_createDatabaseObj();
 	$db->exec("UPDATE data_lanes SET bytelimit_monthly=".$bytelimit." WHERE lane_id=".$lane_id);
 	$db->close();
 }
 
 function removeLane($lane_id)
 {
-	$db = new SQLite3($GLOBALS['database_path']);
+	$db = global_createDatabaseObj();
 	$db->exec("DELETE FROM data_lanes WHERE lane_id=".$lane_id);
 	$db->close();
 }
 
 function newLane()
 {
-	$db = new SQLite3($GLOBALS['database_path']);
+	$db = global_createDatabaseObj();
 	$response=$db->query("SELECT MAX(lane_id) FROM data_lanes");
 	$responseArray=$response->fetchArray();
 	if($response)
@@ -52,16 +52,16 @@ function newLane()
 	$db->close();
 }
 
-function renameLane($land_id,$newName)
+function renameLane($lane_id,$newName)
 {
-	$db = new SQLite3($GLOBALS['database_path']);
+	$db = global_createDatabaseObj();
 	$db->exec("UPDATE data_lanes SET lane_name='".$newName."' WHERE lane_id=".$lane_id);
 	$db->close();
 }
 
 function displayPage()
 {
-	$db = new SQLite3($GLOBALS['database_path']);
+	$db =global_createDatabaseObj();
 	$response = $db->query("SELECT * FROM data_lanes");
 	$table_entries="";
 	$i=0;
@@ -102,6 +102,7 @@ function displayPage()
 		</tr>";
 		$i=$i+1;
 	}
+	$db->close();
 	echo '<!DOCTYPE html>
 	<html>
 	<head>
@@ -197,14 +198,7 @@ function displayPage()
 	</style>
 	<body>
 		<a><img src="/assets/CyberCafe_logo.png" width="100" height="100"></a>
-		<ul>
-			<li><a href="/home">Home</a></li>
-			<li><a>Stats</a></li>
-			<li><a href="/home/ManageUsers">Manage Users</a></li>
-			<li><a>Manage Lanes</a></li>
-			<li><a href="/about/">About</a></li>
-			<li><a href="/logout">Logout</a></li>
-		</ul>
+		'.$GLOBALS['adminNavHTML'].'
 		<h2>Manage Lanes<h2>
 		<table style="width:100%">
 			<tr>
@@ -224,65 +218,45 @@ function displayPage()
 	</body>
 	</html>
 	';
-	$db->close();
 }
 
-if(isset($_COOKIE['session_id']))
+$userType = global_verifyUser($_COOKIE);
+if($userType=='admin')
 {
-	$db = new SQLite3($GLOBALS['database_path']);
-	$response = $db->query("SELECT user_id FROM internet_sessions WHERE session_id='".$_COOKIE['session_id']."'");
-	$responseArray = $response->fetchArray();
-	#if there is an internet session found matching the query then load respective page
-	if($responseArray)
+	if(array_key_exists('bytelimit_daily', $_POST))
 	{
-		$user_id = (int)$responseArray['user_id'];
-		$response2 = $db->query("SELECT * FROM users WHERE user_id=".$user_id."");
-		$responseArray2 = $response2->fetchArray();
-		$user_level=$responseArray2['user_level'];
-		$db->close();
-		if($user_level==0)
-		{
-			if(array_key_exists('bytelimit_daily', $_POST))
-			{
-				updateByteLimitDaily($_POST['action_laneID'],$_POST['bytelimit_daily']);
-			}
-			if(array_key_exists('bytelimit_weekly', $_POST))
-			{
-				updateByteLimitWeekly($_POST['action_laneID'],$_POST['bytelimit_weekly']);
-			}
-			if(array_key_exists('bytelimit_monthly', $_POST))
-			{
-				updateByteLimitMonthly($_POST['action_laneID'],$_POST['bytelimit_monthly']);
-			}
-			if(array_key_exists('laneButton_remove', $_POST))
-			{
-				removeLane($_POST['action_laneID']);
-			}
-			if(array_key_exists('laneButton_new', $_POST))
-			{
-				newLane();
-			}
-			if(array_key_exists('text_laneName', $_POST))
-			{
-				renameLane($_POST['action_laneID'],$_POST['text_laneName']);
-			}
-			displayPage();
-		}
-		else if($user_level==1)
-		{
-			header('Location: /home');
-		}
+		updateByteLimitDaily($_POST['action_laneID'],$_POST['bytelimit_daily']);
 	}
-	#if there is no internet session matching the cookie then return to login
-	else
+	if(array_key_exists('bytelimit_weekly', $_POST))
 	{
-		setcookie('session_id', '', time()-3600, '/');
-		header('Location: /login');
+		updateByteLimitWeekly($_POST['action_laneID'],$_POST['bytelimit_weekly']);
 	}
+	if(array_key_exists('bytelimit_monthly', $_POST))
+	{
+		updateByteLimitMonthly($_POST['action_laneID'],$_POST['bytelimit_monthly']);
+	}
+	if(array_key_exists('laneButton_remove', $_POST))
+	{
+		removeLane($_POST['action_laneID']);
+	}
+	if(array_key_exists('laneButton_new', $_POST))
+	{
+		newLane();
+	}
+	if(array_key_exists('text_laneName', $_POST))
+	{
+		renameLane($_POST['action_laneID'],$_POST['text_laneName']);
+	}
+	displayPage();
 }
-#if session_id is not set users should be redirected to login
-else
+elseif($userType=='user')
+{
+	header('Location: /home');
+}
+elseif($userType=='default')
 {
 	header('Location: /login');
 }
+else
+{}
 ?>

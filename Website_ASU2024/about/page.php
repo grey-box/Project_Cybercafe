@@ -2,7 +2,7 @@
 ini_set('display_errors', '0');
 ini_set('display_startup_errors', '0');
 #error_reporting(E_ALL);
-$GLOBALS['database_path']='/data/data/com.termux/files/usr/var/www/database/CyberCafe_Database.db';
+require __DIR__ . '/../globalfunctions.php';
 
 function aboutPageAdmin()
 {
@@ -38,14 +38,7 @@ function aboutPageAdmin()
 	</style>
 	<body>
 		<a><img src="/assets/CyberCafe_logo.png" width="100" height="100"></a>
-		<ul>
-			<li><a href="/home">Home</a></li>
-			<li><a>Stats</a></li>
-			<li><a href="/home/ManageUsers">Manage Users</a></li>
-			<li><a href="/home/ManageLanes">Manage Lanes</a></li>
-			<li><a href="/about/">About</a></li>
-			<li><a href="/logout">Logout</a></li>
-		</ul>
+		'.$GLOBALS['adminNavHTML'].'
 		<h2>About<h2>
 	</body>
 	</html>
@@ -85,11 +78,7 @@ function aboutPageUser()
 	</style>
 	<body>
 		<a><img src="/assets/CyberCafe_logo.png" width="100" height="100"></a>
-		<ul>
-			<li><a href="/home">Home</a></li>
-			<li><a href="/about/">About</a></li>
-			<li><a href="/logout">Logout</a></li>
-		</ul>
+		'.$GLOBALS['userNavHTML'].'
 		<h2>About<h2>
 	</body>
 	</html>
@@ -129,47 +118,26 @@ function aboutPageDefault()
 	</style>
 	<body>
 		<a><img src="/assets/CyberCafe_logo.png" width="100" height="100"></a>
-		<ul>
-			<li><a href="/home">Home</a></li>
-			<li><a href="/login/">Login</a></li>
-			<li><a href="/createaccount">Create Account</a></li>
-			<li><a href="/about/">About</a></li>
-		</ul>
+		'.$GLOBALS['defaultNavHTML'].'
 		<h2>About<h2>
 	</body>
 	</html>
 	';
 }
-if(isset($_COOKIE['session_id']))
+
+$userType = global_verifyUser($_COOKIE);
+if($userType=='admin')
 {
-	$db = new SQLite3($GLOBALS['database_path']);
-	$response = $db->query("SELECT user_id FROM internet_sessions WHERE session_id='".$_COOKIE['session_id']."'");
-	$responseArray = $response->fetchArray();
-	#if there is an internet session found matching the query then load respective page
-	if($responseArray)
-	{
-		$user_id = (int)$responseArray['user_id'];
-		$response2 = $db->query("SELECT * FROM users WHERE user_id=".$user_id."");
-		$responseArray2 = $response2->fetchArray();
-		if($responseArray2['user_level']==0)
-		{
-			aboutPageAdmin();
-		}
-		else if($responseArray2['user_level']==1)
-		{
-			aboutPageUser();
-		}
-	}
-	#if there is no internet session matching the cookie then return to login
-	else
-	{
-		setcookie('session_id', '', time()-3600, '/');
-		header('Location: /login');
-	}
-	$db->close();
+	aboutPageAdmin();
+}
+elseif($userType=='user')
+{
+	aboutPageUser();
+}
+elseif($userType=='default')
+{
+	aboutPageDefault();
 }
 else
-{
-        aboutPageDefault();
-}
+{}
 ?>

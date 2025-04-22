@@ -2,16 +2,19 @@
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 #error_reporting(E_ALL);
-$GLOBALS['database_path']='/data/data/com.termux/files/usr/var/www/database/CyberCafe_Database.db';
-$GLOBALS['internetSessionFunctionsShellScript_path']='/data/data/com.termux/files/usr/var/www/backend/Cybercafe_internetSessionFunctions.sh';
+require __DIR__ . '/../globalfunctions.php';
 
 function logIn($username,$password,$session_id)
 {
 	$password = hashPassword($password);
-	$db = new SQLite3($GLOBALS['database_path']);
+	$db = global_createDatabaseObj();
 	$response = $db->query("SELECT * FROM users WHERE username='".$username."'");
 	$responseArray = $response->fetchArray();
-	if($responseArray['password']==$password)
+	if($responseArray['status']=='BANNED' && $responseArray['user_level']!=0)
+	{
+		return false;
+	}
+	elseif($responseArray['password']==$password)
 	{
 		$user_level = (int)$responseArray['user_level'];
 		$user_id = (int)$responseArray['user_id'];
@@ -23,8 +26,8 @@ function logIn($username,$password,$session_id)
 		{
 			#Must close database temporarily so process write mutex lock for the database can be given to bash script
 			$db->close();
-			exec("bash '".$GLOBALS['internetSessionFunctionsShellScript_path']."' remove_session ".((int)$responseArray2['table_index']));
-			$db = new SQLite3($GLOBALS['database_path']);
+			global_removeInternetSession($responseArray['table_index']);
+			$db = global_createDatabaseObj();
 		}
 		if($user_level=='0')
 		{
@@ -79,7 +82,7 @@ function hashPassword($passwordString)
 }
 function validSessionID($session_id)
 {
-	$db = new SQLite3($GLOBALS['database_path']);
+	$db = global_createDatabaseObj();
 	$response = $db->query("SELECT 1 FROM internet_sessions WHERE session_id='".$session_id."'");
 	$result = $response->fetchArray();
 	
@@ -95,29 +98,8 @@ function validSessionID($session_id)
 	}
 }
 
-if(isset($_COOKIE['session_id'])&&validSessionID($_COOKIE['session_id']))
+function displayPage()
 {
-	header('Location: ../home');
-	die();
-}
-else
-{
-	if(isset($_POST['username'])&&isset($_POST['password']))
-	{
-		$session_id = session_create_id();
-		if(logIn($_POST['username'],$_POST['password'],$session_id))
-		{
-			setcookie("session_id",$session_id,time()+43200,"/");
-			header('Location: ../home');
-			die();
-		}
-		else
-		{
-			echo "Login Failed!";
-		}
-	}
-	else
-	{
 		echo '<!DOCTYPE html>
 		<html>
 		<head>
@@ -149,12 +131,7 @@ else
 		</style>
 		<body>
 			<a><img src="/assets/CyberCafe_logo.png" width="100" height="100"></a>
-			<ul>
-				<li><a href="/">Home</a></li>
-				<li><a href="/login/">Login</a></li>
-				<li><a href="/createaccount">Create Account</a></li>
-				<li><a href="/about/">About</a></li>
-			</ul>
+			'.$GLOBALS['defaultNavHTML'].'
 			<h2>Log-In</h2>
 			<form method="post">
 					<label for="username">User Name:</label><br>
@@ -165,6 +142,33 @@ else
 			</form>
 		</body>
 		</html>';
+}
+
+if(isset($_COOKIE['session_id'])&&validSessionID($_COOKIE['session_id']))
+{
+	header('Location: ../home');
+	die();
+}
+else
+{
+	if(isset($_POST['username'])&&isset($_POST['password']))
+	{
+		$session_id = session_create_id();
+		if(logIn($_POST['username'],$_POST['password'],$session_id))
+		{
+			setcookie("session_id",$session_id,time()+43200,"/");
+			header('Location: ../home');
+			die();
+		}
+		else
+		{
+			displayPage();
+			echo "Login Failed!";
+		}
+	}
+	else
+	{
+		displayPage();
 	}
 }
 ?>
