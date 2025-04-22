@@ -53,20 +53,32 @@ function command_status
 
 function command_list_sessions
 {
-	DATABASE_PATH='../database/CyberCafe_Database.db'
-	sqlite3 $DATABASE_PATH -header "SELECT * FROM internet_sessions"
+	sqlite3 "${DATABASE_PATH}" -header "SELECT * FROM internet_sessions"
 }
 
 function command_list_users
 {
-	DATABASE_PATH='../database/CyberCafe_Database.db'
-	sqlite3 $DATABASE_PATH -header "SELECT * FROM users"
+	sqlite3 "${DATABASE_PATH}" -header "SELECT * FROM users"
 }
 
 function command_list_lanes
 {
-	DATABASE_PATH='../database/CyberCafe_Database.db'
-	sqlite3 $DATABASE_PATH -header "SELECT * FROM data_lanes"
+	sqlite3 "${DATABASE_PATH}" -header "SELECT * FROM data_lanes"
+}
+
+function command_list_rules
+{
+	echo ""
+	iptables -t nat -L PREROUTING
+	echo ""
+	iptables -t mangle -L FORWARD
+	echo ""
+	iptables -t mangle -L POSTROUTING
+	echo ""
+	iptables -t mangle -L iptmon_tx
+	echo ""
+	iptables -t mangle -L iptmon_rx
+	echo ""
 }
 
 function command_shutdown
@@ -109,7 +121,7 @@ function display_help
 	echo "Valid commands:"
 	echo "run			-		Starts Cybercafe infrastructure."
 	echo "status		-		Show status info on Cybercafe infrastructure."
-	echo "list (table)	-		List database info such as (sessions,users,lanes)"
+	echo "list (table)	-		List database info such as (sessions,users,lanes,rules)"
 	echo "shutdown		-		Sends the signal to system to shutdown cleanly."
 	echo "kill			-		Kills all Cybercafe scripts (not recommended)."
 	echo "exit			-		Leave this command line."
@@ -132,6 +144,8 @@ while $loop; do
 		command_list_users
 	elif [[ $user_command == 'list lanes' ]]; then
 		command_list_lanes
+	elif [[ $user_command == 'list rules' ]]; then
+		command_list_rules
 	elif [[ $user_command == 'shutdown' ]]; then
 		command_shutdown
 	elif [[ $user_command == 'kill' ]]; then
