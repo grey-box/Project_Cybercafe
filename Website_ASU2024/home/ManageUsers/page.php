@@ -82,6 +82,9 @@ function displayPage()
 		{
 			$isAdmin='No';
 		}
+		#Convert to KB
+		$session_rx=round($session_rx/1000);
+		$session_tx=round($session_tx/1000);
 		$table_entries=$table_entries."<tr>
 			<td>".$responseArray['user_id']."</td>
 			<td>".$responseArray['username']."</td>
@@ -89,8 +92,8 @@ function displayPage()
 			<td>".$responseArray['email']."</td>
 			<td>".$responseArray['phone']."</td>
 			<td>".$responseArray['status']."</td>
-			<td>".$session_rx."</td>
-			<td>".$session_tx."</td>
+			<td>".$session_rx." KB</td>
+			<td>".$session_tx." KB</td>
 			<td>".$dataLaneFormHTML."</td>
 			<td>".$isAdmin."</td>";
 		if($responseArray['status']=="BANNED")
