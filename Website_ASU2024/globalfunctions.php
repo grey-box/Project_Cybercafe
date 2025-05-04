@@ -1,4 +1,6 @@
 <?php
+$timezone=date_default_timezone_get();
+date_default_timezone_set($timezone);
 $GLOBALS['database_path']='/data/data/com.termux/files/usr/var/www/database/CyberCafe_Database.db';
 $GLOBALS['internetSessionFunctionsShellScript_path']='/data/data/com.termux/files/usr/var/www/backend/Cybercafe_internetSessionFunctions.sh';
 $GLOBALS['adminNavHTML']='
@@ -24,14 +26,16 @@ $GLOBALS['defaultNavHTML']='
 			<li><a href="/about/">About</a></li>
 		</ul>';
 
-function global_removeInternetSession($table_index)
-{
-	exec("bash '".$GLOBALS['internetSessionFunctionsShellScript_path']."' remove_session ".((int)$table_index));
-}
-
 function global_createDatabaseObj()
 {
 	return $db = new SQLite3($GLOBALS['database_path']);
+}
+
+function global_removeInternetSession($table_index)
+{
+	$db = global_createDatabaseObj();
+	$db->exec("UPDATE internet_sessions SET pending_deletion=1 WHERE table_index=".$table_index);
+	$db->close();
 }
 
 function global_verifyUser($cookies)
@@ -70,6 +74,7 @@ function global_verifyUser($cookies)
 			header('Location: /login');
 			return -1;
 		}
+		$db->close();
 	}
 	else
 	{
