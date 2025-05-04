@@ -25,8 +25,8 @@ function dailyStats()
 	while($responseArray=$response->fetchArray())
 	{
 		$user_id=$responseArray['user_id'];
-		$response2 = $db->query("SELECT SUM(interval_bytes_rx) FROM user_data_usage WHERE entry_datetime>=date(datetime(),'localtime') AND user_id=".$user_id);
-		$response3 = $db->query("SELECT SUM(interval_bytes_tx) FROM user_data_usage WHERE entry_datetime>=date(datetime(),'localtime') AND user_id=".$user_id);
+		$response2 = $db->query("SELECT SUM(interval_bytes_rx) FROM user_data_usage WHERE entry_datetime>=date(datetime(),'localtime','-1 days') AND user_id=".$user_id);
+		$response3 = $db->query("SELECT SUM(interval_bytes_tx) FROM user_data_usage WHERE entry_datetime>=date(datetime(),'localtime','-1 days') AND user_id=".$user_id);
 		if($response2)
 		{
 			$userRXToday=$response2->fetchArray(SQLITE3_NUM)[0];
@@ -43,6 +43,9 @@ function dailyStats()
 		{
 			$isAdmin='No';
 		}
+		#Convert to KB
+		$userTXToday=round($userTXToday/1000);
+		$userRXToday=round($userRXToday/1000);
 		if(($userRXToday!=0 && $userRXToday!='')||($userTXToday!=0 && $userTXToday!=''))
 		{
 			$userTotalToday=(int)$userRXToday+(int)$userTXToday;
@@ -50,9 +53,9 @@ function dailyStats()
 				<td>".$responseArray['user_id']."</td>
 				<td>".$responseArray['username']."</td>
 				<td>".$responseArray['name']."</td>
-				<td>".$userRXToday."</td>
-				<td>".$userTXToday."</td>
-				<td>".$userTotalToday."</td>
+				<td>".$userRXToday." KB</td>
+				<td>".$userTXToday." KB</td>
+				<td>".$userTotalToday." KB</td>
 				<td>".$responseArray['lane_id']."</td>
 				<td>".$isAdmin."</td>";
 		}
@@ -101,6 +104,9 @@ function weeklyStats()
 		{
 			$isAdmin='No';
 		}
+		#Convert to KB
+		$userTXWeek=round($userTXWeek/1000);
+		$userRXWeek=round($userRXWeek/1000);
 		if(($userRXWeek!=0 && $userRXWeek!='')||($userTXWeek!=0 && $userTXWeek!=''))
 		{
 			$userTotalToday=(int)$userRXWeek+(int)$userTXWeek;
@@ -108,9 +114,9 @@ function weeklyStats()
 				<td>".$responseArray['user_id']."</td>
 				<td>".$responseArray['username']."</td>
 				<td>".$responseArray['name']."</td>
-				<td>".$userRXWeek."</td>
-				<td>".$userTXWeek."</td>
-				<td>".$userTotalToday."</td>
+				<td>".$userRXWeek." KB</td>
+				<td>".$userTXWeek." KB</td>
+				<td>".$userTotalToday." KB</td>
 				<td>".$responseArray['lane_id']."</td>
 				<td>".$isAdmin."</td>";
 		}
@@ -159,6 +165,9 @@ function monthlyStats()
 		{
 			$isAdmin='No';
 		}
+		#Convert to KB
+		$userTXMonth=round($userTXMonth/1000);
+		$userRXMonth=round($userRXMonth/1000);
 		if(($userRXMonth!=0 && $userRXMonth!='')||($userTXMonth!=0 && $userTXMonth!=''))
 		{
 			$userTotalToday=(int)$userRXMonth+(int)$userTXMonth;
@@ -166,9 +175,9 @@ function monthlyStats()
 				<td>".$responseArray['user_id']."</td>
 				<td>".$responseArray['username']."</td>
 				<td>".$responseArray['name']."</td>
-				<td>".$userRXMonth."</td>
-				<td>".$userTXMonth."</td>
-				<td>".$userTotalToday."</td>
+				<td>".$userRXMonth." KB</td>
+				<td>".$userTXMonth." KB</td>
+				<td>".$userTotalToday." KB</td>
 				<td>".$responseArray['lane_id']."</td>
 				<td>".$isAdmin."</td>";
 		}
