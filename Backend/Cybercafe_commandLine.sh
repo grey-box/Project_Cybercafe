@@ -40,7 +40,7 @@ function command_status
 		echo "Status: Running"
 		echo ""
 		echo "Process Info:"
-		ps -eo user,pid,ppid,uid,stime,stat,name,cmdline | head -n 1
+		ps -o user,pid,ppid,uid,stime,stat,name,cmdline | head -n 1
 		ps -eo user,pid,ppid,uid,stime,stat,name,cmdline | grep "bash ./Cybercafe_daemon.sh" | grep -v grep
 	else
 		echo "Status: Stopped"
@@ -69,16 +69,25 @@ function command_list_lanes
 function command_list_rules
 {
 	echo ""
-	iptables -t nat -L PREROUTING
+	iptables -t nat -L PREROUTING -vxn
 	echo ""
-	iptables -t mangle -L FORWARD
+	iptables -t mangle -L FORWARD -vxn
 	echo ""
-	iptables -t mangle -L POSTROUTING
+	iptables -t mangle -L POSTROUTING -vxn
 	echo ""
-	iptables -t mangle -L iptmon_tx
+	iptables -t mangle -L iptmon_tx -vxn
 	echo ""
-	iptables -t mangle -L iptmon_rx
+	iptables -t mangle -L iptmon_rx -vxn
 	echo ""
+	iptables -t filter -L FORWARD -vxn
+	echo ""
+	iptables -t filter -L OUTPUT -vxn
+	echo ""
+}
+
+function command_errorlog
+{
+	cat error.log | tail -n 30
 }
 
 function command_shutdown
@@ -119,13 +128,14 @@ function command_exit
 function display_help
 {
 	echo "Valid commands:"
-	echo "run			-		Starts Cybercafe infrastructure."
-	echo "status		-		Show status info on Cybercafe infrastructure."
-	echo "list (table)	-		List database info such as (sessions,users,lanes,rules)"
-	echo "shutdown		-		Sends the signal to system to shutdown cleanly."
-	echo "kill			-		Kills all Cybercafe scripts (not recommended)."
-	echo "exit			-		Leave this command line."
-	echo "help			-		Display this page."
+	echo "run				-		Starts Cybercafe infrastructure."
+	echo "status			-		Show status info on Cybercafe infrastructure."
+	echo "list (table)		-		List database info such as (sessions,users,lanes,rules)"
+	echo "errorlog			-		Prints the most recent errors recorded to errorlog.txt"
+	echo "shutdown			-		Sends the signal to system to shutdown cleanly."
+	echo "kill				-		Kills all Cybercafe scripts (not recommended)."
+	echo "exit				-		Leave this command line."
+	echo "help				-		Display this page."
 }
 
 ##PROGRAM##
@@ -146,6 +156,8 @@ while $loop; do
 		command_list_lanes
 	elif [[ $user_command == 'list rules' ]]; then
 		command_list_rules
+	elif [[ $user_command == 'errorlog' ]]; then
+		command_errorlog
 	elif [[ $user_command == 'shutdown' ]]; then
 		command_shutdown
 	elif [[ $user_command == 'kill' ]]; then
