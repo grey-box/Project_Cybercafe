@@ -20,14 +20,19 @@ function logIn($username,$password,$session_id)
 		$user_id = (int)$responseArray['user_id'];
 		$lane_id = (int)$responseArray['lane_id'];
 		#check to see if there are any sessions already active with this user_id
-		$response2 = $db->query("SELECT * FROM internet_sessions WHERE user_id='".$user_id."'");
+		$response = $db->query("SELECT table_index FROM internet_sessions WHERE user_id='".$user_id."'");
+		$responseArray = $response->fetchArray();
+		
+		#had to add this code for truthy check due to php's interpretation of 0 as NULL (i.e. the first index of the table is 0)
+		$response2 = $db->query("SELECT 1 FROM internet_sessions WHERE user_id='".$user_id."'");
 		$responseArray2 = $response2->fetchArray();
+		#
+		#Must close database temporarily so process write mutex lock for the database can be given to global function
+		$db->close();
 		if($responseArray2)
 		{
-			#Must close database temporarily so process write mutex lock for the database can be given to bash script
-			$db->close();
 			global_removeInternetSession($responseArray['table_index']);
-			$db = global_createDatabaseObj();
+			sleep(2); #it takes at most 2 seconds for the daemon to remove the session
 		}
 		if($user_level=='0')
 		{
@@ -37,17 +42,21 @@ function logIn($username,$password,$session_id)
 		{
 			$sessionAccessBit = 0;
 		}
+		$db = global_createDatabaseObj();
 		$response = $db->query("SELECT MAX(table_index) FROM internet_sessions");
 		$responseArray = $response->fetchArray();
-		$response2 = $db->query("SELECT datetime_created FROM internet_sessions");
+		
+		#had to add this code for truthy check due to php's interpretation of 0 as NULL (i.e. the first index of the table is 0)
+		$response2 = $db->query("SELECT 1 FROM internet_sessions");
 		$responseArray2 = $response2->fetchArray();
-		if($responseArray2['datetime_created']==NULL)
+		#
+		if($responseArray2)
 		{
-			$internetSessionIndex=0;
+			$internetSessionIndex=((int)$responseArray[0])+1;
 		}
 		else
 		{
-			$internetSessionIndex=((int)$responseArray[0])+1;
+			$internetSessionIndex=0;
 		}
 		$datetimeObj = new DateTime();
 		$datetime = $datetimeObj->format('Y-m-d H:i:s');
@@ -60,7 +69,8 @@ function logIn($username,$password,$session_id)
 		session_rx,
 		session_access,
 		datetime_created,
-		datetime_sinceLastRequest)
+		datetime_sinceLastRequest,
+		pending_deletion)
 		VALUES(
 		".$internetSessionIndex.",
 		".$user_id.",
@@ -69,7 +79,50 @@ function logIn($username,$password,$session_id)
 		0,0,
 		".$sessionAccessBit.",
 		'".$datetime."',
-		'".$datetime."')");
+		'".$datetime."',
+		0)");
+		$response = $db->query("SELECT MAX(session_number) FROM user_data_usage WHERE user_id='".$user_id."'");
+		$responseArray = $response->fetchArray();
+		
+		#had to add this code for truthy check due to php's interpretation of 0 as NULL (i.e. the first index of the table is 0)
+		$response2 = $db->query("SELECT 1 FROM user_data_usage WHERE user_id=".$user_id);
+		$responseArray2 = $response2->fetchArray();
+		#
+		if($responseArray2)
+		{
+			$this_session_number=((int)$responseArray[0])+1;
+			$db->exec("INSERT INTO user_data_usage (
+			user_id,
+			session_number,
+			session_entry_index,
+			entry_datetime,
+			interval_bytes_tx,
+			interval_bytes_rx)
+			VALUES(
+			".$user_id.",
+			".$this_session_number.",
+			0,
+			'".$datetime."',
+			0,
+			0)");
+		}
+		else
+		{
+			$db->exec("INSERT INTO user_data_usage (
+			user_id,
+			session_number,
+			session_entry_index,
+			entry_datetime,
+			interval_bytes_tx,
+			interval_bytes_rx)
+			VALUES(
+			".$user_id.",
+			0,
+			0,
+			'".$datetime."',
+			0,
+			0)");
+		}
 		$db->close();
 		return true;
 	}
