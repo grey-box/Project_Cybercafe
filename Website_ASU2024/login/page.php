@@ -2,7 +2,7 @@
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 #error_reporting(E_ALL);
-require __DIR__ . '/../globalfunctions.php';
+require __DIR__ . '/../global.php';
 
 function logIn($username,$password,$session_id)
 {
@@ -129,10 +129,6 @@ function logIn($username,$password,$session_id)
 	$db->close();
 	return false;
 }
-function hashPassword($passwordString)
-{
-	return hash('sha256', $passwordString);
-}
 function validSessionID($session_id)
 {
 	$db = global_createDatabaseObj();
@@ -161,26 +157,7 @@ function displayPage()
 				<meta name="viewport" content="width=device-width, initial-scale=1">
 		</head>
 		<style>
-		ul {
-			list-style-type: none;
-			margin: 0;
-			padding: 0;
-			overflow: hidden;
-			background-color: #e7e7e7;
-		}
-		li {
-			float: left;
-		}
-		li a {
-			display: block;
-			color: black;
-			text-align: center;
-			padding: 14px 16px;
-			text-decoration: none;
-		}
-		li a:hover {
-			background-color: #bfbfbf;
-		}
+		'.$GLOBALS['defaultStyle'].'
 		</style>
 		<body>
 			<a><img src="/assets/CyberCafe_logo.png" width="100" height="100"></a>
@@ -209,7 +186,7 @@ else
 		$session_id = session_create_id();
 		if(logIn($_POST['username'],$_POST['password'],$session_id))
 		{
-			setcookie("session_id",$session_id,time()+43200,"/");
+			setcookie("session_id",$session_id,time()+$GLOBALS['sessionTimeOut'],"/");
 			header('Location: ../home');
 			die();
 		}
