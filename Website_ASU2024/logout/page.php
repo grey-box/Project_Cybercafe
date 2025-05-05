@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . "/../globalfunctions.php";
+require __DIR__ . "/../global.php";
 
 if(isset($_COOKIE['session_id']))
 {
