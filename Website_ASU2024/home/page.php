@@ -1,7 +1,7 @@
 <?php
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
-require __DIR__ . '/../globalfunctions.php';
+require __DIR__ . '/../global.php';
 
 function adminHomePage()
 {
@@ -46,13 +46,16 @@ function adminHomePage()
 	if($status=='ACTIVE')
 	{
 		$status='ADMIN';
+		$laneDailyLimit='ADMIN';
+		$laneWeeklyLimit='ADMIN';
+		$laneMonthlyLimit='ADMIN';
 	}
-	#Convert to KB
-	$todayTotal=round($todayTotal/1000);
-	$weekTotal=round($weekTotal/1000);
-	$monthTotal=round($monthTotal/1000);
-	$sessionTX=round($sessionTX/1000);
-	$sessionRX=round($sessionRX/1000);
+	else
+	{
+		$laneDailyLimit=0;
+		$laneWeeklyLimit=0;
+		$laneMonthlyLimit=0;
+	}
 	echo '<!DOCTYPE html>
 	<html>
 	<head>
@@ -61,41 +64,7 @@ function adminHomePage()
 			<meta name="viewport" content="width=device-width, initial-scale=1">
 	</head>
 	<style>
-	ul {
-		list-style-type: none;
-		margin: 0;
-		padding: 0;
-		overflow: hidden;
-		background-color: #e7e7e7;
-	}
-	li {
-		float: left;
-	}
-	li a {
-		display: block;
-		color: black;
-		text-align: center;
-		padding: 14px 16px;
-		text-decoration: none;
-	}
-	li a:hover {
-		background-color: #bfbfbf;
-	}
-	th, td
-	{
-		padding-top: 10px;
-		padding-bottom: 10px;
-		padding-left: 10px;
-		padding-right: 10px;
-		border-style: groove;
-		text-align: center;
-		font-size: 70%
-	}
-	td
-	{
-		font-weight:normal;
-		font-size: 60%;
-	}
+	'.$GLOBALS['defaultStyle'].'
 	</style>
 	<body>
 		<a><img src="/assets/CyberCafe_logo.png" width="100" height="100"></a>
@@ -131,7 +100,7 @@ function adminHomePage()
 			</tr>
 			<tr>
 				<th>Lane Daily Limit</th>
-				<td>ADMIN</td>
+				<td>'.$laneDailyLimit.' KB</td>
 			</tr>
 			<tr>
 				<th>Weeks\'s Byte Usage</th>
@@ -139,7 +108,7 @@ function adminHomePage()
 			</tr>
 			<tr>
 				<th>Lane Weekly Limit</th>
-				<td>ADMIN</td>
+				<td>'.$laneWeeklyLimit.' KB</td>
 			</tr>
 			<tr>
 				<th>Month\'s Byte Usage</th>
@@ -147,7 +116,7 @@ function adminHomePage()
 			</tr>
 			<tr>
 				<th>Lane Monthly Limit</th>
-				<td>ADMIN</td>
+				<td>'.$laneMonthlyLimit.' KB</td>
 			</tr>
 	</body>
 	</html>
@@ -208,16 +177,22 @@ function userHomePage()
 		{
 			$status='Over Limits';
 		}
+		#Convert to KB
+		$laneDailyLimit=round($laneDailyLimit/1000);
+		$laneWeeklyLimit=round($laneWeeklyLimit/1000);
+		$laneMonthlyLimit=round($laneMonthlyLimit/1000);
+		$todayTotal=round($todayTotal/1000);
+		$weekTotal=round($weekTotal/1000);
+		$monthTotal=round($monthTotal/1000);
+		$sessionTX=round($sessionTX/1000);
+		$sessionRX=round($sessionRX/1000);
 	}
-	#Convert to KB
-	$laneDailyLimit=round($laneDailyLimit/1000);
-	$laneWeeklyLimit=round($laneWeeklyLimit/1000);
-	$laneMonthlyLimit=round($laneMonthlyLimit/1000);
-	$todayTotal=round($todayTotal/1000);
-	$weekTotal=round($weekTotal/1000);
-	$monthTotal=round($monthTotal/1000);
-	$sessionTX=round($sessionTX/1000);
-	$sessionRX=round($sessionRX/1000);
+	else
+	{
+		$laneDailyLimit=0;
+		$laneWeeklyLimit=0;
+		$laneMonthlyLimit=0;
+	}
 	echo '<!DOCTYPE html>
 	<html>
 	<head>
@@ -226,41 +201,7 @@ function userHomePage()
 			<meta name="viewport" content="width=device-width, initial-scale=1">
 	</head>
 	<style>
-	ul {
-		list-style-type: none;
-		margin: 0;
-		padding: 0;
-		overflow: hidden;
-		background-color: #e7e7e7;
-	}
-	li {
-		float: left;
-	}
-	li a {
-		display: block;
-		color: black;
-		text-align: center;
-		padding: 14px 16px;
-		text-decoration: none;
-	}
-	li a:hover {
-		background-color: #bfbfbf;
-	}
-	th, td
-	{
-		padding-top: 10px;
-		padding-bottom: 10px;
-		padding-left: 10px;
-		padding-right: 10px;
-		border-style: groove;
-		text-align: center;
-		font-size: 70%
-	}
-	td
-	{
-		font-weight:normal;
-		font-size: 60%;
-	}
+	'.$GLOBALS['defaultStyle'].'
 	</style>
 	<body>
 		<a><img src="/assets/CyberCafe_logo.png" width="100" height="100"></a>
@@ -328,31 +269,16 @@ function defaultHomePage()
 			<meta name="viewport" content="width=device-width, initial-scale=1">
 	</head>
 	<style>
-	ul {
-		list-style-type: none;
-		margin: 0;
-		padding: 0;
-		overflow: hidden;
-		background-color: #e7e7e7;
-	}
-	li {
-		float: left;
-	}
-	li a {
-		display: block;
-		color: black;
-		text-align: center;
-		padding: 14px 16px;
-		text-decoration: none;
-	}
-	li a:hover {
-		background-color: #bfbfbf;
-	}
+	'.$GLOBALS['defaultStyle'].'
 	</style>
 	<body>
 		<a><img src="/assets/CyberCafe_logo.png" width="100" height="100"></a>
 		'.$GLOBALS['defaultNavHTML'].'
-		<h2>Greybox - Cybercafe<h2>
+		<h2>Greybox: Project Cybercafe<h2>
+		<p>Project Cybercafe is software that runs on an Android device, enabling smart hotspot functionality for the sharing of internet connectivity 
+		with other Wi-Fi devices. Recognizing costs and other restrictions that may exist in our targeted regions, several controls are in place to allow 
+		a high level of control over how a user’s hotspot device is used for internet access.<br>
+		<a href="https://www.grey-box.ca/project-cybercafe/" target="_blank">https://www.grey-box.ca/project-cybercafe/</a></p>
 	</body>
 	</html>
 	';
