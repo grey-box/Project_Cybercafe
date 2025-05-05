@@ -2,7 +2,7 @@
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 #error_reporting(E_ALL);
-require __DIR__ . '/../../globalfunctions.php';
+require __DIR__ . '/../../global.php';
 
 function dailyStats()
 {
@@ -197,48 +197,15 @@ function displayPage()
 			<meta name="viewport" content="width=device-width, initial-scale=1">
 	</head>
 	<style>
-	ul {
-		list-style-type: none;
-		margin: 0;
-		padding: 0;
-		overflow: hidden;
-		background-color: #e7e7e7;
-	}
-	li {
-		float: left;
-	}
-	li a {
-		display: block;
-		color: black;
-		text-align: center;
-		padding: 14px 16px;
-		text-decoration: none;
-	}
-	li a:hover {
-		background-color: #bfbfbf;
-	}
-	table, th, td {
-	}
-	th, td
-	{
-		padding-top: 10px;
-		padding-bottom: 10px;
-		padding-left: 10px;
-		padding-right: 10px;
-		border-style: groove;
-		text-align: center;
-		font-size: 70%
-	}
-	td
-	{
-		font-weight:normal;
-		font-size: 60%;
-	}
+	'.$GLOBALS['defaultStyle'].'
 	</style>
 	<body>
 		<a><img src="/assets/CyberCafe_logo.png" width="100" height="100"></a>
 		'.$GLOBALS['adminNavHTML'].'
 		<h2>Statistics<h2>
+		<form method="post">
+			<input type="submit" value="Refresh">
+		</form>
 		<p>Daily</p>
 		'.dailyStats().'
 		<p>Weekly</p>
