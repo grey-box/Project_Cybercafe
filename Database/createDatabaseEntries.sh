@@ -1,4 +1,3 @@
-#FOR TESTING ONLY#
 DATABASE_PATH=./CyberCafe_Database.db
 
 
