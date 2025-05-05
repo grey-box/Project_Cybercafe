@@ -1,41 +1,37 @@
 #Organization: Grey-box
 #Project: Cybercafe
-#File: globalVariables
-#Description: Contains all global variables and configuration values that are needed by other scripts of the backend.
-
-##VARIABLES##
-DATABASE_PATH='/data/data/com.termux/files/usr/var/www/database/CyberCafe_Database.db'
+#File: internetSessionFunctions
+#Description: Contains all internet session functions that are necessary for updating and managing the system and website
 
 ##FUNCTIONS##
 ##Removal Functions##
 function clear_internet_sessions
+#Removes all existing internet sessions stored in the data based when the system shutsdown (invoked by shutdown_infra)
 {
 	trap 'echo -e "$(date) Error in Cybercafe_internetSessionFunctions.sh: Line ${LINENO}\n" >> error.log' ERR > /dev/null 2>> error.log
-	#Purpose: used to delete all existing internet sessions stored in the database for when the system needs to be shutdown (i.e. shutdown_infra)
-	# 1. Get user session data from sqlite database
-	# 2. Save data from internet_sessions table into user_data_usage table and format it
-	
 	I=0 #iterator value
 	INDEX_LIMIT=$(($(sqlite3 "${DATABASE_PATH}" "SELECT MAX(table_index) FROM internet_sessions;")+1)) > /dev/null 2>> error.log #the maximum number of internet session entries
 	while [ $I -lt $INDEX_LIMIT ]
 	do
-		remove_session $I
+		remove_session $I #remove_session contains all the necessary steps to correctly remove a internet session
 		I=$(($I+1)) #increment iterator
 	done
 }
 
-function delete_user_iptable_rules #used along with remove_session to remove user access
+function delete_user_iptable_rules
+#subfunction of remove_session used to remove user access
 {
 	# Argument1: $1 -> user_ip
 	iptables -t mangle -D iptmon_rx -o ${HS_INTERFACE} -d ${1} > /dev/null 2>> error.log # delete rules since this user is effectively logged out
-	iptables -t mangle -D iptmon_tx -i ${HS_INTERFACE} -s ${1} > /dev/null 2>> error.log
-	iptables -t nat -D PREROUTING -p all -s ${1} -i ${HS_INTERFACE} -j RETURN > /dev/null 2>> error.log #delete access outside of the captive portal using iptables
+	iptables -t mangle -D iptmon_tx -i ${HS_INTERFACE} -s ${1} > /dev/null 2>> error.log # same as above
+	iptables -t nat -D PREROUTING -p all -s ${1} -i ${HS_INTERFACE} -j RETURN > /dev/null 2>> error.log
 	iptables -t filter -D FORWARD -p all -s ${USER_IP} -i ${HS_INTERFACE} -j ACCEPT > /dev/null 2>> error.log
-	iptables -t filter -D OUTPUT -p all -d ${USER_IP} -o ${HS_INTERFACE} -j ACCEPT > /dev/null 2>> error.log
+	iptables -t filter -D FORWARD -p all -d ${USER_IP} -o ${HS_INTERFACE} -j ACCEPT > /dev/null 2>> error.log
 }
 
 
-function remove_session #cleanly remove a given session and save all necessary data
+function remove_session
+#cleanly remove a given session and save all necessary data
 {
 	trap 'echo -e "$(date) Error in Cybercafe_internetSessionFunctions.sh: Line ${LINENO}\n" >> error.log' ERR > /dev/null 2>> error.log
 	# Argument1: $1 -> internet_session table index (i.e. what internet session are we saving/deleting)
@@ -78,19 +74,19 @@ function remove_session #cleanly remove a given session and save all necessary d
 
 ##Check Internet Sessions Functions##
 function check_against_usage_limits
+#subfunction of check_internet_sessions used to determine if user is 'over limits' (returns a boolean)
 {
-	# Argument1: $1 -> index for database table internet_sessions
-	USER_ID=$(sqlite3 "${DATABASE_PATH}" "SELECT user_id FROM internet_sessions WHERE table_index=${I}") > /dev/null 2>> error.log
-	RESPONSE=$(sqlite3 "${DATABASE_PATH}" "SELECT user_level FROM users WHERE user_id=${USER_ID}") > /dev/null 2>> error.log
+	# Argument1: $1 -> internet_session table index
+	#Note: as this is a subfunction of check_internet_sessions USER_ID is already defined correctly
+	USER_LEVEL=$(sqlite3 "${DATABASE_PATH}" "SELECT user_level FROM users WHERE user_id=${USER_ID}") > /dev/null 2>> error.log
 	STATUS=$(sqlite3 "${DATABASE_PATH}" "SELECT status FROM users WHERE user_id=${USER_ID}") > /dev/null 2>> error.log
 	if [[ $STATUS == 'DISABLED' ]]; then #if the user is disabled then skip all other checks and return 1 (i.e. over limits)
 		return 1
 	fi
-	if [[ $REPONSE == '0' ]]; then #if the user is an admin then skip all other checks and return 0 (i.e. not over limits)
-		return 0
+	if [[ $USER_LEVEL == '0' ]]; then #if the user is an admin then skip all other checks and return 0 (i.e. not over limits)
+		return 0 #Note due to the ordering of this and the above if statement admins are able to be disabled but they can re-enable themseleves if needed
 	else
 		#1. Sum of usage today, this week, this month
-		#SELECT SUM(interval_bytes_tx) FROM user_data_usage WHERE user_id=1 AND entry_datetime>=datetime(datetime(),'localtime','-7 days');
 		TOTAL_TX_DAY=$(($(sqlite3 "${DATABASE_PATH}" "SELECT SUM(interval_bytes_tx) FROM user_data_usage WHERE user_id=${USER_ID} AND entry_datetime>=datetime(datetime(),'localtime','-1 days')"))) > /dev/null 2>> error.log
 		TOTAL_RX_DAY=$(($(sqlite3 "${DATABASE_PATH}" "SELECT SUM(interval_bytes_rx) FROM user_data_usage WHERE user_id=${USER_ID} AND entry_datetime>=datetime(datetime(),'localtime','-1 days')"))) > /dev/null 2>> error.log
 		TOTAL_TX_WEEK=$(($(sqlite3 "${DATABASE_PATH}" "SELECT SUM(interval_bytes_tx) FROM user_data_usage WHERE user_id=${USER_ID} AND entry_datetime>=datetime(datetime(),'localtime','-7 days')"))) > /dev/null 2>> error.log
@@ -120,10 +116,11 @@ function check_against_usage_limits
 		if [[ $LANE_ID == '' ]]; then
 			LANE_ID=0
 		fi
-		#3. Do logical comparisions
-		LANE_DAILY_LIMIT=$(($(sqlite3 "${DATABASE_PATH}" "SELECT bytelimit_daily FROM data_lanes WHERE lane_id=${LANE_ID}"))) > /dev/null 2>> error.log
-		LANE_WEEKLY_LIMIT=$(($(sqlite3 "${DATABASE_PATH}" "SELECT bytelimit_weekly FROM data_lanes WHERE lane_id=${LANE_ID}"))) > /dev/null 2>> error.log
-		LANE_MONTHLY_LIMIT=$(($(sqlite3 "${DATABASE_PATH}" "SELECT bytelimit_monthly FROM data_lanes WHERE lane_id=${LANE_ID}"))) > /dev/null 2>> error.log
+		#3. Do mathematical comparisions
+		RESPONSE2=$(sqlite3 "${DATABASE_PATH}" "SELECT bytelimit_daily,bytelimit_weekly,bytelimit_monthly FROM data_lanes WHERE lane_id=${LANE_ID}") > /dev/null 2>> error.log
+		LANE_DAILY_LIMIT=$(($(echo "${RESPONSE2}" | cut -f 1 -d '|'))) > /dev/null 2>> error.log
+		LANE_WEEKLY_LIMIT=$(($(echo "${RESPONSE2}" | cut -f 2 -d '|'))) > /dev/null 2>> error.log
+		LANE_MONTHLY_LIMIT=$(($(echo "${RESPONSE2}" | cut -f 3 -d '|'))) > /dev/null 2>> error.log
 		if [[ $(($TOTAL_TX_DAY+$TOTAL_RX_DAY)) -gt $LANE_DAILY_LIMIT ]]; then
 			return 1
 		elif [[ $(($TOTAL_TX_WEEK+$TOTAL_RX_WEEK)) -gt $LANE_WEEKLY_LIMIT ]]; then
@@ -138,9 +135,10 @@ function check_against_usage_limits
 }
 
 function check_internet_sessions
+#main function used to periodically update internet session data in the sqlite database and remove sessions based certain criteria.
 {
 	trap 'echo -e "$(date) Error in Cybercafe_internetSessionFunctions.sh: Line ${LINENO}\n" >> error.log' ERR > /dev/null 2>> error.log
-	# Purpose: main function used to periodically update internet session data in the sqlite database and remove sessions based certain criteria.
+	
 	I=0 #iterator value
 	INDEX_LIMIT=$(($(sqlite3 "${DATABASE_PATH}" "SELECT MAX(table_index) FROM internet_sessions")+1)) > /dev/null 2>> error.log #the maximum number of internet session entries
 	while [ $I -lt $INDEX_LIMIT ]
@@ -169,7 +167,7 @@ function check_internet_sessions
 			iptables -t mangle -A iptmon_tx -i ${HS_INTERFACE} -s ${USER_IP} > /dev/null 2>> error.log
 		fi
 		
-		# 4. Update session_tx and rx according to iptables onto 'internet_sessions' database table
+		# 4. Update the current session tx and rx based on the associated iptables rule (for this user) on the database
 		SESSION_ACCESS=$(echo $RESPONSE | cut -f 7 -d '|')
 		SESSION_TX=$(($(iptables -t mangle -L iptmon_tx -vxn | grep $USER_IP | awk '{print $2}'))) > /dev/null 2>> error.log
 		SESSION_RX=$(($(iptables -t mangle -L iptmon_rx -vxn | grep $USER_IP | awk '{print $2}'))) > /dev/null 2>> error.log
@@ -185,41 +183,39 @@ function check_internet_sessions
 		USER_IP=$(echo $RESPONSE | cut -f 4 -d '|') > /dev/null 2>> error.log
 		#
 		#Calculate what session number this will be saved under in user_data_usage for this user
-		RESPONSE=$(sqlite3 "${DATABASE_PATH}" "SELECT MAX(session_number) FROM user_data_usage WHERE user_id='${USER_ID}'") > /dev/null 2>> error.log
-		if [[ $RESPONSE != '' ]]; then
-			#Note: php creates the first entry for any given session**
-			SESSION_NUMBER=$(($RESPONSE))
+		SESSION_NUMBER=$(sqlite3 "${DATABASE_PATH}" "SELECT MAX(session_number) FROM user_data_usage WHERE user_id='${USER_ID}'") > /dev/null 2>> error.log
+		if [[ $SESSION_NUMBER != '' ]]; then
+			#**Note: php creates the first entry for any given session**
 			#Calculate what entry number this will be saved under in user_data_usage for this user on this session
 			RESPONSE=$(sqlite3 "${DATABASE_PATH}" "SELECT MAX(session_entry_index) FROM user_data_usage WHERE user_id='${USER_ID}' AND session_number=${SESSION_NUMBER}") > /dev/null 2>> error.log
-			ENTRY_INDEX=$(($RESPONSE+1))
+			ENTRY_INDEX=$(($(($RESPONSE))+1))
 			RESPONSE=$(sqlite3 "${DATABASE_PATH}" "SELECT SUM(interval_bytes_tx) FROM user_data_usage WHERE user_id=${USER_ID} AND session_number=${SESSION_NUMBER}") > /dev/null 2>> error.log
-			INTERVAL_TX=$(($SESSION_TX-$RESPONSE)) #The next interval entry is [total usage for this session - sum of previous entries associated with this user's session]
+			INTERVAL_TX=$(($SESSION_TX-$(($RESPONSE)))) #The next interval entry is [total usage for this session - sum of previous entries associated with this user's session]
 			RESPONSE=$(sqlite3 "${DATABASE_PATH}" "SELECT SUM(interval_bytes_rx) FROM user_data_usage WHERE user_id=${USER_ID} AND session_number=${SESSION_NUMBER}") > /dev/null 2>> error.log
-			INTERVAL_RX=$(($SESSION_RX-$RESPONSE)) #same as above
+			INTERVAL_RX=$(($SESSION_RX-$(($RESPONSE)))) #same as above
 			#create entry for this check in database
 			sqlite3 "${DATABASE_PATH}" "INSERT INTO user_data_usage (user_id,session_number,session_entry_index,entry_datetime,interval_bytes_tx,interval_bytes_rx) VALUES (${USER_ID},${SESSION_NUMBER},${ENTRY_INDEX},'${DATETIME}',${INTERVAL_TX},${INTERVAL_RX})" > /dev/null 2>> error.log
 		fi
 		
 		# 6. update 'datetime_sinceLastRequest' based on metrics from user_data_usage table
-		#if [[ $ENTRY_INDEX -ne 0 && $USER_ID != '' ]]; then #no need to check on the first entry for a session
-		#	RESPONSE=$(sqlite3 "${DATABASE_PATH}" "SELECT MAX(entry_datetime) FROM user_data_usage WHERE user_id=${USER_ID} AND interval_bytes_tx+interval_bytes_rx!=0 AND (SELECT datetime_sinceLastRequest FROM internet_sessions WHERE user_id=${USER_ID})<entry_datetime") > /dev/null 2>> error.log
-		#	if [[ $RESPONSE != '' ]]; then
-		#		sqlite3 "${DATABASE_PATH}" "UPDATE internet_sessions SET datetime_sinceLastRequest='${RESPONSE}' WHERE table_index=${I}" > /dev/null 2>> error.log
-		#	else
-		#		# 7. If session age or session idle time becomes to great then save that sessions data and delete the session
-		#		#Note: if the previous if statment triggers then we can assume it isn't idle or aged out because it was just updated
-		#		RESPONSE=$(sqlite3 "${DATABASE_PATH}" "SELECT timediff((SELECT datetime_created FROM internet_sessions WHERE table_index=${I}),datetime(datetime(),'localtime'))") > /dev/null 2>> error.log
-		#		if [[ $RESPONSE != '' ]]; then
-		#			SESSION_AGE=86400*$((10#$(echo $RESPONSE | awk '{print $1}' | cut -f 4 -d '-')))+3600*$((10#$(echo $RESPONSE | awk '{print $2}' | cut -f 1 -d ':')))+60*$((10#$(echo $RESPONSE | awk '{print $2}' | cut -f 2 -d ':')))+$((10#$(echo $RESPONSE | awk '{print $2}' | cut -f 3 -d ':' | cut -f 1 -d '.'))) > /dev/null 2>> error.log
-		#			RESPONSE=$(sqlite3 "${DATABASE_PATH}" "SELECT timediff((SELECT datetime_sinceLastRequest FROM internet_sessions WHERE table_index=${I}),datetime(datetime(),'localtime'))")
-		#			SESSION_IDLETIME=86400*$((10#$(echo $RESPONSE | awk '{print $1}' | cut -f 4 -d '-')))+3600*$((10#$(echo $RESPONSE | awk '{print $2}' | cut -f 1 -d ':')))+60*$((10#$(echo $RESPONSE | awk '{print $2}' | cut -f 2 -d ':')))+$((10#$(echo $RESPONSE | awk '{print $2}' | cut -f 3 -d ':' | cut -f 1 -d '.'))) > /dev/null 2>> error.log
-		#			
-		#			if [[ ${SESSION_AGE} -gt 43200 ]] || [[ ${SESSION_IDLETIME} -gt 3600 ]]; then #if session is older than 12 hours or has been idle for more than 1hr then delete session
-		#				remove_session $I
-		#			fi
-		#		fi
-		#	fi
-		#fi
+		if [[ $ENTRY_INDEX -ne 0 && $USER_ID != '' ]]; then #no need to check on the first entry for a session
+			RESPONSE=$(sqlite3 "${DATABASE_PATH}" "SELECT MAX(entry_datetime) FROM user_data_usage WHERE user_id=${USER_ID} AND interval_bytes_tx+interval_bytes_rx!=0 AND (SELECT datetime_sinceLastRequest FROM internet_sessions WHERE user_id=${USER_ID})<entry_datetime") > /dev/null 2>> error.log
+			if [[ $RESPONSE != '' ]]; then
+				sqlite3 "${DATABASE_PATH}" "UPDATE internet_sessions SET datetime_sinceLastRequest='${RESPONSE}' WHERE table_index=${I}" > /dev/null 2>> error.log
+			else
+				# 7. If session age or session idle time becomes to great then save that sessions data and delete the session
+				#Note: if the previous if statment triggers then we can assume it isn't idle or aged out because it was just updated
+				RESPONSE=$(sqlite3 "${DATABASE_PATH}" "SELECT timediff((SELECT datetime_created FROM internet_sessions WHERE table_index=${I}),datetime(datetime(),'localtime'))") > /dev/null 2>> error.log
+				RESPONSE2=$(sqlite3 "${DATABASE_PATH}" "SELECT timediff((SELECT datetime_sinceLastRequest FROM internet_sessions WHERE table_index=${I}),datetime(datetime(),'localtime'))")
+				if [[ $RESPONSE != '' && $RESPONSE2 != '' ]]; then
+					SESSION_AGE=86400*$((10#$(echo ${RESPONSE} | awk '{print $1}' | cut -f 4 -d '-')))+3600*$((10#$(echo ${RESPONSE} | awk '{print $2}' | cut -f 1 -d ':')))+60*$((10#$(echo ${RESPONSE} | awk '{print $2}' | cut -f 2 -d ':')))+$((10#$(echo ${RESPONSE} | awk '{print $2}' | cut -f 3 -d ':' | cut -f 1 -d '.'))) > /dev/null 2>> error.log
+					SESSION_IDLETIME=86400*$((10#$(echo ${RESPONSE2} | awk '{print $1}' | cut -f 4 -d '-')))+3600*$((10#$(echo ${RESPONSE2} | awk '{print $2}' | cut -f 1 -d ':')))+60*$((10#$(echo ${RESPONSE2} | awk '{print $2}' | cut -f 2 -d ':')))+$((10#$(echo ${RESPONSE2} | awk '{print $2}' | cut -f 3 -d ':' | cut -f 1 -d '.'))) > /dev/null 2>> error.log
+					if [[ $SESSION_AGE -gt $SESSION_MAX_AGE ]] || [[ $SESSION_IDLETIME -gt $SESSION_MAX_IDLETIME ]]; then #if session is older than 12 hours or has been idle for more than 1hr then delete session
+						remove_session $I #session has aged or idled out
+					fi
+				fi
+			fi
+		fi
 		
 		#8. Calculate current usage and determine if given user is outside their limits
 		check_against_usage_limits $I
@@ -229,19 +225,19 @@ function check_internet_sessions
 			sqlite3 "${DATABASE_PATH}" "UPDATE internet_sessions SET session_access='1' WHERE table_index=${I}" > /dev/null 2>> error.log
 		fi
 		
-		#9. Check user access entry for user to see if PREROUTING iptable rules need to be updated for this user
+		#9. Check user access entry in the database and add or remove user exception rules if they have access
 		SESSION_ACCESS=$(($(sqlite3 "${DATABASE_PATH}" "SELECT session_access FROM internet_sessions WHERE user_id=${USER_ID}")))
 		iptables -t nat -C PREROUTING -s ${USER_IP} -i ${HS_INTERFACE} -j RETURN > /dev/null 2>> error.log
 		if [[ $? -eq 0 && $SESSION_ACCESS == '0' ]]; then #rules exists but shouldn't
 			iptables -t nat -D PREROUTING -p all -s ${USER_IP} -i ${HS_INTERFACE} -j RETURN > /dev/null 2>> error.log
 			iptables -t filter -D FORWARD -p all -s ${USER_IP} -i ${HS_INTERFACE} -j ACCEPT > /dev/null 2>> error.log
-			iptables -t filter -D OUTPUT -p all -d ${USER_IP} -o ${HS_INTERFACE} -j ACCEPT > /dev/null 2>> error.log
+			iptables -t filter -D FORWARD -p all -d ${USER_IP} -o ${HS_INTERFACE} -j ACCEPT > /dev/null 2>> error.log
 		fi
 		iptables -t nat -C PREROUTING -s ${USER_IP} -i ${HS_INTERFACE} -j RETURN > /dev/null 2>> error.log
 		if [[ $? -eq 1 && $SESSION_ACCESS == '1' ]]; then #rule doesn't exist but should
 			iptables -t nat -I PREROUTING 1 -p all -s ${USER_IP} -i ${HS_INTERFACE} -j RETURN > /dev/null 2>> error.log
 			iptables -t filter -I FORWARD 1 -p all -s ${USER_IP} -i ${HS_INTERFACE} -j ACCEPT > /dev/null 2>> error.log #this rule will allow requests outside of the network for this user
-			iptables -t filter -I OUTPUT 1 -p all -d ${USER_IP} -o ${HS_INTERFACE} -j ACCEPT > /dev/null 2>> error.log
+			iptables -t filter -I FORWARD 1 -p all -d ${USER_IP} -o ${HS_INTERFACE} -j ACCEPT > /dev/null 2>> error.log
 		fi
 		
 		

@@ -2,7 +2,7 @@
 #Organization: Grey-box
 #Project: Cybercafe
 #File: testbed
-#Description: Used to test functions contained in the different Cybercafe libraries
+#Description: Used to test functions contained in the different Cybercafe libraries for errors or other unwanted behaviour
 
 ###INCLUDES###
 . ./Cybercafe_setupFunctions.sh

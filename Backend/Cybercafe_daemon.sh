@@ -5,11 +5,13 @@
 #Description: Main script that is run at start. This script is invoked by Cybercafe_commandLine.sh
 
 ###INCLUDES###
+. ./cybercafe.conf
 . ./Cybercafe_setupFunctions.sh
 . ./Cybercafe_internetSessionFunctions.sh
 
 ### START OF PROGRAM EXECUTION ###
 while true; do
+	trap 'echo -e "$(date) Error in Cybercafe_daemon.sh: Line ${LINENO}\n" >> error.log' ERR > /dev/null 2>> error.log
 	check_hotspot_status
 
 	#Case 1: Hotspot up and was up in previous check
