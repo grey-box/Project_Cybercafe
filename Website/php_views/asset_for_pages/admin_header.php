@@ -66,7 +66,7 @@
         <div class="sidebar-content">
           <ul class="nav nav-secondary">
             <li class="nav-item">
-              <a href="http://localhost/CCFBackup/php_views/final_admin/adashboard.php">
+              <a href="../final_admin/adashboard.php">
                 <i class="fas fa-home"></i>
                 <p>Dashboard</p>
               </a>
@@ -103,7 +103,7 @@
             </li> -->
 
             <li class="nav-item">
-              <a  href="http://localhost/CCFBackup/php_views/final_admin/afaq_table.php">
+              <a  href="../final_admin/afaq_table.php">
                 <i class="far fa-chart-bar"></i>
                 <p>FAQs Management</p>
                 
@@ -111,13 +111,13 @@
               <!-- <div class="collapse" id="charts">
                 <ul class="nav nav-collapse">
                   <li>
-                    <a href="http://localhost/CCFBackup/php_views/final_admin/afaq_table.php">
+                    <a href="../final_admin/afaq_table.php">
                       <i class="fas fa-pen-square"></i>
                       <p>FAQs Page</p>
                     </a>
                   </li>
                   <li>
-                    <a href="http://localhost/CCFBackup/php_views/final_admin/afaq_add_form.php">
+                    <a href="../final_admin/afaq_add_form.php">
                       <i class="fas fa-table"></i>
                       <p>Add FAQs</p>
                     </a>
@@ -143,7 +143,7 @@
             </li> -->
 
             <li class="nav-item">
-              <a href="http://localhost/CCFBackup/php_views/final_admin/auser_table.php">
+              <a href="../final_admin/auser_table.php">
                 <i class="far fa-chart-bar"></i>
                 <p>User Management</p>
                 
@@ -151,19 +151,19 @@
               <div class="collapse" id="charts">
                 <ul class="nav nav-collapse">
                   <li>
-                    <a href="http://localhost/CCFBackup/php_views/final_admin/auser_table.php">
+                    <a href="../final_admin/auser_table.php">
                       <i class="far fa-chart-bar"></i>
                       <p>Users Information</p>
                     </a>
                   </li>
                   <li>
-                    <a href="http://localhost/CCFBackup/php_views/final_admin/add_user.php">
+                    <a href="../final_admin/add_user.php">
                       <i class="fas fa-layer-group"></i>
                       <p>Add User</p>
                     </a>
                   </li>
                   <li>
-                    <a href="http://localhost/CCFBackup/php_views/final_admin/auser_info_add_and_edit.php">
+                    <a href="../final_admin/auser_info_add_and_edit.php">
                       <i class="far fa-chart-bar"></i>
                       <p>Users Add/Edit</p>
                     </a>
@@ -173,7 +173,7 @@
             </li>
 
             <li class="nav-item">
-                <a href="http://localhost/CCFBackup/php_views/final_admin/support.php">
+                <a href="../final_admin/support.php">
                   <i class="far fa-question-circle"></i>
                   <p>Support</p>
                 </a>
