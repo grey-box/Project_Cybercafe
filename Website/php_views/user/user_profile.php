@@ -1,9 +1,12 @@
 <?php
+declare(strict_types=1);
 // Set the page title dynamically
-$pageTitle = "User Profile"; 
+$pageTitle = "User Profile";
+
+require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
 
 // Include the header
-include('../asset_for_pages/user_header.php');
+require_once VIEWS_ROOT . '/asset_for_pages/user_header.php';
 
 // Sample device data (you can fetch this from a database)
 $devices = [
@@ -15,7 +18,7 @@ $devices = [
 <div class="page-header">
     <ul class="breadcrumbs mb-3">
         <li class="nav-home">
-            <a href="#">
+            <a href="<?= WEB_BASE ?>/php_views/user/user_profile.php">
                 <i class="icon-home"></i>
             </a>
         </li>
@@ -152,19 +155,10 @@ $devices = [
 
 <?php
 // Include the footer
-include('../asset_for_pages/footer.php');
+require_once VIEWS_ROOT . '/asset_for_pages/footer.php'
 ?>
 
 <script>
-// JavaScript function to generate a random access code
-function generateAccessCode() {
-    var code = '';
-    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    for (var i = 0; i < 10; i++) {
-        code += characters.charAt(Math.floor(Math.random() * characters.length));
-    }
-    document.getElementById("accessCode").value = code;
-}
 
 function generatePassword() {
     var words = ["Horse", "Battery", "Staple", "Cloud", "Secure", "Bridge", "River", "Table", "Laptop", "Coffee"];
@@ -216,8 +210,3 @@ function showNotification(message, type) {
     });
 }
 </script>
-
-<script src="../assets/js/core/jquery-3.7.1.min.js"></script>
-<script src="../assets/js/core/popper.min.js"></script>
-<script src="../assets/js/core/bootstrap.min.js"></script>
-<script src="../assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>

@@ -1,7 +1,9 @@
 <?php
+declare(strict_types=1);
+require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
 
-// Include header file
-include('../asset_for_pages/user_header.php');
+// Include the header
+require_once VIEWS_ROOT . '/asset_for_pages/user_header.php';
 ?>
 
 
@@ -121,5 +123,5 @@ include('../asset_for_pages/user_header.php');
 
 <?php
 // Include the footer
-include('../asset_for_pages/footer.php');
+require_once VIEWS_ROOT . '/asset_for_pages/footer.php'
 ?>

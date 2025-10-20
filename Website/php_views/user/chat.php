@@ -1,9 +1,11 @@
 <?php
+declare(strict_types=1);
 // Set the page title dynamically
-$pageTitle = "Support Page"; 
+$pageTitle = "Chat Page"; 
 
+require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
 // Include the header
-include('../asset_for_pages/user_header.php');
+require_once VIEWS_ROOT . '/asset_for_pages/user_header.php';
 ?>
 
 <div class="page-inner mt-4">
@@ -88,4 +90,4 @@ include('../asset_for_pages/user_header.php');
     }
 </style>
 
-<?php include('../asset_for_pages/footer.php'); ?>
+<?php require_once VIEWS_ROOT . '/asset_for_pages/footer.php' ?>

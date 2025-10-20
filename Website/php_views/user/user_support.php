@@ -1,9 +1,12 @@
 <?php
+declare(strict_types=1);
 // Set the page title dynamically
-$pageTitle = "User - CyberCafe Queries";
+$pageTitle = "Support Page";
+
+require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
 
 // Include the header
-include('../asset_for_pages/user_header.php');
+require_once VIEWS_ROOT . '/asset_for_pages/user_header.php';
 
 // Simulated queries data (Replace this with a database query)
 $queries = [
@@ -108,4 +111,4 @@ $queries = [
     }
 </style>
 
-<?php include('../asset_for_pages/footer.php'); ?>
+<?php require_once VIEWS_ROOT . '/asset_for_pages/footer.php' ?>
