@@ -1,10 +1,12 @@
-
 <?php
+declare(strict_types=1);
 // Set the page title dynamically
 $pageTitle = "Detailed Instructions"; 
 
+require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
+
 // Include the header
-include('../asset_for_pages/user_header.php');
+require_once VIEWS_ROOT . '/asset_for_pages/user_header.php';
 ?>
 
 <div class="container">
@@ -13,7 +15,7 @@ include('../asset_for_pages/user_header.php');
             <h3 class="fw-bold mb-3">Instructions</h3>
             <ul class="breadcrumbs mb-3">
                 <li class="nav-home">
-                    <a href="#">
+                    <a href="<?= WEB_BASE ?>/php_views/user/user_profile.php">
                         <i class="icon-home"></i>
                     </a>
                 </li>
@@ -85,5 +87,5 @@ include('../asset_for_pages/user_header.php');
 
 <?php
 // Include the footer
-include('../asset_for_pages/footer.php');
+require_once VIEWS_ROOT . '/asset_for_pages/footer.php'
 ?>

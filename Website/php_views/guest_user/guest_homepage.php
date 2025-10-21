@@ -1,9 +1,10 @@
 <?php
-// Set the page title dynamically
-$pageTitle = "Guest - Home"; 
+declare(strict_types=1);
+$pageTitle = "Guest - Home";
 
-// Include the header
-include('../asset_for_pages/guest_header.php');
+require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
+
+require_once VIEWS_ROOT . '/asset_for_pages/guest_header.php';
 ?>
 
 <style>
@@ -23,12 +24,6 @@ include('../asset_for_pages/guest_header.php');
             <a href="#">
                 <i class="icon-home"></i>
             </a>
-        </li>
-        <li class="separator">
-            <i class="icon-arrow-right"></i>
-        </li>
-        <li class="nav-item">
-            <a href="#">Guest Login</a>
         </li>
         <li class="separator">
             <i class="icon-arrow-right"></i>
@@ -62,12 +57,12 @@ include('../asset_for_pages/guest_header.php');
                 </thead>
                 <tbody>
                   <tr>
-                    <td>https://example.com</td>
-                    <td><button class="btn btn-info btn-sm" onclick="removeRow(this)">Visit</button></td>
+                    <td><a href="https://example.com" target="_blank" rel="noopener">https://example.com</a></td>
+                    <td><a class="btn btn-info btn-sm" href="https://example.com" target="_blank" rel="noopener">Visit</a></td>
                   </tr>
                   <tr>
-                    <td>https://anotherurl.com</td>
-                    <td><button class="btn btn-info btn-sm" onclick="removeRow(this)">Visit</button></td>
+                    <td><a href="https://anotherurl.com" target="_blank" rel="noopener">https://anotherurl.com</a></td>
+                    <td><a class="btn btn-info btn-sm" href="https://anotherurl.com" target="_blank" rel="noopener">Visit</a></td>
                   </tr>
                 </tbody>
               </table>
@@ -80,7 +75,7 @@ include('../asset_for_pages/guest_header.php');
 
 <?php
 // Include the footer
-include('../asset_for_pages/footer.php');
+require_once VIEWS_ROOT . '/asset_for_pages/footer.php'
 ?>
 
 <script>
