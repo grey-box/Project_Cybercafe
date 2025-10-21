@@ -44,7 +44,7 @@
       <div class="sidebar-logo">
         <!-- Logo Header -->
         <div class="logo-header" data-background-color="dark">
-          <a href="../index.html" class="logo">
+          <a href="adashboard.php" class="logo">
             <img src="https://www.grey-box.ca/wp-content/uploads/2018/05/logoGREY-BOX.jpg" alt="navbar brand"
               class="navbar-brand" height="50" />
           </a>
@@ -66,7 +66,7 @@
         <div class="sidebar-content">
           <ul class="nav nav-secondary">
             <li class="nav-item">
-              <a href="../final_admin/adashboard.php">
+              <a href="adashboard.php">
                 <i class="fas fa-home"></i>
                 <p>Dashboard</p>
               </a>
@@ -79,7 +79,7 @@
 
             <!-- <li class="nav-item">
               <a data-bs-toggle="collapse">
-              <a href="http://localhost/CyberCafe-Fleming-prototype/php_views/final_admin/admin_add_user.php">
+              <a href="admin_add_user.php">
                 <i class="fas fa-layer-group"></i>
                 <p>Add User</p>
               </a>
@@ -88,7 +88,7 @@
 
             <!-- <li class="nav-item">
               <a data-bs-toggle="collapse">
-                <a href="http://localhost/CyberCafe-Fleming-prototype/php_views/final_admin/afaq_table.php">
+                <a href="afaq_table.php">
                 <i class="fas fa-pen-square"></i>
                 <p>FAQs Page</p>
 
@@ -96,14 +96,14 @@
 
             <li class="nav-item">
               <a data-bs-toggle="collapse">
-              <a href="http://localhost/CyberCafe-Fleming-prototype/php_views/final_admin/afaq_add_form.php">
+              <a href="afaq_add_form.php">
                 <i class="fas fa-table"></i>
                 <p>Add FAQs</p>
               </a>
             </li> -->
 
             <li class="nav-item">
-              <a  href="../final_admin/afaq_table.php">
+              <a  href="afaq_table.php">
                 <i class="far fa-chart-bar"></i>
                 <p>FAQs Management</p>
                 
@@ -111,13 +111,13 @@
               <!-- <div class="collapse" id="charts">
                 <ul class="nav nav-collapse">
                   <li>
-                    <a href="../final_admin/afaq_table.php">
+                    <a href="afaq_table.php">
                       <i class="fas fa-pen-square"></i>
                       <p>FAQs Page</p>
                     </a>
                   </li>
                   <li>
-                    <a href="../final_admin/afaq_add_form.php">
+                    <a href="afaq_add_form.php">
                       <i class="fas fa-table"></i>
                       <p>Add FAQs</p>
                     </a>
@@ -128,7 +128,7 @@
 
             <!-- <li class="nav-item">
               <a data-bs-toggle="collapse">
-              <a href="http://localhost/CyberCafe-Fleming-prototype/php_views/final_admin/auser_table.php">
+              <a href="auser_table.php">
                 <i class="far fa-chart-bar"></i>
                 <p>Users Information</p>
               </a>
@@ -136,14 +136,14 @@
 
             <li class="nav-item">
               <a data-bs-toggle="collapse">
-              <a href="http://localhost/CyberCafe-Fleming-prototype/php_views/final_admin/auser_info_add_and_edit.php">
+              <a href="auser_info_add_and_edit.php">
                 <i class="far fa-chart-bar"></i>
                 <p>Users Add/Edit</p>
               </a>
             </li> -->
 
             <li class="nav-item">
-              <a href="../final_admin/auser_table.php">
+              <a href="auser_table.php">
                 <i class="far fa-chart-bar"></i>
                 <p>User Management</p>
                 
@@ -151,19 +151,19 @@
               <div class="collapse" id="charts">
                 <ul class="nav nav-collapse">
                   <li>
-                    <a href="../final_admin/auser_table.php">
+                    <a href="auser_table.php">
                       <i class="far fa-chart-bar"></i>
                       <p>Users Information</p>
                     </a>
                   </li>
                   <li>
-                    <a href="../final_admin/add_user.php">
+                    <a href="add_user.php">
                       <i class="fas fa-layer-group"></i>
                       <p>Add User</p>
                     </a>
                   </li>
                   <li>
-                    <a href="../final_admin/auser_info_add_and_edit.php">
+                    <a href="auser_info_add_and_edit.php">
                       <i class="far fa-chart-bar"></i>
                       <p>Users Add/Edit</p>
                     </a>
@@ -173,7 +173,7 @@
             </li>
 
             <li class="nav-item">
-                <a href="../final_admin/support.php">
+                <a href="support.php">
                   <i class="far fa-question-circle"></i>
                   <p>Support</p>
                 </a>
@@ -190,7 +190,7 @@
         <div class="main-header-logo">
           <!-- Logo Header -->
           <div class="logo-header" data-background-color="dark">
-            <a href="../index.html" class="logo">
+            <a href="adashboard.php" class="logo">
               <img src="../../assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" />
             </a>
             <div class="nav-toggle">
@@ -463,7 +463,7 @@
                       <div class="dropdown-divider"></div>
                       <a class="dropdown-item" href="#">Account Setting</a>
                       <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="http://localhost/CCFBackup/captive_portal/captiveportal.php">Logout</a>
+                      <a class="dropdown-item" href="#">Logout</a>
                     </li>
                   </div>
                 </ul>

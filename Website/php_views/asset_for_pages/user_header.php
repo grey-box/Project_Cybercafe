@@ -1,9 +1,3 @@
-<?php
-declare(strict_types=1);
-
-require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,10 +5,10 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title><?php echo isset($pageTitle) ? $pageTitle : 'Default Title'; ?></title>
   <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
-  <link rel="icon" href="<?= WEB_BASE ?>/assets/greybox-logo.png" type="image/x-icon" />
+  <link rel="icon" href="https://www.grey-box.ca/wp-content/uploads/2018/05/logoGREY-BOX.jpg" type="image/x-icon" />
 
   <!-- Fonts and icons -->
-  <script src="<?= WEB_BASE ?>/assets/js/plugin/webfont/webfont.min.js"></script>
+  <script src="../../assets/js/plugin/webfont/webfont.min.js"></script>
   <script>
     WebFont.load({
       google: { families: ["Public Sans:300,400,500,600,700"] },
@@ -25,7 +19,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
           "Font Awesome 5 Brands",
           "simple-line-icons",
         ],
-        urls: ["<?= WEB_BASE ?>/assets/css/fonts.min.css"],
+        urls: ["../../assets/css/fonts.min.css"],
       },
       active: function () {
         sessionStorage.fonts = true;
@@ -34,13 +28,13 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
   </script>
 
   <!-- CSS Files -->
-  <link rel="stylesheet" href="<?= WEB_BASE ?>/assets/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="<?= WEB_BASE ?>/assets/css/plugins.min.css" />
-  <link rel="stylesheet" href="<?= WEB_BASE ?>/assets/css/kaiadmin.min.css" />
+  <link rel="stylesheet" href="../../assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="../../assets/css/plugins.min.css" />
+  <link rel="stylesheet" href="../../assets/css/kaiadmin.min.css" />
 
   <!-- CSS Just for demo purpose, don't include it in your project -->
-  <link rel="stylesheet" href="<?= WEB_BASE ?>/assets/css/demo.css" />
-  <link rel="stylesheet" href="<?= WEB_BASE ?>/assets/css/owner/feature_toggle.css" />
+  <link rel="stylesheet" href="../../assets/css/demo.css" />
+  <link rel="stylesheet" href="../../assets/css/owner/feature_toggle.css" />
 </head>
 
 <body>
@@ -50,8 +44,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
       <div class="sidebar-logo">
         <!-- Logo Header -->
         <div class="logo-header" data-background-color="dark">
-          <a href="https://www.grey-box.ca/project-cybercafe/" class="logo">
-            <img src="<?= WEB_BASE ?>/assets/greybox-logo.png" alt="navbar brand"
+          <a href="../index.html" class="logo">
+            <img src="https://www.grey-box.ca/wp-content/uploads/2018/05/logoGREY-BOX.jpg" alt="navbar brand"
               class="navbar-brand" height="50" />
           </a>
           <div class="nav-toggle">
@@ -72,7 +66,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
         <div class="sidebar-content">
           <ul class="nav nav-secondary">
             <li class="nav-item">
-              <a href="<?= WEB_BASE ?>/php_views/user/user_profile.php" class="collapsed" aria-expanded="false">
+              <a href="http://localhost/CCFBackup/php_views/user/user_profile.php" class="collapsed" aria-expanded="false">
                 <i class="fas fa-home"></i>
                 <p>Home Page</p>
               </a>
@@ -84,21 +78,21 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
             </li>
 
             <li class="nav-item">
-              <a href="<?= WEB_BASE ?>/php_views/user/faqpage.php">
+              <a href="http://localhost/CCFBackup/php_views/user/faqpage.php">
                 <i class="fas fa-table"></i>
                 <p>FAQs</p>
               </a>
             </li>
 
             <li class="nav-item">
-              <a href="<?= WEB_BASE ?>/php_views/user/instructionspage.php">
+              <a href="http://localhost/CCFBackup/php_views/user/instructionspage.php">
                 <i class="far fa-chart-bar"></i>
                 <p>Instructions</p>
               </a>
             </li>
 
             <li class="nav-item">
-                <a href="<?= WEB_BASE ?>/php_views/user/user_support.php">
+                <a href="http://localhost/CCFBackup/php_views/user/user_support.php">
                   <i class="far fa-question-circle"></i>
                   <p>Support</p>
                 </a>
@@ -183,8 +177,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
         <div class="main-header-logo">
           <!-- Logo Header -->
           <div class="logo-header" data-background-color="dark">
-            <a href="https://www.grey-box.ca/project-cybercafe/" class="logo">
-              <img src="<?= WEB_BASE ?>/assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" />
+            <a href="../index.html" class="logo">
+              <img src="../../assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" />
             </a>
             <div class="nav-toggle">
               <button class="btn btn-toggle toggle-sidebar">
@@ -309,7 +303,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
                   <li>
                     <div class="notif-scroll scrollbar-outer">
                       <div class="notif-center">
-                        <a href="<?= WEB_BASE ?>/php_views/user/user_notification.php">
+                        <a href="#">
                           <div class="notif-icon notif-primary">
                             <i class="fa fa-user-plus"></i>
                           </div>
@@ -318,7 +312,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
                             <span class="time">5 minutes ago</span>
                           </div>
                         </a>
-                        <a href="<?= WEB_BASE ?>/php_views/user/user_notification.php">
+                        <a href="#">
                           <div class="notif-icon notif-success">
                             <i class="fa fa-comment"></i>
                           </div>
@@ -329,7 +323,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
                             <span class="time">12 minutes ago</span>
                           </div>
                         </a>
-                        <a href="<?= WEB_BASE ?>/php_views/user/user_notification.php">
+                        <a href="#">
                           <div class="notif-icon notif-success">
                             <i class="fa fa-comment"></i>
                           </div>
@@ -353,7 +347,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
                     </div>
                   </li>
                   <li>
-                    <a class="see-all" href="<?= WEB_BASE ?>/php_views/user/user_notification.php">See all notifications<i class="fa fa-angle-right"></i>
+                    <a class="see-all" href="javascript:void(0);">See all notifications<i class="fa fa-angle-right"></i>
                     </a>
                   </li>
                 </ul>
@@ -427,7 +421,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
               <li class="nav-item topbar-user dropdown hidden-caret">
                 <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
                   <div class="avatar-sm">
-                    <img src="<?= WEB_BASE ?>/assets/img/profile.jpg" alt="..." class="avatar-img rounded-circle" />
+                    <img src="../../assets/img/profile.jpg" alt="..." class="avatar-img rounded-circle" />
                   </div>
                   <span class="profile-username">
                     <span class="op-7">Hi,</span>
@@ -439,24 +433,24 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
                     <li>
                       <div class="user-box">
                         <div class="avatar-lg">
-                          <img src="<?= WEB_BASE ?>/assets/img/profile.jpg" alt="image profile" class="avatar-img rounded" />
+                          <img src="../../assets/img/profile.jpg" alt="image profile" class="avatar-img rounded" />
                         </div>
                         <div class="u-text">
                           <h4>Aniket</h4>
                           <p class="text-muted">Aniket@yahoo.com</p>
-                          <a href="<?= WEB_BASE ?>/php_views/user/user_profile.php" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
+                          <a href="profile.html" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
                         </div>
                       </div>
                     </li>
                     <li>
                       <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="<?= WEB_BASE ?>/php_views/user/user_profile.php">My Profile</a>
+                      <a class="dropdown-item" href="#">My Profile</a>
                       <!-- <a class="dropdown-item" href="#">My Balance</a> -->
                       <a class="dropdown-item" href="#">Inbox</a>
                       <div class="dropdown-divider"></div>
                       <a class="dropdown-item" href="#">Account Setting</a>
                       <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="<?= WEB_BASE ?>/php_views/user/user_login.php">Logout</a>
+                      <a class="dropdown-item" href="http://localhost/CCFBackup/captive_portal/captiveportal.php">Logout</a>
                     </li>
                   </div>
                 </ul>

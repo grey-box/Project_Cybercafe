@@ -7,7 +7,6 @@ $pageTitle = "A - FAQ Add";
 // Include the header
 include('../asset_for_pages/admin_header.php');
 
-// Sample FAQ data for demo purposes (this would come from your database in a real application)
 $faq = [
     'question' => 'What is the CyberCafe service?',
     'answer' => 'CyberCafe provides a network for users to access the internet through Wi-Fi in public spaces. Users must register to access the internet.'

@@ -109,7 +109,7 @@ $deviceStatus = [
                 </div>
                 <div class="card-body">
                     <canvas id="devicesChart"></canvas>
-                    <div class="mt-3">Device Connected: 5</div>
+                    <div class="mt-3">Device Connected: <span id="totalDevices">5</span></div>
                 </div>
             </div>
         </div>
