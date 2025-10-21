@@ -97,7 +97,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/php_views/asset_for_pages/owner_header.php
 
 <?php
 // Include the footer
-include('../asset_for_pages/footer.php');
+include $_SERVER['DOCUMENT_ROOT'] .'/php_views/asset_for_pages/footer.php';
 ?>
 <script>
       $(document).ready(function () {

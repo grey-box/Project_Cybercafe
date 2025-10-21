@@ -88,4 +88,4 @@ include $_SERVER['DOCUMENT_ROOT'] . '/php_views/asset_for_pages/owner_header.php
     }
 </style>
 
-<?php include('../asset_for_pages/footer.php'); ?>
+<?php include $_SERVER['DOCUMENT_ROOT'] .'/php_views/asset_for_pages/footer.php'; ?>

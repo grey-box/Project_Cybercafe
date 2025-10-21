@@ -123,4 +123,7 @@ $queries = [
     }
 </style>
 
-<?php include('../asset_for_pages/footer.php'); ?>
+<?php
+// Include the footer
+include $_SERVER['DOCUMENT_ROOT'] .'/php_views/asset_for_pages/footer.php';
+?>
