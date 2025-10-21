@@ -28,7 +28,7 @@ $devices = [
             <i class="icon-arrow-right"></i>
         </li>
         <li class="nav-item">
-            <a href="user_table.php">User</a>
+            <a href="<?php echo $adminBase; ?>/auser_table.php">User</a>
         </li>
         <li class="separator">
             <i class="icon-arrow-right"></i>

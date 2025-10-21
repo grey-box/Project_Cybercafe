@@ -1,0 +1,1384 @@
+[Tue Oct 21 16:36:13 2025] PHP 8.4.13 Development Server (http://localhost:8000) started
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56481 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56481 [200]: GET /php_views/final_admin/adashboard.php
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56481 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56484 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56485 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56484 [200]: GET /assets/js/plugin/webfont/webfont.min.js
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56486 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56484 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56487 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56488 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56489 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56485 [200]: GET /assets/css/bootstrap.min.css
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56486 [200]: GET /assets/css/plugins.min.css
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56487 [200]: GET /assets/css/kaiadmin.min.css
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56485 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56488 [200]: GET /assets/css/demo.css
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56489 [200]: GET /assets/css/owner/feature_toggle.css
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56486 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56487 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56488 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56489 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56490 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56491 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56490 [200]: GET /assets/js/core/jquery-3.7.1.min.js
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56492 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56490 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56492 [200]: GET /assets/js/core/bootstrap.min.js
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56492 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56493 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56491 [200]: GET /assets/js/core/popper.min.js
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56491 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56494 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56493 [200]: GET /assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56493 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56494 [200]: GET /assets/js/plugin/datatables/datatables.min.js
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56494 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56495 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56496 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56495 [200]: GET /assets/js/kaiadmin.min.js
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56495 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56497 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56496 [200]: GET /assets/img/kaiadmin/logo_light.svg
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56497 [200]: GET /assets/js/setting-demo2.js
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56496 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56497 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56498 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56499 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56498 [200]: GET /assets/img/jm_denis.jpg
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56498 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56499 [200]: GET /assets/js/plugin/owl-carousel/owl.carousel.min.js
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56499 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56500 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56501 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56500 [404]: GET /assets/js/plugin/magnific-popup/jquery.magnific-popup.min.js - No such file or directory
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56500 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56501 [200]: GET /assets/img/profile.jpg
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56501 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56502 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56502 [200]: GET /assets/js/plugin/moment/moment.min.js
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56502 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56503 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56503 [200]: GET /assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56503 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56504 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56504 [200]: GET /assets/js/plugin/sweetalert/sweetalert.min.js
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56504 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56506 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56506 [200]: GET /assets/js/plugin/select2/select2.full.min.js
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56506 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56507 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56507 [200]: GET /assets/js/plugin/dropzone/dropzone.min.js
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56507 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56509 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56509 [200]: GET /assets/js/plugin/fullcalendar/fullcalendar.min.js
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56509 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56510 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56510 [200]: GET /assets/js/plugin/gmaps/gmaps.js
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56510 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56512 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56512 [404]: GET /assets/js/plugin/jquery-sparkline/jquery.sparkline.min.js - No such file or directory
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56512 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56514 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56514 [200]: GET /assets/js/plugin/sortable/sortable.min.js
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56514 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56516 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56516 [200]: GET /assets/js/plugin/sticky-sidebar/sticky-sidebar.min.js
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56516 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56517 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56517 [404]: GET /assets/js/plugin/circles/circles.min.js - No such file or directory
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56517 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56518 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56518 [404]: GET /assets/js/plugin/chartjs/chart.min.js - No such file or directory
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56518 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56519 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56519 [200]: GET /assets/js/plugin/jsvectormap/jsvectormap.min.js
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56519 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56521 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56521 [200]: GET /assets/js/plugin/jsvectormap/world.js
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56521 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56522 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56522 [200]: GET /assets/js/owner/feature_toggle.js
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56522 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56524 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56524 [200]: GET /assets/js/owner/faq_table.js
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56524 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56525 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56525 [200]: GET /assets/js/owner/faq_add_form.js
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56525 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56527 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56527 [200]: GET /assets/js/owner/instructions_add_edit_form.js
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56527 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56528 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56528 [200]: GET /assets/js/owner/instructions.js
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56528 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56529 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56529 [200]: GET /assets/js/owner/report.js
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56529 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56531 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56531 [200]: GET /assets/js/owner/user_table.js
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56531 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56532 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56532 [200]: GET /assets/js/owner/view_user.js
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56532 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56534 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56534 [200]: GET /assets/js/owner/ocharts_values.js
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56534 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56536 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56536 [200]: GET /assets/js/admin/choose_layout.js
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56536 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56538 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56538 [200]: GET /assets/js/admin/charts.js
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56538 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56539 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56539 [200]: GET /assets/js/admin/main_page_with_charts_and_tables.js
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56539 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56540 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56540 [200]: GET /assets/js/admin/table_samples.js
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56540 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56542 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56542 [200]: GET /assets/css/fonts.min.css
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56542 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56544 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56545 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56544 [200]: GET /assets/fonts/fontawesome/fa-solid-900.woff2
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56546 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56545 [200]: GET /assets/fonts/fontawesome/fa-regular-400.woff2
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56547 Accepted
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56546 [200]: GET /assets/fonts/fontawesome/fa-brands-400.woff2
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56544 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56547 [200]: GET /assets/fonts/simple-line-icons/Simple-Line-Icons.woff2?v=2.4.0
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56545 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56546 Closing
+[Tue Oct 21 16:36:15 2025] 127.0.0.1:56547 Closing
+[Tue Oct 21 16:36:16 2025] 127.0.0.1:56549 Accepted
+[Tue Oct 21 16:36:16 2025] 127.0.0.1:56549 [404]: GET /apple-touch-icon-precomposed.png - No such file or directory
+[Tue Oct 21 16:36:16 2025] 127.0.0.1:56549 Closing
+[Tue Oct 21 16:36:16 2025] 127.0.0.1:56551 Accepted
+[Tue Oct 21 16:36:16 2025] 127.0.0.1:56551 [404]: GET /apple-touch-icon.png - No such file or directory
+[Tue Oct 21 16:36:16 2025] 127.0.0.1:56551 Closing
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56553 Accepted
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56553 [200]: GET /php_views/final_admin/add_user.php
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56553 Closing
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56555 Accepted
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56555 [200]: GET /assets/js/plugin/webfont/webfont.min.js
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56555 Closing
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56556 Accepted
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56556 [200]: GET /assets/css/bootstrap.min.css
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56556 Closing
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56557 Accepted
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56557 [200]: GET /assets/css/plugins.min.css
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56557 Closing
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56558 Accepted
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56558 [200]: GET /assets/css/kaiadmin.min.css
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56558 Closing
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56559 Accepted
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56559 [200]: GET /assets/css/demo.css
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56559 Closing
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56561 Accepted
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56561 [200]: GET /assets/css/owner/feature_toggle.css
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56561 Closing
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56563 Accepted
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56563 [200]: GET /assets/img/kaiadmin/logo_light.svg
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56563 Closing
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56564 Accepted
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56564 [200]: GET /assets/img/jm_denis.jpg
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56564 Closing
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56565 Accepted
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56565 [200]: GET /assets/img/profile.jpg
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56565 Closing
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56566 Accepted
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56566 [200]: GET /assets/js/core/jquery-3.7.1.min.js
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56566 Closing
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56567 Accepted
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56568 Accepted
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56567 [200]: GET /assets/js/core/popper.min.js
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56567 Closing
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56569 Accepted
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56568 [200]: GET /assets/js/core/bootstrap.min.js
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56568 Closing
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56569 [200]: GET /assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56569 Closing
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56570 Accepted
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56570 [200]: GET /assets/js/plugin/datatables/datatables.min.js
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56570 Closing
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56571 Accepted
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56571 [200]: GET /assets/js/kaiadmin.min.js
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56571 Closing
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56572 Accepted
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56572 [200]: GET /assets/js/setting-demo2.js
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56572 Closing
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56573 Accepted
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56573 [200]: GET /assets/js/plugin/owl-carousel/owl.carousel.min.js
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56573 Closing
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56575 Accepted
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56575 [404]: GET /assets/js/plugin/magnific-popup/jquery.magnific-popup.min.js - No such file or directory
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56575 Closing
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56576 Accepted
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56576 [200]: GET /assets/js/plugin/moment/moment.min.js
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56576 Closing
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56577 Accepted
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56577 [200]: GET /assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56577 Closing
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56578 Accepted
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56578 [200]: GET /assets/js/plugin/sweetalert/sweetalert.min.js
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56578 Closing
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56579 Accepted
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56579 [200]: GET /assets/js/plugin/select2/select2.full.min.js
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56579 Closing
+[Tue Oct 21 16:36:19 2025] 127.0.0.1:56580 Accepted
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56580 [200]: GET /assets/js/plugin/dropzone/dropzone.min.js
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56580 Closing
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56581 Accepted
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56581 [200]: GET /assets/js/plugin/fullcalendar/fullcalendar.min.js
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56581 Closing
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56582 Accepted
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56582 [200]: GET /assets/js/plugin/gmaps/gmaps.js
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56582 Closing
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56584 Accepted
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56584 [404]: GET /assets/js/plugin/jquery-sparkline/jquery.sparkline.min.js - No such file or directory
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56584 Closing
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56586 Accepted
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56586 [200]: GET /assets/js/plugin/sortable/sortable.min.js
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56586 Closing
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56587 Accepted
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56587 [200]: GET /assets/js/plugin/sticky-sidebar/sticky-sidebar.min.js
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56587 Closing
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56589 Accepted
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56589 [404]: GET /assets/js/plugin/circles/circles.min.js - No such file or directory
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56589 Closing
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56590 Accepted
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56590 [404]: GET /assets/js/plugin/chartjs/chart.min.js - No such file or directory
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56590 Closing
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56592 Accepted
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56592 [200]: GET /assets/js/plugin/jsvectormap/jsvectormap.min.js
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56592 Closing
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56594 Accepted
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56594 [200]: GET /assets/js/plugin/jsvectormap/world.js
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56594 Closing
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56596 Accepted
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56596 [200]: GET /assets/js/owner/feature_toggle.js
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56596 Closing
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56597 Accepted
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56597 [200]: GET /assets/js/owner/faq_table.js
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56597 Closing
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56599 Accepted
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56599 [200]: GET /assets/js/owner/faq_add_form.js
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56599 Closing
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56600 Accepted
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56600 [200]: GET /assets/js/owner/instructions_add_edit_form.js
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56600 Closing
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56602 Accepted
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56602 [200]: GET /assets/js/owner/instructions.js
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56602 Closing
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56604 Accepted
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56604 [200]: GET /assets/js/owner/report.js
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56604 Closing
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56606 Accepted
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56606 [200]: GET /assets/js/owner/user_table.js
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56606 Closing
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56608 Accepted
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56608 [200]: GET /assets/js/owner/view_user.js
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56608 Closing
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56610 Accepted
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56610 [200]: GET /assets/js/owner/ocharts_values.js
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56610 Closing
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56612 Accepted
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56612 [200]: GET /assets/js/admin/choose_layout.js
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56612 Closing
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56614 Accepted
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56614 [200]: GET /assets/js/admin/charts.js
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56614 Closing
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56615 Accepted
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56615 [200]: GET /assets/js/admin/main_page_with_charts_and_tables.js
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56615 Closing
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56617 Accepted
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56617 [200]: GET /assets/js/admin/table_samples.js
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56617 Closing
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56619 Accepted
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56619 [200]: GET /assets/css/fonts.min.css
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56619 Closing
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56621 Accepted
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56621 [200]: GET /assets/fonts/fontawesome/fa-solid-900.woff2
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56621 Closing
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56622 Accepted
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56622 [200]: GET /assets/fonts/simple-line-icons/Simple-Line-Icons.woff2?v=2.4.0
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56622 Closing
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56624 Accepted
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56624 [200]: GET /assets/fonts/fontawesome/fa-regular-400.woff2
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56624 Closing
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56625 Accepted
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56625 [200]: GET /assets/fonts/fontawesome/fa-brands-400.woff2
+[Tue Oct 21 16:36:20 2025] 127.0.0.1:56625 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56627 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56627 [200]: GET /php_views/final_admin/bandwidth_usage.php
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56627 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56629 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56629 [200]: GET /assets/js/plugin/webfont/webfont.min.js
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56629 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56630 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56630 [200]: GET /assets/css/bootstrap.min.css
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56630 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56631 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56631 [200]: GET /assets/css/plugins.min.css
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56631 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56632 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56632 [200]: GET /assets/css/kaiadmin.min.css
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56632 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56633 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56633 [200]: GET /assets/css/demo.css
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56633 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56634 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56634 [200]: GET /assets/css/owner/feature_toggle.css
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56634 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56636 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56636 [200]: GET /assets/img/kaiadmin/logo_light.svg
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56636 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56637 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56637 [200]: GET /assets/img/jm_denis.jpg
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56637 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56638 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56638 [200]: GET /assets/img/profile.jpg
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56638 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56639 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56639 [200]: GET /assets/js/core/jquery-3.7.1.min.js
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56639 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56640 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56640 [200]: GET /assets/js/core/popper.min.js
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56641 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56641 [200]: GET /assets/js/core/bootstrap.min.js
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56640 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56642 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56641 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56643 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56642 [200]: GET /assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56643 [200]: GET /assets/js/plugin/datatables/datatables.min.js
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56642 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56643 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56644 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56645 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56644 [200]: GET /assets/js/kaiadmin.min.js
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56645 [200]: GET /assets/js/setting-demo2.js
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56644 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56645 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56646 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56646 [200]: GET /assets/js/plugin/owl-carousel/owl.carousel.min.js
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56646 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56647 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56647 [404]: GET /assets/js/plugin/magnific-popup/jquery.magnific-popup.min.js - No such file or directory
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56647 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56649 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56649 [200]: GET /assets/js/plugin/moment/moment.min.js
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56649 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56650 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56650 [200]: GET /assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56650 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56651 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56651 [200]: GET /assets/js/plugin/sweetalert/sweetalert.min.js
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56651 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56652 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56652 [200]: GET /assets/js/plugin/select2/select2.full.min.js
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56652 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56653 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56653 [200]: GET /assets/js/plugin/dropzone/dropzone.min.js
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56653 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56655 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56655 [200]: GET /assets/js/plugin/fullcalendar/fullcalendar.min.js
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56655 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56656 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56656 [200]: GET /assets/js/plugin/gmaps/gmaps.js
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56656 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56658 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56658 [404]: GET /assets/js/plugin/jquery-sparkline/jquery.sparkline.min.js - No such file or directory
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56658 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56660 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56660 [200]: GET /assets/js/plugin/sortable/sortable.min.js
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56660 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56661 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56661 [200]: GET /assets/js/plugin/sticky-sidebar/sticky-sidebar.min.js
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56661 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56663 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56663 [404]: GET /assets/js/plugin/circles/circles.min.js - No such file or directory
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56663 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56664 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56664 [404]: GET /assets/js/plugin/chartjs/chart.min.js - No such file or directory
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56664 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56666 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56666 [200]: GET /assets/js/plugin/jsvectormap/jsvectormap.min.js
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56666 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56667 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56667 [200]: GET /assets/js/plugin/jsvectormap/world.js
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56667 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56669 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56669 [200]: GET /assets/js/owner/feature_toggle.js
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56669 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56670 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56670 [200]: GET /assets/js/owner/faq_table.js
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56670 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56672 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56672 [200]: GET /assets/js/owner/faq_add_form.js
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56672 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56673 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56673 [200]: GET /assets/js/owner/instructions_add_edit_form.js
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56673 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56675 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56675 [200]: GET /assets/js/owner/instructions.js
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56675 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56677 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56677 [200]: GET /assets/js/owner/report.js
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56677 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56679 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56679 [200]: GET /assets/js/owner/user_table.js
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56679 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56681 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56681 [200]: GET /assets/js/owner/view_user.js
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56681 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56683 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56683 [200]: GET /assets/js/owner/ocharts_values.js
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56683 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56684 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56684 [200]: GET /assets/js/admin/choose_layout.js
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56684 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56685 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56685 [200]: GET /assets/js/admin/charts.js
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56685 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56687 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56687 [200]: GET /assets/js/admin/main_page_with_charts_and_tables.js
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56687 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56688 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56688 [200]: GET /assets/js/admin/table_samples.js
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56688 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56690 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56690 [200]: GET /assets/css/fonts.min.css
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56690 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56692 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56692 [200]: GET /assets/fonts/fontawesome/fa-solid-900.woff2
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56692 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56693 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56693 [200]: GET /assets/fonts/fontawesome/fa-regular-400.woff2
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56693 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56694 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56694 [200]: GET /assets/fonts/simple-line-icons/Simple-Line-Icons.woff2?v=2.4.0
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56694 Closing
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56696 Accepted
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56696 [200]: GET /assets/fonts/fontawesome/fa-brands-400.woff2
+[Tue Oct 21 16:36:22 2025] 127.0.0.1:56696 Closing
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56698 Accepted
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56698 [200]: GET /php_views/final_admin/afaq_table.php
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56698 Closing
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56700 Accepted
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56700 [200]: GET /assets/js/plugin/webfont/webfont.min.js
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56700 Closing
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56701 Accepted
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56701 [200]: GET /assets/css/bootstrap.min.css
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56701 Closing
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56702 Accepted
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56702 [200]: GET /assets/css/plugins.min.css
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56702 Closing
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56703 Accepted
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56703 [200]: GET /assets/css/kaiadmin.min.css
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56703 Closing
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56704 Accepted
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56704 [200]: GET /assets/css/demo.css
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56704 Closing
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56705 Accepted
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56705 [200]: GET /assets/css/owner/feature_toggle.css
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56705 Closing
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56707 Accepted
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56707 [200]: GET /assets/img/kaiadmin/logo_light.svg
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56708 Accepted
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56707 Closing
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56708 [200]: GET /assets/img/jm_denis.jpg
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56708 Closing
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56709 Accepted
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56709 [200]: GET /assets/img/profile.jpg
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56709 Closing
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56711 Accepted
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56711 [200]: GET /assets/js/core/jquery-3.7.1.min.js
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56711 Closing
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56712 Accepted
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56712 [200]: GET /assets/js/core/popper.min.js
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56712 Closing
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56713 Accepted
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56713 [200]: GET /assets/js/core/bootstrap.min.js
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56713 Closing
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56715 Accepted
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56715 [200]: GET /assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56715 Closing
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56716 Accepted
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56716 [200]: GET /assets/js/plugin/datatables/datatables.min.js
+[Tue Oct 21 16:36:26 2025] 127.0.0.1:56716 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56718 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56718 [200]: GET /assets/js/kaiadmin.min.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56718 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56719 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56719 [200]: GET /assets/js/setting-demo2.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56719 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56721 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56721 [200]: GET /assets/js/plugin/owl-carousel/owl.carousel.min.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56721 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56722 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56722 [404]: GET /assets/js/plugin/magnific-popup/jquery.magnific-popup.min.js - No such file or directory
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56722 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56724 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56724 [200]: GET /assets/js/plugin/moment/moment.min.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56724 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56725 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56725 [200]: GET /assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56725 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56727 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56727 [200]: GET /assets/js/plugin/sweetalert/sweetalert.min.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56727 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56728 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56728 [200]: GET /assets/js/plugin/select2/select2.full.min.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56728 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56730 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56730 [200]: GET /assets/js/plugin/dropzone/dropzone.min.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56730 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56732 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56732 [200]: GET /assets/js/plugin/fullcalendar/fullcalendar.min.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56732 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56733 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56733 [200]: GET /assets/js/plugin/gmaps/gmaps.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56733 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56734 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56734 [404]: GET /assets/js/plugin/jquery-sparkline/jquery.sparkline.min.js - No such file or directory
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56734 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56735 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56735 [200]: GET /assets/js/plugin/sortable/sortable.min.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56735 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56737 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56737 [200]: GET /assets/js/plugin/sticky-sidebar/sticky-sidebar.min.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56737 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56738 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56738 [404]: GET /assets/js/plugin/circles/circles.min.js - No such file or directory
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56738 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56740 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56740 [404]: GET /assets/js/plugin/chartjs/chart.min.js - No such file or directory
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56740 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56742 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56742 [200]: GET /assets/js/plugin/jsvectormap/jsvectormap.min.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56742 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56744 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56744 [200]: GET /assets/js/plugin/jsvectormap/world.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56744 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56745 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56745 [200]: GET /assets/js/owner/feature_toggle.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56745 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56747 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56747 [200]: GET /assets/js/owner/faq_table.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56747 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56748 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56748 [200]: GET /assets/js/owner/faq_add_form.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56748 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56752 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56752 [200]: GET /assets/js/owner/instructions_add_edit_form.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56752 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56753 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56753 [200]: GET /assets/js/owner/instructions.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56753 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56755 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56755 [200]: GET /assets/js/owner/report.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56755 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56757 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56757 [200]: GET /assets/js/owner/user_table.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56757 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56758 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56758 [200]: GET /assets/js/owner/view_user.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56758 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56760 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56760 [200]: GET /assets/js/owner/ocharts_values.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56760 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56761 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56761 [200]: GET /assets/js/admin/choose_layout.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56761 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56763 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56763 [200]: GET /assets/js/admin/charts.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56763 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56765 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56765 [200]: GET /assets/js/admin/main_page_with_charts_and_tables.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56765 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56767 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56767 [200]: GET /assets/js/admin/table_samples.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56767 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56769 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56769 [200]: GET /assets/css/fonts.min.css
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56769 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56771 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56771 [200]: GET /assets/fonts/fontawesome/fa-solid-900.woff2
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56771 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56772 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56772 [200]: GET /assets/fonts/fontawesome/fa-regular-400.woff2
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56772 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56773 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56773 [200]: GET /assets/fonts/simple-line-icons/Simple-Line-Icons.woff2?v=2.4.0
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56773 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56775 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56775 [200]: GET /assets/fonts/fontawesome/fa-brands-400.woff2
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56775 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56777 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56777 [200]: GET /php_views/final_admin/support.php
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56777 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56779 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56779 [200]: GET /assets/js/plugin/webfont/webfont.min.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56779 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56780 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56780 [200]: GET /assets/css/bootstrap.min.css
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56780 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56781 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56781 [200]: GET /assets/css/plugins.min.css
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56781 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56782 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56782 [200]: GET /assets/css/kaiadmin.min.css
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56782 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56783 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56783 [200]: GET /assets/css/demo.css
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56783 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56784 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56785 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56784 [200]: GET /assets/css/owner/feature_toggle.css
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56784 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56785 [200]: GET /assets/img/kaiadmin/logo_light.svg
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56785 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56786 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56786 [200]: GET /assets/img/jm_denis.jpg
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56786 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56787 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56787 [200]: GET /assets/img/profile.jpg
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56787 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56789 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56789 [200]: GET /assets/js/core/jquery-3.7.1.min.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56789 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56790 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56790 [200]: GET /assets/js/core/popper.min.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56790 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56791 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56791 [200]: GET /assets/js/core/bootstrap.min.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56791 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56792 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56792 [200]: GET /assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56792 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56793 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56793 [200]: GET /assets/js/plugin/datatables/datatables.min.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56793 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56794 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56794 [200]: GET /assets/js/kaiadmin.min.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56794 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56795 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56795 [200]: GET /assets/js/setting-demo2.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56795 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56796 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56796 [200]: GET /assets/js/plugin/owl-carousel/owl.carousel.min.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56796 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56797 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56797 [404]: GET /assets/js/plugin/magnific-popup/jquery.magnific-popup.min.js - No such file or directory
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56797 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56798 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56798 [200]: GET /assets/js/plugin/moment/moment.min.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56798 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56799 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56799 [200]: GET /assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56799 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56801 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56801 [200]: GET /assets/js/plugin/sweetalert/sweetalert.min.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56801 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56802 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56802 [200]: GET /assets/js/plugin/select2/select2.full.min.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56802 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56804 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56804 [200]: GET /assets/js/plugin/dropzone/dropzone.min.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56804 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56806 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56806 [200]: GET /assets/js/plugin/fullcalendar/fullcalendar.min.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56806 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56807 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56807 [200]: GET /assets/js/plugin/gmaps/gmaps.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56807 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56809 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56809 [404]: GET /assets/js/plugin/jquery-sparkline/jquery.sparkline.min.js - No such file or directory
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56809 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56810 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56810 [200]: GET /assets/js/plugin/sortable/sortable.min.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56810 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56811 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56811 [200]: GET /assets/js/plugin/sticky-sidebar/sticky-sidebar.min.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56811 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56813 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56813 [404]: GET /assets/js/plugin/circles/circles.min.js - No such file or directory
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56813 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56815 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56815 [404]: GET /assets/js/plugin/chartjs/chart.min.js - No such file or directory
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56815 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56817 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56817 [200]: GET /assets/js/plugin/jsvectormap/jsvectormap.min.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56817 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56818 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56818 [200]: GET /assets/js/plugin/jsvectormap/world.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56818 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56820 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56820 [200]: GET /assets/js/owner/feature_toggle.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56820 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56821 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56821 [200]: GET /assets/js/owner/faq_table.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56821 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56822 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56822 [200]: GET /assets/js/owner/faq_add_form.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56822 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56823 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56823 [200]: GET /assets/js/owner/instructions_add_edit_form.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56823 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56825 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56825 [200]: GET /assets/js/owner/instructions.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56825 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56826 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56826 [200]: GET /assets/js/owner/report.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56826 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56828 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56828 [200]: GET /assets/js/owner/user_table.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56828 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56829 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56829 [200]: GET /assets/js/owner/view_user.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56829 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56831 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56831 [200]: GET /assets/js/owner/ocharts_values.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56831 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56833 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56833 [200]: GET /assets/js/admin/choose_layout.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56833 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56835 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56835 [200]: GET /assets/js/admin/charts.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56835 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56836 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56836 [200]: GET /assets/js/admin/main_page_with_charts_and_tables.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56836 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56837 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56837 [200]: GET /assets/js/admin/table_samples.js
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56837 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56839 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56839 [200]: GET /assets/css/fonts.min.css
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56839 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56841 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56841 [200]: GET /assets/fonts/fontawesome/fa-solid-900.woff2
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56841 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56843 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56843 [200]: GET /assets/fonts/fontawesome/fa-regular-400.woff2
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56843 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56844 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56845 Accepted
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56844 [200]: GET /assets/fonts/fontawesome/fa-brands-400.woff2
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56844 Closing
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56845 [200]: GET /assets/fonts/simple-line-icons/Simple-Line-Icons.woff2?v=2.4.0
+[Tue Oct 21 16:36:27 2025] 127.0.0.1:56845 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56847 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56847 [200]: GET /php_views/final_admin/auser_table.php
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56847 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56849 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56849 [200]: GET /assets/js/plugin/webfont/webfont.min.js
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56849 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56850 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56850 [200]: GET /assets/css/bootstrap.min.css
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56851 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56852 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56850 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56851 [200]: GET /assets/css/plugins.min.css
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56853 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56852 [200]: GET /assets/css/kaiadmin.min.css
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56851 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56852 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56853 [200]: GET /assets/css/demo.css
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56854 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56853 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56854 [200]: GET /assets/css/owner/feature_toggle.css
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56854 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56856 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56856 [200]: GET /assets/img/kaiadmin/logo_light.svg
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56856 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56857 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56857 [200]: GET /assets/img/jm_denis.jpg
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56857 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56858 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56858 [200]: GET /assets/img/profile.jpg
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56858 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56860 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56860 [200]: GET /assets/js/core/jquery-3.7.1.min.js
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56860 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56861 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56862 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56861 [200]: GET /assets/js/core/popper.min.js
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56862 [200]: GET /assets/js/core/bootstrap.min.js
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56861 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56862 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56863 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56863 [200]: GET /assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56863 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56864 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56864 [200]: GET /assets/js/plugin/datatables/datatables.min.js
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56864 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56865 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56866 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56865 [200]: GET /assets/js/kaiadmin.min.js
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56865 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56866 [200]: GET /assets/js/setting-demo2.js
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56866 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56867 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56868 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56867 [200]: GET /assets/js/plugin/owl-carousel/owl.carousel.min.js
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56867 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56868 [404]: GET /assets/js/plugin/magnific-popup/jquery.magnific-popup.min.js - No such file or directory
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56868 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56869 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56869 [200]: GET /assets/js/plugin/moment/moment.min.js
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56869 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56871 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56871 [200]: GET /assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56871 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56872 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56872 [200]: GET /assets/js/plugin/sweetalert/sweetalert.min.js
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56872 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56873 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56873 [200]: GET /assets/js/plugin/select2/select2.full.min.js
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56873 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56874 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56874 [200]: GET /assets/js/plugin/dropzone/dropzone.min.js
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56874 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56876 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56876 [200]: GET /assets/js/plugin/fullcalendar/fullcalendar.min.js
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56876 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56877 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56877 [200]: GET /assets/js/plugin/gmaps/gmaps.js
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56877 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56878 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56878 [404]: GET /assets/js/plugin/jquery-sparkline/jquery.sparkline.min.js - No such file or directory
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56878 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56880 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56880 [200]: GET /assets/js/plugin/sortable/sortable.min.js
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56881 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56881 [200]: GET /assets/js/plugin/sticky-sidebar/sticky-sidebar.min.js
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56880 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56881 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56882 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56882 [404]: GET /assets/js/plugin/circles/circles.min.js - No such file or directory
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56882 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56883 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56883 [404]: GET /assets/js/plugin/chartjs/chart.min.js - No such file or directory
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56883 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56885 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56886 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56885 [200]: GET /assets/js/plugin/jsvectormap/jsvectormap.min.js
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56887 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56886 [200]: GET /assets/js/plugin/jsvectormap/world.js
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56888 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56887 [200]: GET /assets/js/owner/feature_toggle.js
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56889 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56885 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56888 [200]: GET /assets/js/owner/faq_table.js
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56886 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56889 [200]: GET /assets/js/owner/faq_add_form.js
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56887 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56888 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56889 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56890 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56890 [200]: GET /assets/js/owner/instructions_add_edit_form.js
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56890 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56891 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56891 [200]: GET /assets/js/owner/instructions.js
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56891 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56892 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56892 [200]: GET /assets/js/owner/report.js
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56892 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56894 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56894 [200]: GET /assets/js/owner/user_table.js
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56894 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56896 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56896 [200]: GET /assets/js/owner/view_user.js
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56896 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56898 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56898 [200]: GET /assets/js/owner/ocharts_values.js
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56899 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56898 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56899 [200]: GET /assets/js/admin/choose_layout.js
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56899 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56900 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56900 [200]: GET /assets/js/admin/charts.js
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56900 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56901 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56901 [200]: GET /assets/js/admin/main_page_with_charts_and_tables.js
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56901 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56903 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56903 [200]: GET /assets/js/admin/table_samples.js
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56903 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56905 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56905 [200]: GET /assets/css/fonts.min.css
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56905 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56907 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56907 [200]: GET /assets/fonts/fontawesome/fa-solid-900.woff2
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56907 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56908 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56908 [200]: GET /assets/fonts/simple-line-icons/Simple-Line-Icons.woff2?v=2.4.0
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56908 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56910 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56910 [200]: GET /assets/fonts/fontawesome/fa-regular-400.woff2
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56910 Closing
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56911 Accepted
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56911 [200]: GET /assets/fonts/fontawesome/fa-brands-400.woff2
+[Tue Oct 21 16:36:28 2025] 127.0.0.1:56911 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56913 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56913 [200]: GET /php_views/final_admin/adashboard.php
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56913 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56915 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56915 [200]: GET /assets/js/plugin/webfont/webfont.min.js
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56915 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56916 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56916 [200]: GET /assets/css/bootstrap.min.css
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56916 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56917 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56917 [200]: GET /assets/css/plugins.min.css
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56917 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56918 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56918 [200]: GET /assets/css/kaiadmin.min.css
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56918 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56919 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56920 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56919 [200]: GET /assets/css/demo.css
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56919 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56920 [200]: GET /assets/css/owner/feature_toggle.css
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56920 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56922 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56922 [200]: GET /assets/img/kaiadmin/logo_light.svg
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56923 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56922 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56923 [200]: GET /assets/img/jm_denis.jpg
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56923 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56924 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56924 [200]: GET /assets/img/profile.jpg
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56925 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56924 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56925 [200]: GET /assets/js/core/jquery-3.7.1.min.js
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56925 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56926 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56927 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56926 [200]: GET /assets/js/core/popper.min.js
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56926 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56927 [200]: GET /assets/js/core/bootstrap.min.js
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56927 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56928 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56928 [200]: GET /assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56928 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56929 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56930 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56929 [200]: GET /assets/js/plugin/datatables/datatables.min.js
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56930 [200]: GET /assets/js/kaiadmin.min.js
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56929 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56930 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56931 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56931 [200]: GET /assets/js/setting-demo2.js
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56931 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56932 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56932 [200]: GET /assets/js/plugin/owl-carousel/owl.carousel.min.js
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56932 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56933 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56933 [404]: GET /assets/js/plugin/magnific-popup/jquery.magnific-popup.min.js - No such file or directory
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56933 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56934 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56934 [200]: GET /assets/js/plugin/moment/moment.min.js
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56934 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56936 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56936 [200]: GET /assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56936 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56937 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56937 [200]: GET /assets/js/plugin/sweetalert/sweetalert.min.js
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56937 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56939 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56939 [200]: GET /assets/js/plugin/select2/select2.full.min.js
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56939 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56940 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56940 [200]: GET /assets/js/plugin/dropzone/dropzone.min.js
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56940 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56942 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56942 [200]: GET /assets/js/plugin/fullcalendar/fullcalendar.min.js
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56942 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56943 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56943 [200]: GET /assets/js/plugin/gmaps/gmaps.js
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56943 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56945 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56945 [404]: GET /assets/js/plugin/jquery-sparkline/jquery.sparkline.min.js - No such file or directory
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56945 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56946 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56946 [200]: GET /assets/js/plugin/sortable/sortable.min.js
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56946 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56948 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56948 [200]: GET /assets/js/plugin/sticky-sidebar/sticky-sidebar.min.js
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56948 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56950 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56950 [404]: GET /assets/js/plugin/circles/circles.min.js - No such file or directory
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56950 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56952 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56952 [404]: GET /assets/js/plugin/chartjs/chart.min.js - No such file or directory
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56952 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56953 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56953 [200]: GET /assets/js/plugin/jsvectormap/jsvectormap.min.js
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56953 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56955 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56955 [200]: GET /assets/js/plugin/jsvectormap/world.js
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56955 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56956 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56956 [200]: GET /assets/js/owner/feature_toggle.js
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56956 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56957 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56957 [200]: GET /assets/js/owner/faq_table.js
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56957 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56958 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56958 [200]: GET /assets/js/owner/faq_add_form.js
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56958 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56960 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56960 [200]: GET /assets/js/owner/instructions_add_edit_form.js
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56960 Closing
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56961 Accepted
+[Tue Oct 21 16:36:29 2025] 127.0.0.1:56961 [200]: GET /assets/js/owner/instructions.js
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56961 Closing
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56963 Accepted
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56963 [200]: GET /assets/js/owner/report.js
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56963 Closing
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56965 Accepted
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56965 [200]: GET /assets/js/owner/user_table.js
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56965 Closing
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56966 Accepted
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56966 [200]: GET /assets/js/owner/view_user.js
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56966 Closing
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56968 Accepted
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56968 [200]: GET /assets/js/owner/ocharts_values.js
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56968 Closing
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56969 Accepted
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56969 [200]: GET /assets/js/admin/choose_layout.js
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56969 Closing
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56971 Accepted
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56971 [200]: GET /assets/js/admin/charts.js
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56971 Closing
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56973 Accepted
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56973 [200]: GET /assets/js/admin/main_page_with_charts_and_tables.js
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56973 Closing
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56975 Accepted
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56975 [200]: GET /assets/js/admin/table_samples.js
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56975 Closing
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56977 Accepted
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56977 [200]: GET /assets/css/fonts.min.css
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56977 Closing
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56979 Accepted
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56979 [200]: GET /assets/fonts/fontawesome/fa-solid-900.woff2
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56979 Closing
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56980 Accepted
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56980 [200]: GET /assets/fonts/fontawesome/fa-regular-400.woff2
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56980 Closing
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56982 Accepted
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56982 [200]: GET /assets/fonts/fontawesome/fa-brands-400.woff2
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56982 Closing
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56983 Accepted
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56983 [200]: GET /assets/fonts/simple-line-icons/Simple-Line-Icons.woff2?v=2.4.0
+[Tue Oct 21 16:36:30 2025] 127.0.0.1:56983 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:56985 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:56985 [200]: GET /php_views/final_admin/device_management.php
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:56985 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:56987 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:56987 [200]: GET /assets/js/plugin/webfont/webfont.min.js
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:56987 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:56988 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:56988 [200]: GET /assets/css/bootstrap.min.css
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:56988 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:56989 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:56989 [200]: GET /assets/css/plugins.min.css
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:56989 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:56990 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:56990 [200]: GET /assets/css/kaiadmin.min.css
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:56990 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:56991 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:56991 [200]: GET /assets/css/demo.css
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:56991 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:56992 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:56992 [200]: GET /assets/css/owner/feature_toggle.css
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:56992 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:56994 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:56994 [200]: GET /assets/img/kaiadmin/logo_light.svg
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:56994 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:56995 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:56995 [200]: GET /assets/img/jm_denis.jpg
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:56995 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:56997 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:56997 [200]: GET /assets/img/profile.jpg
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:56997 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:56999 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:56999 [200]: GET /assets/js/core/jquery-3.7.1.min.js
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:56999 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57000 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57001 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57000 [200]: GET /assets/js/core/popper.min.js
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57000 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57002 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57002 [200]: GET /assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57002 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57003 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57001 [200]: GET /assets/js/core/bootstrap.min.js
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57001 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57004 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57003 [200]: GET /assets/js/plugin/datatables/datatables.min.js
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57003 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57005 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57004 [200]: GET /assets/js/kaiadmin.min.js
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57004 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57006 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57005 [200]: GET /assets/js/setting-demo2.js
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57005 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57006 [200]: GET /assets/js/plugin/owl-carousel/owl.carousel.min.js
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57006 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57007 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57007 [404]: GET /assets/js/plugin/magnific-popup/jquery.magnific-popup.min.js - No such file or directory
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57007 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57009 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57009 [200]: GET /assets/js/plugin/moment/moment.min.js
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57009 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57010 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57010 [200]: GET /assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57010 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57011 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57011 [200]: GET /assets/js/plugin/sweetalert/sweetalert.min.js
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57011 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57012 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57012 [200]: GET /assets/js/plugin/select2/select2.full.min.js
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57012 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57014 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57014 [200]: GET /assets/js/plugin/dropzone/dropzone.min.js
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57014 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57015 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57015 [200]: GET /assets/js/plugin/fullcalendar/fullcalendar.min.js
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57015 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57017 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57017 [200]: GET /assets/js/plugin/gmaps/gmaps.js
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57017 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57018 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57018 [404]: GET /assets/js/plugin/jquery-sparkline/jquery.sparkline.min.js - No such file or directory
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57018 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57020 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57020 [200]: GET /assets/js/plugin/sortable/sortable.min.js
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57020 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57021 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57021 [200]: GET /assets/js/plugin/sticky-sidebar/sticky-sidebar.min.js
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57021 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57022 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57022 [404]: GET /assets/js/plugin/circles/circles.min.js - No such file or directory
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57022 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57024 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57024 [404]: GET /assets/js/plugin/chartjs/chart.min.js - No such file or directory
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57024 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57025 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57025 [200]: GET /assets/js/plugin/jsvectormap/jsvectormap.min.js
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57025 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57027 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57027 [200]: GET /assets/js/plugin/jsvectormap/world.js
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57027 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57028 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57028 [200]: GET /assets/js/owner/feature_toggle.js
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57028 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57030 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57030 [200]: GET /assets/js/owner/faq_table.js
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57030 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57031 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57031 [200]: GET /assets/js/owner/faq_add_form.js
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57031 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57033 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57033 [200]: GET /assets/js/owner/instructions_add_edit_form.js
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57033 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57034 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57034 [200]: GET /assets/js/owner/instructions.js
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57034 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57035 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57035 [200]: GET /assets/js/owner/report.js
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57035 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57037 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57037 [200]: GET /assets/js/owner/user_table.js
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57037 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57039 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57039 [200]: GET /assets/js/owner/view_user.js
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57039 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57040 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57040 [200]: GET /assets/js/owner/ocharts_values.js
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57040 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57042 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57042 [200]: GET /assets/js/admin/choose_layout.js
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57042 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57044 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57044 [200]: GET /assets/js/admin/charts.js
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57044 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57045 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57045 [200]: GET /assets/js/admin/main_page_with_charts_and_tables.js
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57045 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57046 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57046 [200]: GET /assets/js/admin/table_samples.js
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57046 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57048 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57048 [200]: GET /assets/css/fonts.min.css
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57048 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57050 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57050 [200]: GET /assets/fonts/fontawesome/fa-solid-900.woff2
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57050 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57051 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57051 [200]: GET /assets/fonts/simple-line-icons/Simple-Line-Icons.woff2?v=2.4.0
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57051 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57052 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57053 Accepted
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57052 [200]: GET /assets/fonts/fontawesome/fa-regular-400.woff2
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57052 Closing
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57053 [200]: GET /assets/fonts/fontawesome/fa-brands-400.woff2
+[Tue Oct 21 16:36:31 2025] 127.0.0.1:57053 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57055 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57055 [200]: GET /php_views/final_admin/help_support.php
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57055 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57057 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57057 [200]: GET /assets/js/plugin/webfont/webfont.min.js
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57057 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57058 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57058 [200]: GET /assets/css/bootstrap.min.css
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57058 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57059 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57059 [200]: GET /assets/css/plugins.min.css
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57059 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57060 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57060 [200]: GET /assets/css/kaiadmin.min.css
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57060 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57061 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57061 [200]: GET /assets/css/demo.css
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57061 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57063 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57063 [200]: GET /assets/css/owner/feature_toggle.css
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57063 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57065 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57065 [200]: GET /assets/img/kaiadmin/logo_light.svg
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57065 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57066 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57066 [200]: GET /assets/img/jm_denis.jpg
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57066 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57067 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57067 [200]: GET /assets/img/profile.jpg
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57067 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57068 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57068 [200]: GET /assets/js/core/jquery-3.7.1.min.js
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57068 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57069 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57069 [200]: GET /assets/js/core/popper.min.js
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57069 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57070 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57070 [200]: GET /assets/js/core/bootstrap.min.js
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57070 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57072 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57072 [200]: GET /assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57072 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57073 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57073 [200]: GET /assets/js/plugin/datatables/datatables.min.js
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57073 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57074 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57074 [200]: GET /assets/js/kaiadmin.min.js
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57074 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57075 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57075 [200]: GET /assets/js/setting-demo2.js
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57075 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57076 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57076 [200]: GET /assets/js/plugin/owl-carousel/owl.carousel.min.js
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57076 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57077 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57077 [404]: GET /assets/js/plugin/magnific-popup/jquery.magnific-popup.min.js - No such file or directory
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57077 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57078 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57078 [200]: GET /assets/js/plugin/moment/moment.min.js
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57078 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57080 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57080 [200]: GET /assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57080 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57082 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57082 [200]: GET /assets/js/plugin/sweetalert/sweetalert.min.js
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57082 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57084 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57084 [200]: GET /assets/js/plugin/select2/select2.full.min.js
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57084 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57085 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57085 [200]: GET /assets/js/plugin/dropzone/dropzone.min.js
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57085 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57087 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57087 [200]: GET /assets/js/plugin/fullcalendar/fullcalendar.min.js
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57087 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57088 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57088 [200]: GET /assets/js/plugin/gmaps/gmaps.js
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57088 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57090 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57090 [404]: GET /assets/js/plugin/jquery-sparkline/jquery.sparkline.min.js - No such file or directory
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57090 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57091 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57091 [200]: GET /assets/js/plugin/sortable/sortable.min.js
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57091 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57093 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57093 [200]: GET /assets/js/plugin/sticky-sidebar/sticky-sidebar.min.js
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57093 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57095 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57095 [404]: GET /assets/js/plugin/circles/circles.min.js - No such file or directory
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57095 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57097 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57097 [404]: GET /assets/js/plugin/chartjs/chart.min.js - No such file or directory
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57097 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57099 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57099 [200]: GET /assets/js/plugin/jsvectormap/jsvectormap.min.js
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57099 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57100 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57100 [200]: GET /assets/js/plugin/jsvectormap/world.js
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57100 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57102 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57102 [200]: GET /assets/js/owner/feature_toggle.js
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57102 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57103 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57103 [200]: GET /assets/js/owner/faq_table.js
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57103 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57105 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57105 [200]: GET /assets/js/owner/faq_add_form.js
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57105 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57107 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57107 [200]: GET /assets/js/owner/instructions_add_edit_form.js
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57107 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57108 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57108 [200]: GET /assets/js/owner/instructions.js
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57108 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57110 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57110 [200]: GET /assets/js/owner/report.js
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57110 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57111 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57111 [200]: GET /assets/js/owner/user_table.js
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57111 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57113 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57113 [200]: GET /assets/js/owner/view_user.js
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57113 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57114 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57114 [200]: GET /assets/js/owner/ocharts_values.js
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57114 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57116 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57116 [200]: GET /assets/js/admin/choose_layout.js
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57116 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57117 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57117 [200]: GET /assets/js/admin/charts.js
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57117 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57119 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57119 [200]: GET /assets/js/admin/main_page_with_charts_and_tables.js
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57119 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57120 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57120 [200]: GET /assets/js/admin/table_samples.js
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57120 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57122 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57122 [200]: GET /assets/css/fonts.min.css
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57122 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57124 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57124 [200]: GET /assets/fonts/fontawesome/fa-solid-900.woff2
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57124 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57125 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57126 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57127 Accepted
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57125 [200]: GET /assets/fonts/simple-line-icons/Simple-Line-Icons.woff2?v=2.4.0
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57125 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57126 [200]: GET /assets/fonts/fontawesome/fa-regular-400.woff2
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57127 [200]: GET /assets/fonts/fontawesome/fa-brands-400.woff2
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57126 Closing
+[Tue Oct 21 16:36:34 2025] 127.0.0.1:57127 Closing
