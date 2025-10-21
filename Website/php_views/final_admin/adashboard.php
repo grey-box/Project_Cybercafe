@@ -35,19 +35,19 @@ $deviceStatus = [
         <button class="btn btn-primary" id="toggleQuickLinks">Quick Links</button>
         <div id="quickLinks" class="mt-3">
             <div class="d-flex justify-content-around">
-                <a href="add_user.php" class="text-center text-decoration-none">
+                <a href="<?php echo $adminBase; ?>/add_user.php" class="text-center text-decoration-none">
                     <i class="fas fa-user-plus fa-2x"></i>
                     <div>Add User</div>
                 </a>
-                <a href="bandwidth_usage.php" class="text-center text-decoration-none">
+                <a href="<?php echo $adminBase; ?>/bandwidth_usage.php" class="text-center text-decoration-none">
                     <i class="fas fa-chart-line fa-2x"></i>
                     <div>Bandwidth Usage</div>
                 </a>
-                <a href="device_management.php" class="text-center text-decoration-none">
+                <a href="<?php echo $adminBase; ?>/device_management.php" class="text-center text-decoration-none">
                     <i class="fas fa-desktop fa-2x"></i>
                     <div>Device Management</div>
                 </a>
-                <a href="help_support.php" class="text-center text-decoration-none">
+                <a href="<?php echo $adminBase; ?>/help_support.php" class="text-center text-decoration-none">
                     <i class="fas fa-life-ring fa-2x"></i>
                     <div>Help & Support</div>
                 </a>
@@ -73,7 +73,7 @@ $deviceStatus = [
             <div class="card flex-fill">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <div class="card-title">Active Users</div>
-                    <a href="add_user.php">
+                    <a href="<?php echo $adminBase; ?>/add_user.php">
                         <button class="btn btn-success">Add User</button>
                     </a>
                 </div>
@@ -90,7 +90,7 @@ $deviceStatus = [
                             <tbody>
                                 <?php foreach ($activeUsers as $user): ?>
                                     <tr>
-                                        <td><a style="text-decoration: none; color: inherit;" href="auser_info_add_and_edit.php"><?= $user[0] ?></a></td>
+                                        <td><a style="text-decoration: none; color: inherit;" href="<?php echo $adminBase; ?>/auser_info_add_and_edit.php"><?= $user[0] ?></a></td>
                                         <td><?= $user[1] ?></td>
                                         <td><?= $user[2] ?></td>
                                     </tr>

@@ -21,7 +21,7 @@ $supportTopics = [
         <h3 class="fw-bold mb-3">Help & Support Center</h3>
         <ul class="breadcrumbs mb-3">
             <li class="nav-home">
-                <a href="adashboard.php">
+                <a href="<?php echo $adminBase; ?>/adashboard.php">
                     <i class="icon-home"></i>
                 </a>
             </li>
@@ -48,7 +48,7 @@ $supportTopics = [
                     <i class="fas fa-question-circle fa-3x text-primary mb-3"></i>
                     <h5>FAQ</h5>
                     <p class="text-muted">Frequently Asked Questions</p>
-                    <a href="afaq_table.php" class="btn btn-primary">View FAQ</a>
+                    <a href="<?php echo $adminBase; ?>/afaq_table.php" class="btn btn-primary">View FAQ</a>
                 </div>
             </div>
         </div>
@@ -58,7 +58,7 @@ $supportTopics = [
                     <i class="fas fa-comments fa-3x text-success mb-3"></i>
                     <h5>Live Chat</h5>
                     <p class="text-muted">Chat with support team</p>
-                    <a href="chat.php" class="btn btn-success">Start Chat</a>
+                    <a href="<?php echo $adminBase; ?>/chat.php" class="btn btn-success">Start Chat</a>
                 </div>
             </div>
         </div>
@@ -68,7 +68,7 @@ $supportTopics = [
                     <i class="fas fa-ticket-alt fa-3x text-warning mb-3"></i>
                     <h5>Support Tickets</h5>
                     <p class="text-muted">Manage support requests</p>
-                    <a href="support.php" class="btn btn-warning">View Tickets</a>
+                    <a href="<?php echo $adminBase; ?>/support.php" class="btn btn-warning">View Tickets</a>
                 </div>
             </div>
         </div>
@@ -78,7 +78,7 @@ $supportTopics = [
                     <i class="fas fa-bell fa-3x text-info mb-3"></i>
                     <h5>Notifications</h5>
                     <p class="text-muted">System notifications</p>
-                    <a href="notifications.php" class="btn btn-info">View Notifications</a>
+                    <a href="<?php echo $adminBase; ?>/notifications.php" class="btn btn-info">View Notifications</a>
                 </div>
             </div>
         </div>

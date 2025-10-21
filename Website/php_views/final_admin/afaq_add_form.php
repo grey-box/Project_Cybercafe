@@ -113,7 +113,7 @@ function showNotification(message, type) {
 }
 </script>
 
-<script src="../assets/js/core/jquery-3.7.1.min.js"></script>
-<script src="../assets/js/core/popper.min.js"></script>
-<script src="../assets/js/core/bootstrap.min.js"></script>
-<script src="../assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+<script src="<?php echo $assetsBase; ?>/js/core/jquery-3.7.1.min.js"></script>
+<script src="<?php echo $assetsBase; ?>/js/core/popper.min.js"></script>
+<script src="<?php echo $assetsBase; ?>/js/core/bootstrap.min.js"></script>
+<script src="<?php echo $assetsBase; ?>/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>

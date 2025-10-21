@@ -1,3 +1,10 @@
+<?php
+require_once dirname(__DIR__, 2) . '/config/paths.php';
+
+$webBase = rtrim(WEB_BASE, '/');
+$assetsBase = $webBase . '/assets';
+$adminBase = $webBase . '/php_views/final_admin';
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,9 +13,10 @@
   <title><?php echo isset($pageTitle) ? $pageTitle : 'Default Title'; ?></title>
   <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
   <link rel="icon" href="https://www.grey-box.ca/wp-content/uploads/2018/05/logoGREY-BOX.jpg" type="image/x-icon" />
+  <base href="<?php echo htmlspecialchars($adminBase, ENT_QUOTES); ?>/">
 
   <!-- Fonts and icons -->
-  <script src="../../assets/js/plugin/webfont/webfont.min.js"></script>
+  <script src="<?php echo $assetsBase; ?>/js/plugin/webfont/webfont.min.js"></script>
   <script>
     WebFont.load({
       google: { families: ["Public Sans:300,400,500,600,700"] },
@@ -19,7 +27,7 @@
           "Font Awesome 5 Brands",
           "simple-line-icons",
         ],
-        urls: ["../../assets/css/fonts.min.css"],
+        urls: ["<?php echo $assetsBase; ?>/css/fonts.min.css"],
       },
       active: function () {
         sessionStorage.fonts = true;
@@ -28,13 +36,13 @@
   </script>
 
   <!-- CSS Files -->
-  <link rel="stylesheet" href="../../assets/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="../../assets/css/plugins.min.css" />
-  <link rel="stylesheet" href="../../assets/css/kaiadmin.min.css" />
+  <link rel="stylesheet" href="<?php echo $assetsBase; ?>/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="<?php echo $assetsBase; ?>/css/plugins.min.css" />
+  <link rel="stylesheet" href="<?php echo $assetsBase; ?>/css/kaiadmin.min.css" />
 
   <!-- CSS Just for demo purpose, don't include it in your project -->
-  <link rel="stylesheet" href="../../assets/css/demo.css" />
-  <link rel="stylesheet" href="../../assets/css/owner/feature_toggle.css" />
+  <link rel="stylesheet" href="<?php echo $assetsBase; ?>/css/demo.css" />
+  <link rel="stylesheet" href="<?php echo $assetsBase; ?>/css/owner/feature_toggle.css" />
 
 </head>
 <body>
@@ -44,7 +52,7 @@
       <div class="sidebar-logo">
         <!-- Logo Header -->
         <div class="logo-header" data-background-color="dark">
-          <a href="adashboard.php" class="logo">
+          <a href="<?php echo $adminBase; ?>/adashboard.php" class="logo">
             <img src="https://www.grey-box.ca/wp-content/uploads/2018/05/logoGREY-BOX.jpg" alt="navbar brand"
               class="navbar-brand" height="50" />
           </a>
@@ -66,7 +74,7 @@
         <div class="sidebar-content">
           <ul class="nav nav-secondary">
             <li class="nav-item">
-              <a href="adashboard.php">
+              <a href="<?php echo $adminBase; ?>/adashboard.php">
                 <i class="fas fa-home"></i>
                 <p>Dashboard</p>
               </a>
@@ -103,7 +111,7 @@
             </li> -->
 
             <li class="nav-item">
-              <a  href="afaq_table.php">
+              <a  href="<?php echo $adminBase; ?>/afaq_table.php">
                 <i class="far fa-chart-bar"></i>
                 <p>FAQs Management</p>
                 
@@ -143,7 +151,7 @@
             </li> -->
 
             <li class="nav-item">
-              <a href="auser_table.php">
+              <a href="<?php echo $adminBase; ?>/auser_table.php">
                 <i class="far fa-chart-bar"></i>
                 <p>User Management</p>
                 
@@ -151,19 +159,19 @@
               <div class="collapse" id="charts">
                 <ul class="nav nav-collapse">
                   <li>
-                    <a href="auser_table.php">
+                    <a href="<?php echo $adminBase; ?>/auser_table.php">
                       <i class="far fa-chart-bar"></i>
                       <p>Users Information</p>
                     </a>
                   </li>
                   <li>
-                    <a href="add_user.php">
+                    <a href="<?php echo $adminBase; ?>/add_user.php">
                       <i class="fas fa-layer-group"></i>
                       <p>Add User</p>
                     </a>
                   </li>
                   <li>
-                    <a href="auser_info_add_and_edit.php">
+                    <a href="<?php echo $adminBase; ?>/auser_info_add_and_edit.php">
                       <i class="far fa-chart-bar"></i>
                       <p>Users Add/Edit</p>
                     </a>
@@ -173,7 +181,7 @@
             </li>
 
             <li class="nav-item">
-                <a href="support.php">
+                <a href="<?php echo $adminBase; ?>/support.php">
                   <i class="far fa-question-circle"></i>
                   <p>Support</p>
                 </a>
@@ -190,8 +198,8 @@
         <div class="main-header-logo">
           <!-- Logo Header -->
           <div class="logo-header" data-background-color="dark">
-            <a href="adashboard.php" class="logo">
-              <img src="../../assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" />
+            <a href="<?php echo $adminBase; ?>/adashboard.php" class="logo">
+              <img src="<?php echo $assetsBase; ?>/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" />
             </a>
             <div class="nav-toggle">
               <button class="btn btn-toggle toggle-sidebar">
@@ -252,7 +260,7 @@
                       <div class="notif-center">
                         <a href="#">
                           <div class="notif-img">
-                            <img src="../../assets/img/jm_denis.jpg" alt="Img Profile" />
+                            <img src="<?php echo $assetsBase; ?>/img/jm_denis.jpg" alt="Img Profile" />
                           </div>
                           <div class="notif-content">
                             <span class="subject">Louis Rai</span>
@@ -262,7 +270,7 @@
                         </a>
                         <!-- <a href="#">
                           <div class="notif-img">
-                            <img src="../../assets/img/chadengle.jpg" alt="Img Profile" />
+                            <img src="<?php echo $assetsBase; ?>/img/chadengle.jpg" alt="Img Profile" />
                           </div>
                           <div class="notif-content">
                             <span class="subject">Chad</span>
@@ -272,7 +280,7 @@
                         </a>
                         <a href="#">
                           <div class="notif-img">
-                            <img src="../../assets/img/mlane.jpg" alt="Img Profile" />
+                            <img src="<?php echo $assetsBase; ?>/img/mlane.jpg" alt="Img Profile" />
                           </div>
                           <div class="notif-content">
                             <span class="subject">Jhon Doe</span>
@@ -284,7 +292,7 @@
                         </a>
                         <a href="#">
                           <div class="notif-img">
-                            <img src="../../assets/img/talha.jpg" alt="Img Profile" />
+                            <img src="<?php echo $assetsBase; ?>/img/talha.jpg" alt="Img Profile" />
                           </div>
                           <div class="notif-content">
                             <span class="subject">Talha</span>
@@ -434,7 +442,7 @@
               <li class="nav-item topbar-user dropdown hidden-caret">
                 <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
                   <div class="avatar-sm">
-                    <img src="../../assets/img/profile.jpg" alt="..." class="avatar-img rounded-circle" />
+                    <img src="<?php echo $assetsBase; ?>/img/profile.jpg" alt="..." class="avatar-img rounded-circle" />
                   </div>
                   <span class="profile-username">
                     <span class="op-7">Hi,</span>
@@ -446,12 +454,12 @@
                     <li>
                       <div class="user-box">
                         <div class="avatar-lg">
-                          <img src="../../assets/img/profile.jpg" alt="image profile" class="avatar-img rounded" />
+                          <img src="<?php echo $assetsBase; ?>/img/profile.jpg" alt="image profile" class="avatar-img rounded" />
                         </div>
                         <div class="u-text">
                           <h4>Chinmay</h4>
                           <p class="text-muted">Chinmay@yahoo.com</p>
-                          <a href="profile.html" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
+                          <a href="<?php echo $adminBase; ?>/profile.html" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
                         </div>
                       </div>
                     </li>
