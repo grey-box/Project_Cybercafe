@@ -3,7 +3,7 @@
 $pageTitle = "O - Report"; 
 
 // Include the header
-include('../asset_for_pages/header.php');
+include $_SERVER['DOCUMENT_ROOT'] . '/php_views/asset_for_pages/owner_header.php';
 
 ?>
 
@@ -110,7 +110,9 @@ include('../asset_for_pages/header.php');
               <div class="form-group row">
                 <div class="col-sm-12 text-right">
                   <button type="reset" class="btn btn-secondary">Reset</button>
-                  <button type="button" class="btn btn-primary" onclick="runReport()">Run Report</button>
+                  <a href="report_display.php">
+                    <button type="button" class="btn btn-primary">Run Report</button>
+                  </a>
                 </div>
               </div>
             </form>
@@ -125,5 +127,5 @@ include('../asset_for_pages/header.php');
 
 <?php
 // Include the footer
-include('../asset_for_pages/footer.php');
+include $_SERVER['DOCUMENT_ROOT'] .'/php_views/asset_for_pages/footer.php';
 ?>

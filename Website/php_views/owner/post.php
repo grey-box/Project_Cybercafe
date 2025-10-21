@@ -3,7 +3,7 @@
 $pageTitle = "Broadcast Message - CyberCafe"; 
 
 // Include the header
-include('../asset_for_pages/owner_header.php');
+include $_SERVER['DOCUMENT_ROOT'] . '/php_views/asset_for_pages/owner_header.php';
 ?>
 
 <div class="container">
@@ -51,7 +51,7 @@ include('../asset_for_pages/owner_header.php');
 
 <?php
 // Include the footer
-include('../asset_for_pages/footer.php');
+include $_SERVER['DOCUMENT_ROOT'] .'/php_views/asset_for_pages/footer.php';
 ?>
 
 

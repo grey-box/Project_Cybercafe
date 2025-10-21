@@ -2,7 +2,7 @@
 
 
 // Include header file
-include('../asset_for_pages/owner_header.php');
+include $_SERVER['DOCUMENT_ROOT'] . '/php_views/asset_for_pages/owner_header.php';
 ?>
 
 <!DOCTYPE html>
@@ -118,7 +118,10 @@ include('../asset_for_pages/owner_header.php');
                 </div>
             </div>
 
-            <?php include('../asset_for_pages/footer.php'); ?>
+        <?php
+        // Include the footer
+        include $_SERVER['DOCUMENT_ROOT'] .'/php_views/asset_for_pages/footer.php';
+        ?>
         </div>
 
         <!-- Custom template | don't include it in your project! -->
@@ -173,5 +176,5 @@ include('../asset_for_pages/owner_header.php');
 
 <?php
 // Include the footer
-include('../asset_for_pages/footer.php');
+include $_SERVER['DOCUMENT_ROOT'] .'/php_views/asset_for_pages/footer.php';
 ?>

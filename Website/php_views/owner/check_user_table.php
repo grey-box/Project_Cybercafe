@@ -17,7 +17,7 @@ $user_data = [
 $pageTitle = "O - Add User"; 
 
 // Include the header
-include('../asset_for_pages/owner_header.php');
+include $_SERVER['DOCUMENT_ROOT'] . '/php_views/asset_for_pages/owner_header.php';
 ?>
                 <div class="page-inner">
                 <div class="page-header">
@@ -45,10 +45,10 @@ include('../asset_for_pages/owner_header.php');
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
                                         <h4 class="card-title">User Table</h4>
-                                        <button class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal" data-bs-target="#addRowModal">
-                                            <i class="fa fa-plus"></i>
+                                        <a href="add_user.php" class="btn btn-primary btn-round ms-auto">
+                                          <i class="fa fa-plus"></i>
                                             Add User
-                                        </button>
+                                          </a>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -97,7 +97,7 @@ include('../asset_for_pages/owner_header.php');
 
 <?php
 // Include the footer
-include('../asset_for_pages/footer.php');
+include $_SERVER['DOCUMENT_ROOT'] .'/php_views/asset_for_pages/footer.php';
 ?>
 <script>
       $(document).ready(function () {
