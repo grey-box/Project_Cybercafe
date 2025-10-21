@@ -1,40 +1,67 @@
 PRAGMA foreign_keys = ON;
 
--- User roles
-CREATE TABLE User_Role (
+/* =========================
+   Roles & Users
+   ========================= */
+
+CREATE TABLE IF NOT EXISTS User_Role (
   role_id TEXT PRIMARY KEY,
   role_name TEXT NOT NULL,
   role_description TEXT,
   permission_set TEXT
 );
 
--- Main user table
-CREATE TABLE User (
+CREATE TABLE IF NOT EXISTS User (
   user_id TEXT PRIMARY KEY,
   full_name TEXT NOT NULL,
   email TEXT UNIQUE NOT NULL,
   phone_number TEXT,
   access_code TEXT,
   user_role TEXT NOT NULL,
-  user_status TEXT,
   account_expiry_date TEXT,
   account_creation_date TEXT NOT NULL,
   last_login_timestamp DATETIME,
   FOREIGN KEY (user_role) REFERENCES User_Role(role_id)
 );
 
--- Track changes to user status over time
-CREATE TABLE User_Status_History (
-  status_id INTEGER PRIMARY KEY AUTOINCREMENT,
-  user_id TEXT NOT NULL,
-  status_type TEXT NOT NULL,
-  timestamp DATETIME NOT NULL,
-  reason TEXT,
-  FOREIGN KEY (user_id) REFERENCES User(user_id)
+/* =========================
+   User Status
+   ========================= */
+
+CREATE TABLE IF NOT EXISTS User_Status_Lookup (
+  status_code TEXT PRIMARY KEY, -- ACTIVE, SUSPENDED, BANNED, EXPIRED, PENDING
+  description TEXT NOT NULL
 );
 
--- Service tiers / queues
-CREATE TABLE Speed_Queue (
+CREATE TABLE IF NOT EXISTS User_Status_History (
+  status_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id TEXT NOT NULL,
+  status_code TEXT NOT NULL,
+  changed_by_user_id TEXT,
+  changed_reason TEXT,
+  changed_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES User(user_id),
+  FOREIGN KEY (status_code) REFERENCES User_Status_Lookup(status_code),
+  FOREIGN KEY (changed_by_user_id) REFERENCES User(user_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_user_status_hist_user_time
+  ON User_Status_History(user_id, changed_at DESC);
+
+CREATE VIEW IF NOT EXISTS User_Current_Status AS
+SELECT h.user_id, h.status_code, h.changed_at
+FROM User_Status_History h
+JOIN (
+  SELECT user_id, MAX(changed_at) AS max_changed_at
+  FROM User_Status_History
+  GROUP BY user_id
+) last ON last.user_id = h.user_id AND last.max_changed_at = h.changed_at;
+
+/* =========================
+   Queues & Plans
+   ========================= */
+
+CREATE TABLE IF NOT EXISTS Speed_Queue (
   queue_id TEXT PRIMARY KEY,
   queue_name TEXT NOT NULL,
   upload_speed_limit INTEGER,
@@ -42,35 +69,53 @@ CREATE TABLE Speed_Queue (
   bandwidth_quota INTEGER
 );
 
--- Track user balances
-CREATE TABLE User_Balance (
-  balance_id INTEGER PRIMARY KEY AUTOINCREMENT,
+CREATE TABLE IF NOT EXISTS Service_Plan (
+  plan_id TEXT PRIMARY KEY,
+  plan_name TEXT NOT NULL,
+  upload_speed_limit INTEGER,
+  bandwidth_quota INTEGER,
+  monthly_price DECIMAL(10,2)
+);
+
+/* =========================
+   Balance, Ledgers, Payments
+   ========================= */
+
+CREATE TABLE IF NOT EXISTS User_Balance (
   user_id TEXT NOT NULL,
   speed_queue_id TEXT NOT NULL,
-  bytes_remaining INTEGER,
-  monetary_balance DECIMAL(10,2),
+  monetary_balance DECIMAL(10,2) NOT NULL DEFAULT 0.00,
   last_update_timestamp DATETIME,
+  PRIMARY KEY (user_id, speed_queue_id),
   FOREIGN KEY (user_id) REFERENCES User(user_id),
   FOREIGN KEY (speed_queue_id) REFERENCES Speed_Queue(queue_id)
 );
 
--- Internet sessions
-CREATE TABLE Internet_Session (
-  session_id TEXT PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS Monetary_Ledger (
+  entry_id INTEGER PRIMARY KEY AUTOINCREMENT,
   user_id TEXT NOT NULL,
-  ip_address TEXT,
-  mac_address TEXT,
-  host_name TEXT,
-  login_timestamp DATETIME NOT NULL,
-  logout_timestamp DATETIME,
-  session_length INTEGER,
+  speed_queue_id TEXT,
+  amount_delta DECIMAL(10,2) NOT NULL,
+  reason TEXT,
+  ref_payment_id TEXT,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES User(user_id),
+  FOREIGN KEY (speed_queue_id) REFERENCES Speed_Queue(queue_id),
+  FOREIGN KEY (ref_payment_id) REFERENCES Payment(payment_id)
+);
+
+CREATE TABLE IF NOT EXISTS Byte_Quota_Ledger (
+  entry_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id TEXT NOT NULL,
   speed_queue_id TEXT NOT NULL,
+  bytes_delta INTEGER NOT NULL,
+  reason TEXT,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES User(user_id),
   FOREIGN KEY (speed_queue_id) REFERENCES Speed_Queue(queue_id)
 );
 
--- Historical payment attempts
-CREATE TABLE Payment_History (
+CREATE TABLE IF NOT EXISTS Payment_History (
   history_id INTEGER PRIMARY KEY AUTOINCREMENT,
   user_id TEXT NOT NULL,
   timestamp DATETIME NOT NULL,
@@ -80,115 +125,106 @@ CREATE TABLE Payment_History (
   FOREIGN KEY (user_id) REFERENCES User(user_id)
 );
 
--- Actual payments
-CREATE TABLE Payment (
+CREATE TABLE IF NOT EXISTS Payment (
   payment_id TEXT PRIMARY KEY,
   user_id TEXT NOT NULL,
   payment_datetime DATETIME NOT NULL,
   payment_method TEXT,
-  amount_charged DECIMAL(10,2),
+  amount_charged DECIMAL(10,2) NOT NULL,
   transaction_ref_number TEXT,
   invoice_number TEXT,
   FOREIGN KEY (user_id) REFERENCES User(user_id)
 );
 
--- Reports generated by the system
-CREATE TABLE Report (
-  report_id TEXT PRIMARY KEY,
-  report_type TEXT,
-  generation_time DATETIME NOT NULL,
-  parameters TEXT
-);
+/* =========================
+   Sessions & Traffic
+   ========================= */
 
--- Map users to reports (many-to-many)
-CREATE TABLE User_Report_Mapping (
-  mapping_id INTEGER PRIMARY KEY AUTOINCREMENT,
+CREATE TABLE IF NOT EXISTS Internet_Session (
+  session_id TEXT PRIMARY KEY,
   user_id TEXT NOT NULL,
-  report_id TEXT NOT NULL,
+  ip_address TEXT,
+  mac_address TEXT,
+  host_name TEXT,
+  login_timestamp DATETIME NOT NULL,
+  logout_timestamp DATETIME, -- NULL = active
+  speed_queue_id TEXT NOT NULL,
   FOREIGN KEY (user_id) REFERENCES User(user_id),
-  FOREIGN KEY (report_id) REFERENCES Report(report_id)
+  FOREIGN KEY (speed_queue_id) REFERENCES Speed_Queue(queue_id)
 );
 
--- System status snapshots
-CREATE TABLE System_Status (
-  status_id INTEGER PRIMARY KEY AUTOINCREMENT,
-  hotspot_status TEXT,
-  local_ip_address TEXT,
-  last_refresh_time DATETIME,
-  uptime INTEGER,
-  restart_count INTEGER,
-  last_reboot_time DATETIME,
-  software_version TEXT
-);
+CREATE VIEW IF NOT EXISTS Internet_Session_With_Length AS
+SELECT s.*,
+       CASE
+         WHEN s.logout_timestamp IS NOT NULL
+           THEN CAST((JULIANDAY(s.logout_timestamp) - JULIANDAY(s.login_timestamp)) * 86400 AS INTEGER)
+         ELSE NULL
+       END AS session_length_seconds
+FROM Internet_Session s;
 
--- Logs of maintenance events
-CREATE TABLE Maintenance_Log (
-  log_id INTEGER PRIMARY KEY AUTOINCREMENT,
-  status_id INTEGER NOT NULL,
-  event_type TEXT,
-  timestamp DATETIME NOT NULL,
-  description TEXT,
-  FOREIGN KEY (status_id) REFERENCES System_Status(status_id)
-);
+CREATE VIEW IF NOT EXISTS Active_Session AS
+SELECT * FROM Internet_Session WHERE logout_timestamp IS NULL;
 
--- Web‐site access per session
-CREATE TABLE Website_Access_Log (
-  log_id INTEGER PRIMARY KEY AUTOINCREMENT,
-  session_id TEXT NOT NULL,
-  url TEXT,
-  access_time DATETIME NOT NULL,
-  blocked BOOLEAN,
+CREATE TABLE IF NOT EXISTS Traffic_Data (
+  session_id TEXT PRIMARY KEY,
+  received_bytes INTEGER NOT NULL DEFAULT 0,
+  transmitted_bytes INTEGER NOT NULL DEFAULT 0,
+  last_updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (session_id) REFERENCES Internet_Session(session_id)
 );
 
--- URL‐based restrictions
-CREATE TABLE URL_Restriction (
-  restriction_id INTEGER PRIMARY KEY AUTOINCREMENT,
-  url TEXT NOT NULL,
-  is_blocked BOOLEAN NOT NULL
+/* =========================
+   Reporting
+   ========================= */
+
+CREATE TABLE IF NOT EXISTS Report_Run (
+  run_id TEXT PRIMARY KEY,
+  user_id TEXT NOT NULL,
+  report_type TEXT NOT NULL,
+  parameters TEXT,
+  generated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  share_flag INTEGER NOT NULL DEFAULT 0,
+  FOREIGN KEY (user_id) REFERENCES User(user_id)
 );
 
--- Device‐based restrictions
-CREATE TABLE Device_Restriction (
+/* =========================
+   System (Events)
+   ========================= */
+
+CREATE TABLE IF NOT EXISTS System_Event (
+  event_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  event_type TEXT NOT NULL,
+  description TEXT,
+  details TEXT,
+  occurred_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_system_event_time
+  ON System_Event(occurred_at DESC);
+
+CREATE VIEW IF NOT EXISTS System_Current AS
+SELECT e.*
+FROM System_Event e
+JOIN (
+  SELECT MAX(occurred_at) AS last_time
+  FROM System_Event
+  WHERE event_type IN ('SNAPSHOT','CONFIG_CHANGE')
+) t ON t.last_time = e.occurred_at;
+
+/* =========================
+   Restrictions
+   ========================= */
+
+CREATE TABLE IF NOT EXISTS URL_Restriction (
+  url TEXT PRIMARY KEY,
+  is_blocked INTEGER NOT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  created_by_user_id TEXT,
+  FOREIGN KEY (created_by_user_id) REFERENCES User(user_id)
+);
+
+CREATE TABLE IF NOT EXISTS Device_Restriction (
   restriction_id INTEGER PRIMARY KEY AUTOINCREMENT,
   mac_address TEXT NOT NULL,
   reason TEXT
-);
-
--- Traffic data per session
-CREATE TABLE Traffic_Data (
-  traffic_id INTEGER PRIMARY KEY AUTOINCREMENT,
-  session_id TEXT NOT NULL,
-  received_bytes INTEGER,
-  transmitted_bytes INTEGER,
-  FOREIGN KEY (session_id) REFERENCES Internet_Session(session_id)
-);
-
--- Subscription or service plans
-CREATE TABLE Service_Plan (
-  plan_id TEXT PRIMARY KEY,
-  plan_name TEXT,
-  upload_speed_limit INTEGER,
-  bandwidth_quota INTEGER,
-  monthly_price DECIMAL(10,2)
-);
-
--- Membership levels (Silver, Gold)
-CREATE TABLE Membership_Level (
-  level_id TEXT PRIMARY KEY,
-  level_name TEXT,
-  description TEXT,
-  benefits TEXT,
-  speed_amount DECIMAL(10,2),
-  plan_id TEXT NOT NULL,
-  FOREIGN KEY (plan_id) REFERENCES Service_Plan(plan_id)
-);
-
--- Join table for many-to-many Service_Plan <-> Membership_Level
-CREATE TABLE ServicePlan_Membership (
-  plan_id TEXT NOT NULL,
-  level_id TEXT NOT NULL,
-  PRIMARY KEY (plan_id, level_id),
-  FOREIGN KEY (plan_id) REFERENCES Service_Plan(plan_id),
-  FOREIGN KEY (level_id) REFERENCES Membership_Level(level_id)
 );
