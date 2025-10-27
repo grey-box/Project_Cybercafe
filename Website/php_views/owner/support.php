@@ -3,7 +3,7 @@
 $pageTitle = "Owner - CyberCafe Support";
 
 // Include the header
-include $_SERVER['DOCUMENT_ROOT'] . '/php_views/asset_for_pages/owner_header.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/Website/php_views/asset_for_pages/owner_header.php';
 
 // Simulated queries data (Replace this with a database query)
 $queries = [
@@ -125,5 +125,5 @@ $queries = [
 
 <?php
 // Include the footer
-include $_SERVER['DOCUMENT_ROOT'] .'/php_views/asset_for_pages/footer.php';
+include $_SERVER['DOCUMENT_ROOT'] .'/Website/php_views/asset_for_pages/footer.php';
 ?>

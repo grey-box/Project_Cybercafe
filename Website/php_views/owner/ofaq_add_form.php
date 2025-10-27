@@ -5,7 +5,7 @@ $pageTitle = "A - FAQ Add";
 
 
 // Include the header
-include $_SERVER['DOCUMENT_ROOT'] . '/php_views/asset_for_pages/owner_header.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/Website/php_views/asset_for_pages/owner_header.php';
 
 // Sample FAQ data for demo purposes (this would come from your database in a real application)
 $faq = [
@@ -78,7 +78,7 @@ $faq = [
 
 <?php
 // Include the footer
-include $_SERVER['DOCUMENT_ROOT'] .'/php_views/asset_for_pages/footer.php';
+include $_SERVER['DOCUMENT_ROOT'] .'/Website/php_views/asset_for_pages/footer.php';
 ?>
 
 

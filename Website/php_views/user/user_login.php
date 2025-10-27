@@ -1,6 +1,30 @@
 <?php
 declare(strict_types=1);
 require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/auth.php';
+
+require_session();
+if (!empty($_SESSION['role'])) {
+    redirect_for_role($_SESSION['role']);
+}
+
+$error = null;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $identifier = trim($_POST['username'] ?? '');
+    $password = $_POST['password'] ?? '';
+
+    if ($identifier === '' || $password === '') {
+        $error = 'Enter both email/user ID and password.';
+    } else {
+        $user = authenticate($identifier, $password);
+        if ($user && in_array($user['user_role'], ['admin', 'owner', 'user'], true)) {
+            login_user($user);
+            redirect_for_role($user['user_role']);
+        } else {
+            $error = 'Credentials not recognised. Sample accounts: user@example.com/userpass, admin@example.com/adminpass, owner@example.com/ownerpass.';
+        }
+    }
+}
 
 $pageTitle = "Sign In";
 ?>
@@ -43,16 +67,19 @@ $pageTitle = "Sign In";
 
         <form method="POST" action="" novalidate>
           <input type="hidden" name="csrf_token" value="">
+          <?php if ($error): ?>
+            <div class="alert alert-danger" role="alert"><?= htmlspecialchars($error) ?></div>
+          <?php endif; ?>
 
           <!-- Username -->
           <div class="mb-3">
-            <label for="username" class="form-label">Username</label>
+            <label for="username" class="form-label">Email or User ID</label>
             <input
               type="text"
               class="form-control"
               id="username"
               name="username"
-              placeholder="Username"
+              placeholder="user@example.com"
               required
               autocomplete="username">
           </div>

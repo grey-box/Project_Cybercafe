@@ -1,8 +1,34 @@
 <?php
 declare(strict_types=1);
 require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/auth.php';
 
-$pageTitle = "Guest Login";
+require_session();
+if (!empty($_SESSION['role'])) {
+    redirect_for_role($_SESSION['role']);
+}
+
+$error = null;
+$agreed = false;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $agreed = isset($_POST['agree']) && $_POST['agree'] === 'yes';
+
+    if (!$agreed) {
+        $error = 'You must accept the terms before continuing.';
+    } else {
+        // Create a lightweight guest session without requiring credentials
+        login_user([
+            'user_id' => 'guest-' . bin2hex(random_bytes(3)),
+            'email' => 'guest@local',
+            'full_name' => 'Guest User',
+            'user_role' => 'guest',
+        ]);
+        redirect_for_role('guest');
+    }
+}
+
+$pageTitle = 'Guest Access';
 ?>
 <!doctype html>
 <html lang="en">
@@ -34,10 +60,6 @@ $pageTitle = "Guest Login";
       background-color: #13a463;
       border-color: #13a463;
     }
-    .btn-success:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
     .terms-box {
       height: 180px;
       overflow-y: auto;
@@ -55,33 +77,38 @@ $pageTitle = "Guest Login";
       <img src="<?= WEB_BASE ?>/assets/greybox-logo.png" alt="Guest Access" class="login-img">
 
       <div class="card-body py-4 px-4">
-        <h3 class="fw-bold mb-4">Sign In</h3>
+        <h3 class="fw-bold mb-4">Guest Sign In</h3>
 
-        <h4 class="fw-bold mb-2">Terms and Conditions</h4>
-        <div id="termsBox" class="terms-box mb-3">
-          <ol class="mb-0">
-            <li>You agree to use this service responsibly and abide by all applicable laws.</li>
-            <li>Guest access is provided “as is” without guarantees of uptime or speed.</li>
-            <li>Activity may be logged for security and abuse prevention.</li>
-            <li>Do not attempt to access accounts or data that are not yours.</li>
-            <li>We may suspend guest access at any time without notice.</li>
-            <li>You acknowledge that public networks are not fully secure.</li>
-            <li>By continuing you accept the privacy and usage policies.</li>
-          </ol>
-        </div>
-
-        <div class="form-check mb-3">
-          <input class="form-check-input" type="checkbox" id="agreeChk">
-          <label class="form-check-label" for="agreeChk">
-            I agree to the Terms and Conditions
-          </label>
-        </div>
-
-        <form method="POST" action="">
+        <form method="POST" action="" novalidate>
           <input type="hidden" name="csrf_token" value="">
+
+          <h4 class="fw-bold mb-2">Terms and Conditions</h4>
+          <div class="terms-box mb-3">
+            <ol class="mb-0">
+              <li>You agree to use this service responsibly and abide by all applicable laws.</li>
+              <li>Guest access is provided “as is” without guarantees of uptime or speed.</li>
+              <li>Activity may be logged for security and abuse prevention.</li>
+              <li>Do not attempt to access accounts or data that are not yours.</li>
+              <li>We may suspend guest access at any time without notice.</li>
+              <li>You acknowledge that public networks are not fully secure.</li>
+              <li>By continuing you accept the privacy and usage policies.</li>
+            </ol>
+          </div>
+
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" id="agreeChk" name="agree" value="yes" <?= $agreed ? 'checked' : '' ?>>
+            <label class="form-check-label" for="agreeChk">
+              I agree to the Terms and Conditions
+            </label>
+          </div>
+
+          <?php if ($error): ?>
+            <div class="alert alert-danger" role="alert"><?= htmlspecialchars($error) ?></div>
+          <?php endif; ?>
+
           <div class="d-grid">
-            <button id="guestBtn" type="submit" class="btn btn-success" disabled>
-              Login as Guest
+            <button id="guestBtn" type="submit" class="btn btn-success" <?= $agreed ? '' : 'disabled' ?>>
+              Continue as Guest
             </button>
           </div>
         </form>
@@ -92,8 +119,7 @@ $pageTitle = "Guest Login";
   <script>
     const agreeChk = document.getElementById('agreeChk');
     const guestBtn = document.getElementById('guestBtn');
-
-    agreeChk.addEventListener('change', function() {
+    agreeChk.addEventListener('change', function () {
       guestBtn.disabled = !this.checked;
     });
   </script>

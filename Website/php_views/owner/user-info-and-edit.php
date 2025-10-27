@@ -5,7 +5,7 @@ $randomUsername = "John Doe";
 $randomEmail = "John.doe@flemingcollege.ca";
 
 // Include the header
-include $_SERVER['DOCUMENT_ROOT'] . '/php_views/asset_for_pages/owner_header.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/Website/php_views/asset_for_pages/owner_header.php';
 
 // Generate random data for demonstration purposes
 $randomAccessCode = strtoupper(substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, 10));
@@ -200,7 +200,7 @@ $devices = [
 
 <?php
 // Include the footer
-include $_SERVER['DOCUMENT_ROOT'] .'/php_views/asset_for_pages/footer.php';
+include $_SERVER['DOCUMENT_ROOT'] .'/Website/php_views/asset_for_pages/footer.php';
 ?>
 
 <script>
