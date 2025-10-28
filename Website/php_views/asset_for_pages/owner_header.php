@@ -1,3 +1,12 @@
+<?php
+declare(strict_types=1);
+require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
+
+$webBase = rtrim(WEB_BASE, '/');
+$assetsBase = $webBase . '/assets';
+$ownerBase = $webBase . '/php_views/owner';
+$ownerLogoutUrl = $webBase . '/php_views/auth/logout.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,7 +17,7 @@
   <link rel="icon" href="https://www.grey-box.ca/wp-content/uploads/2018/05/logoGREY-BOX.jpg" type="image/x-icon" />
 
   <!-- Fonts and icons -->
-  <script src="/assets/js/plugin/webfont/webfont.min.js"></script>
+  <script src="<?= $assetsBase ?>/js/plugin/webfont/webfont.min.js"></script>
   <script>
     WebFont.load({
       google: { families: ["Public Sans:300,400,500,600,700"] },
@@ -19,7 +28,7 @@
           "Font Awesome 5 Brands",
           "simple-line-icons",
         ],
-        urls: ["/assets/css/fonts.min.css"],
+        urls: ["<?= $assetsBase ?>/css/fonts.min.css"],
       },
       active: function () {
         sessionStorage.fonts = true;
@@ -28,13 +37,13 @@
   </script>
 
   <!-- CSS Files -->
-  <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="/assets/css/plugins.min.css" />
-  <link rel="stylesheet" href="/assets/css/kaiadmin.min.css" />
+  <link rel="stylesheet" href="<?= $assetsBase ?>/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="<?= $assetsBase ?>/css/plugins.min.css" />
+  <link rel="stylesheet" href="<?= $assetsBase ?>/css/kaiadmin.min.css" />
 
   <!-- CSS Just for demo purpose, don't include it in your project -->
-  <link rel="stylesheet" href="/assets/css/demo.css" />
-  <link rel="stylesheet" href="/assets/css/owner/feature_toggle.css" />
+  <link rel="stylesheet" href="<?= $assetsBase ?>/css/demo.css" />
+  <link rel="stylesheet" href="<?= $assetsBase ?>/css/owner/feature_toggle.css" />
 
 </head>
 <body>
@@ -66,7 +75,7 @@
         <div class="sidebar-content">
           <ul class="nav nav-secondary">
             <li class="nav-item">
-              <a href="/php_views/owner/odashboard.php">
+              <a href="<?= $ownerBase ?>/odashboard.php">
                 <i class="fas fa-home"></i>
                 <p>Dashboard</p>
               </a>
@@ -103,7 +112,7 @@
             </li> -->
 
             <li class="nav-item">
-              <a href="/php_views/owner/ouser_table.php">
+              <a href="<?= $ownerBase ?>/ouser_table.php">
                 <i class="far fa-chart-bar"></i>
                 <p>User Management</p>  
               </a>
@@ -111,7 +120,7 @@
 
 
             <li class="nav-item">
-              <a  href="/php_views/owner/ofaq_table.php">
+              <a  href="<?= $ownerBase ?>/ofaq_table.php">
                 <i class="fas fa-layer-group"></i>
                 <p>FAQs Management</p>
               </a>
@@ -120,7 +129,7 @@
             
 
             <li class="nav-item">
-              <a href="/php_views/owner/ofeaturetoggle.php">
+              <a href="<?= $ownerBase ?>/ofeaturetoggle.php">
                 <i class="fas fa-table"></i>
                 <p>Feature Toggle</p>
               </a>
@@ -128,7 +137,7 @@
 
 
             <li class="nav-item">
-              <a href="/php_views/owner/owner_restrictions.php">
+              <a href="<?= $ownerBase ?>/owner_restrictions.php">
                 <i class="far fa-chart-bar"></i>
                 <p>Restrictions</p>
               </a>
@@ -136,21 +145,21 @@
 
 
             <li class="nav-item">
-              <a href="/php_views/owner/oreport.php">
+              <a href="<?= $ownerBase ?>/oreport.php">
                 <i class="fas fa-table"></i>
                 <p>Reports</p>
               </a>
             </li>
 
             <li class="nav-item">
-              <a href="/php_views/owner/post.php">
+              <a href="<?= $ownerBase ?>/post.php">
                 <i class="fas fa-pen-square"></i>
                 <p>Broadcast</p>
               </a>
             </li>
 
             <li class="nav-item">
-              <a href="/php_views/owner/support.php">
+              <a href="<?= $ownerBase ?>/support.php">
                   <i class="far fa-question-circle"></i>
                   <p>Support</p>
                 </a>
@@ -168,7 +177,7 @@
           <!-- Logo Header -->
           <div class="logo-header" data-background-color="dark">
             <a href="../index.html" class="logo">
-              <img src="/assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" />
+              <img src="<?= $assetsBase ?>/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" />
             </a>
             <div class="nav-toggle">
               <button class="btn btn-toggle toggle-sidebar">
@@ -229,7 +238,7 @@
                       <div class="notif-center">
                         <a href="#">
                           <div class="notif-img">
-                            <img src="/assets/img/jm_denis.jpg" alt="Img Profile" />
+                            <img src="<?= $assetsBase ?>/img/jm_denis.jpg" alt="Img Profile" />
                           </div>
                           <div class="notif-content">
                             <span class="subject">Louis Rai</span>
@@ -239,7 +248,7 @@
                         </a>
                         <!-- <a href="#">
                           <div class="notif-img">
-                            <img src="/assets/img/chadengle.jpg" alt="Img Profile" />
+                            <img src="<?= $assetsBase ?>/img/chadengle.jpg" alt="Img Profile" />
                           </div>
                           <div class="notif-content">
                             <span class="subject">Chad</span>
@@ -249,7 +258,7 @@
                         </a>
                         <a href="#">
                           <div class="notif-img">
-                            <img src="/assets/img/mlane.jpg" alt="Img Profile" />
+                            <img src="<?= $assetsBase ?>/img/mlane.jpg" alt="Img Profile" />
                           </div>
                           <div class="notif-content">
                             <span class="subject">Jhon Doe</span>
@@ -261,7 +270,7 @@
                         </a>
                         <a href="#">
                           <div class="notif-img">
-                            <img src="/assets/img/talha.jpg" alt="Img Profile" />
+                            <img src="<?= $assetsBase ?>/img/talha.jpg" alt="Img Profile" />
                           </div>
                           <div class="notif-content">
                             <span class="subject">Talha</span>
@@ -411,7 +420,7 @@
               <li class="nav-item topbar-user dropdown hidden-caret">
                 <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
                   <div class="avatar-sm">
-                    <img src="/assets/img/profile.jpg" alt="..." class="avatar-img rounded-circle" />
+                    <img src="<?= $assetsBase ?>/img/profile.jpg" alt="..." class="avatar-img rounded-circle" />
                   </div>
                   <span class="profile-username">
                     <span class="op-7">Hi,</span>
@@ -423,7 +432,7 @@
                     <li>
                       <div class="user-box">
                         <div class="avatar-lg">
-                          <img src="/assets/img/profile.jpg" alt="image profile" class="avatar-img rounded" />
+                          <img src="<?= $assetsBase ?>/img/profile.jpg" alt="image profile" class="avatar-img rounded" />
                         </div>
                         <div class="u-text">
                           <h4>Louis</h4>
@@ -440,7 +449,7 @@
                       <div class="dropdown-divider"></div>
                       <a class="dropdown-item" href="#">Account Setting</a>
                       <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="../captiveportal.php">Logout</a>
+                      <a class="dropdown-item" href="<?= htmlspecialchars($ownerLogoutUrl, ENT_QUOTES) ?>">Logout</a>
                     </li>
                   </div>
                 </ul>

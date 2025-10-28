@@ -4,6 +4,7 @@ require_once dirname(__DIR__, 2) . '/config/paths.php';
 $webBase = rtrim(WEB_BASE, '/');
 $assetsBase = $webBase . '/assets';
 $adminBase = $webBase . '/php_views/final_admin';
+$logoutUrl = $webBase . '/php_views/auth/logout.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -471,7 +472,7 @@ $adminBase = $webBase . '/php_views/final_admin';
                       <div class="dropdown-divider"></div>
                       <a class="dropdown-item" href="#">Account Setting</a>
                       <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">Logout</a>
+                      <a class="dropdown-item" href="<?php echo htmlspecialchars($logoutUrl, ENT_QUOTES); ?>">Logout</a>
                     </li>
                   </div>
                 </ul>

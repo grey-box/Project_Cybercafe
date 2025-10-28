@@ -17,7 +17,7 @@ $user_data = [
 $pageTitle = "O - Add User"; 
 
 // Include the header
-include $_SERVER['DOCUMENT_ROOT'] . '/php_views/asset_for_pages/owner_header.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/Website/php_views/asset_for_pages/owner_header.php';
 ?>
                 <div class="page-inner">
                 <div class="page-header">
@@ -97,7 +97,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/php_views/asset_for_pages/owner_header.php
 
 <?php
 // Include the footer
-include $_SERVER['DOCUMENT_ROOT'] .'/php_views/asset_for_pages/footer.php';
+include $_SERVER['DOCUMENT_ROOT'] .'/Website/php_views/asset_for_pages/footer.php';
 ?>
 <script>
       $(document).ready(function () {

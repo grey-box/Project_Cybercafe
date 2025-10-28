@@ -456,7 +456,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
                       <div class="dropdown-divider"></div>
                       <a class="dropdown-item" href="#">Account Setting</a>
                       <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="<?= WEB_BASE ?>/php_views/user/user_login.php">Logout</a>
+                      <a class="dropdown-item" href="<?= WEB_BASE ?>/php_views/auth/logout.php">Logout</a>
                     </li>
                   </div>
                 </ul>

@@ -2,8 +2,8 @@
 // Set the page title dynamically
 $pageTitle = "O - Dashboard"; 
 
-// Include the header uses /Website as root
-include $_SERVER['DOCUMENT_ROOT'] . '/php_views/asset_for_pages/owner_header.php';
+// Include the header using the Website folder as root
+include $_SERVER['DOCUMENT_ROOT'] . '/Website/php_views/asset_for_pages/owner_header.php';
 
 // Define table data arrays
 $activeUsers = [
@@ -47,7 +47,7 @@ $deviceStatus = [
                     <i class="fas fa-desktop fa-2x"></i>
                     <div>Device Management</div>
                 </a>
-                <a href="help_support.php" class="text-center text-decoration-none">
+                <a href="support.php" class="text-center text-decoration-none">
                     <i class="fas fa-life-ring fa-2x"></i>
                     <div>Help & Support</div>
                 </a>
@@ -178,7 +178,7 @@ $deviceStatus = [
     </div>
 </div>
 
-<?php include $_SERVER['DOCUMENT_ROOT'] . '/php_views/asset_for_pages/footer.php'; ?>
+<?php include $_SERVER['DOCUMENT_ROOT'] . '/Website/php_views/asset_for_pages/footer.php'; ?>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 

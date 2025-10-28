@@ -3,7 +3,7 @@
 $pageTitle = "O - FAQ"; 
 
 // Include the header
-include $_SERVER['DOCUMENT_ROOT'] . '/php_views/asset_for_pages/owner_header.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/Website/php_views/asset_for_pages/owner_header.php';
 
 // Sample data for the FAQ (in a real application, this data would come from a database)
 $faqData = [
@@ -107,5 +107,5 @@ function removeRow(button) {
 
 <?php
 // Include the footer
-include $_SERVER['DOCUMENT_ROOT'] .'/php_views/asset_for_pages/footer.php';
+include $_SERVER['DOCUMENT_ROOT'] .'/Website/php_views/asset_for_pages/footer.php';
 ?>
