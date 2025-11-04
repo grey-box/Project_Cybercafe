@@ -1,6 +1,9 @@
 <?php
 require_once dirname(__DIR__, 2) . '/config/paths.php';
 
+require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/auth.php';
+require_roles(['admin']);
+
 $webBase = rtrim(WEB_BASE, '/');
 $assetsBase = $webBase . '/assets';
 $adminBase = $webBase . '/php_views/final_admin';

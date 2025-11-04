@@ -2,6 +2,9 @@
 declare(strict_types=1);
 require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
 
+require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/auth.php';
+require_roles(['owner']);
+
 $webBase = rtrim(WEB_BASE, '/');
 $assetsBase = $webBase . '/assets';
 $ownerBase = $webBase . '/php_views/owner';

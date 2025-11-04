@@ -1,4 +1,6 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/auth.php';
+require_roles(['admin']);
 // Sample user data array
 $user_data = [
     ['GBale', 'Gareth Bale', 'Active'],

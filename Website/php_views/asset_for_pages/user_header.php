@@ -2,6 +2,9 @@
 declare(strict_types=1);
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
+
+require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/auth.php';
+require_roles(['user']);
 ?>
 
 <!DOCTYPE html>
@@ -204,15 +207,23 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
         <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
           <div class="container-fluid">
             <nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
-              <div class="input-group">
+              <form class="input-group w-auto" action="<?= WEB_BASE ?>/php_views/user/search_results.php" method="get">
                 <div class="input-group-prepend">
                   <button type="submit" class="btn btn-search pe-1">
                     <i class="fa fa-search search-icon"></i>
                   </button>
                 </div>
-                <input type="text" placeholder="Search ..." class="form-control" />
-              </div>
-            </nav>
+                <input
+                  type="text"
+                  name="q"
+                  placeholder="Search payments, invoices, sessions…"
+                  class="form-control"
+                  value="<?= isset($_GET['q']) ? htmlspecialchars((string)$_GET['q']) : '' ?>"
+                  aria-label="Search"
+                />
+              </form>
+          </nav>
+
 
             <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
               <li class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none">
@@ -221,9 +232,9 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
                   <i class="fa fa-search"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-search animated fadeIn">
-                  <form class="navbar-left navbar-form nav-search">
+                  <form class="navbar-left navbar-form nav-search" action="<?= WEB_BASE ?>/php_views/user/search_results.php" method="get">
                     <div class="input-group">
-                      <input type="text" placeholder="Search ..." class="form-control" />
+                      <input type="text" name="q" placeholder="Search ..." class="form-control" />
                     </div>
                   </form>
                 </ul>
@@ -370,7 +381,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
                   <div class="quick-actions-scroll scrollbar-outer">
                     <div class="quick-actions-items">
                       <div class="row m-0">
-                        <a class="col-6 col-md-4 p-0" href="#">
+                        <a class="col-6 col-md-4 p-0" href="<?= WEB_BASE ?>/php_views/user/user_calendar.php">
                           <div class="quick-actions-item">
                             <div class="avatar-item bg-danger rounded-circle">
                               <i class="far fa-calendar-alt"></i>
@@ -386,7 +397,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
                             <span class="text">Maps</span>
                           </div>
                         </a>
-                        <a class="col-6 col-md-4 p-0" href="#">
+                        <a class="col-6 col-md-4 p-0" href="<?= WEB_BASE ?>/php_views/user/user_reports.php">
                           <div class="quick-actions-item">
                             <div class="avatar-item bg-info rounded-circle">
                               <i class="fas fa-file-excel"></i>
@@ -402,7 +413,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
                             <span class="text">Emails</span>
                           </div>
                         </a>
-                        <a class="col-6 col-md-4 p-0" href="#">
+                        <a class="col-6 col-md-4 p-0" href="<?= WEB_BASE ?>/php_views/user/user_invoices.php">
                           <div class="quick-actions-item">
                             <div class="avatar-item bg-primary rounded-circle">
                               <i class="fas fa-file-invoice-dollar"></i>
@@ -410,7 +421,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
                             <span class="text">Invoice</span>
                           </div>
                         </a>
-                        <a class="col-6 col-md-4 p-0" href="#">
+                        <a class="col-6 col-md-4 p-0" href="<?= WEB_BASE ?>/php_views/user/user_payments.php">
                           <div class="quick-actions-item">
                             <div class="avatar-item bg-secondary rounded-circle">
                               <i class="fas fa-credit-card"></i>
@@ -454,7 +465,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
                       <!-- <a class="dropdown-item" href="#">My Balance</a> -->
                       <a class="dropdown-item" href="#">Inbox</a>
                       <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">Account Setting</a>
+                      <a class="dropdown-item" href="<?= WEB_BASE ?>/php_views/user/account_settings.php">Account Setting</a>
                       <div class="dropdown-divider"></div>
                       <a class="dropdown-item" href="<?= WEB_BASE ?>/php_views/auth/logout.php">Logout</a>
                     </li>
