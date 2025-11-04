@@ -19,13 +19,15 @@ function authenticate(string $identifier, string $password): ?array {
     );
     $stmt->execute([':id' => $identifier]);
     $user = $stmt->fetch();
-    if (!$user) {
+
+    if ($user && password_verify($password, $user['access_code'])) {
+        return $user; 
+    }
+    else {
+        $msg = 'Wrong username or password.';
         return null;
     }
-    if (!hash_equals((string) $user['access_code'], $password)) {
-        return null;
-    }
-    return $user;
+   
 }
 
 function require_session(): void {
