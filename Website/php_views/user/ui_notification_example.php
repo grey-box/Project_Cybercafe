@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
-
+require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/auth.php';
+require_roles(['user']);
 // Include the header
 require_once VIEWS_ROOT . '/asset_for_pages/user_header.php';
 ?>
-
 
     <div class="wrapper">
 

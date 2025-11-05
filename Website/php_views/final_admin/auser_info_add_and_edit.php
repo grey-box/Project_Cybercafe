@@ -1,4 +1,6 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/auth.php';
+require_roles(['admin']);
 // Set the page title dynamically
 $pageTitle = "A - Edit User"; 
 $randomUsername = "John Doe";
