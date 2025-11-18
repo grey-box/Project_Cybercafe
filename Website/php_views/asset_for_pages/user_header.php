@@ -5,6 +5,9 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/auth.php';
 require_roles(['user']);
+
+$user = get_curr_user();
+
 ?>
 
 <!DOCTYPE html>
@@ -442,7 +445,7 @@ require_roles(['user']);
                   </div>
                   <span class="profile-username">
                     <span class="op-7">Hi,</span>
-                    <span class="fw-bold">Aniket</span>
+                    <span class="fw-bold"><?= htmlspecialchars($user['full_name']) ?></span>
                   </span>
                 </a>
                 <ul class="dropdown-menu dropdown-user animated fadeIn">
@@ -453,8 +456,8 @@ require_roles(['user']);
                           <img src="<?= WEB_BASE ?>/assets/img/profile.jpg" alt="image profile" class="avatar-img rounded" />
                         </div>
                         <div class="u-text">
-                          <h4>Aniket</h4>
-                          <p class="text-muted">Aniket@yahoo.com</p>
+                          <h4><?= htmlspecialchars($user['full_name']) ?></h4>
+                          <p class="text-muted"><?= htmlspecialchars($user['email']) ?></p>
                           <a href="<?= WEB_BASE ?>/php_views/user/user_profile.php" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
                         </div>
                       </div>

@@ -39,7 +39,9 @@ require_once VIEWS_ROOT . '/asset_for_pages/user_header.php';
         </div>
 
         <hr class="my-4" />
-        <div class="text-muted small">Tip: results are limited to your own data (payments, invoices, sessions, reports, allowed sites you can visit).</div>
+        <div class="text-muted small">
+          Tip: results are limited to your own data (payments, invoices, sessions, reports, allowed sites you can visit).
+        </div>
       </div>
     </div>
   </div>

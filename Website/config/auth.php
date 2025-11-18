@@ -138,3 +138,10 @@ function require_min_role(string $minRole): void {
     exit;
 }
 
+function get_curr_user() {
+    $pdo = get_db();
+    $userId = current_user_id();
+    $stmt = $pdo->prepare("SELECT * FROM user WHERE user_id = :u LIMIT 1");
+    $stmt->execute([':u' => $userId]);
+    return $stmt->fetch();
+}
