@@ -1,5 +1,23 @@
 <?php
+<<<<<<< HEAD
 declare(strict_types=1);
+=======
+require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/auth.php';
+require_roles(['admin']);
+// Sample user data array
+$user_data = [
+    ['GBale', 'Gareth Bale', 'Active'],
+    ['RLouis', 'Louis Rai', 'Inactive'],
+    ['Saniket', 'Aniket Saroha', 'Active'],
+    ['JSmith', 'John Smith', 'Inactive'],
+    ['ADoe', 'Alice Doe', 'Active'],
+    ['TJohnson', 'Tom Johnson', 'Active'],
+    ['LWilliams', 'Liam Williams', 'Inactive'],
+    ['EBrown', 'Emily Brown', 'Active'],
+    ['MBaker', 'Mason Baker', 'Inactive'],
+    ['SWhite', 'Sophia White', 'Active']
+];
+>>>>>>> main
 
 // Set the page title dynamically
 $pageTitle = "A - User Management";

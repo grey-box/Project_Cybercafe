@@ -1,6 +1,11 @@
 <?php
+<<<<<<< HEAD
 declare(strict_types=1);
 
+=======
+require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/auth.php';
+require_roles(['admin']);
+>>>>>>> main
 // Set the page title dynamically
 $pageTitle = "A - Device Management";
 

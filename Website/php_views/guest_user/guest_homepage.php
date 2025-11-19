@@ -3,6 +3,9 @@ declare(strict_types=1);
 $pageTitle = "Guest - Home";
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/auth.php';
+
+require_roles(['guest']);
 
 /** @var PDO $pdo */
 $pdo = require $_SERVER['DOCUMENT_ROOT'] . '/Website/config/db.php';

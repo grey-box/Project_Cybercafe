@@ -1,6 +1,13 @@
 <?php
+<<<<<<< HEAD
 declare(strict_types=1);
 $pageTitle = "A - Dashboard";
+=======
+require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/auth.php';
+require_roles(['admin']);
+// Set the page title dynamically
+$pageTitle = "A - Dashboard"; 
+>>>>>>> main
 
 $root = dirname(__DIR__, 2);
 

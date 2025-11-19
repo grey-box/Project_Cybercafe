@@ -228,3 +228,35 @@ CREATE TABLE IF NOT EXISTS device_restriction (
   mac_address TEXT NOT NULL,
   reason TEXT
 );
+
+/* =========================
+   Support
+   ========================= */
+
+CREATE TABLE IF NOT EXISTS support_ticket (
+  ticket_id TEXT PRIMARY KEY,
+  user_id   TEXT NOT NULL,
+  title     TEXT NOT NULL,
+  description TEXT,
+  status    TEXT NOT NULL DEFAULT 'OPEN',
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES user(user_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_support_ticket_user
+  ON support_ticket(user_id, created_at DESC);
+
+CREATE TABLE IF NOT EXISTS support_message (
+  message_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  ticket_id  TEXT NOT NULL,
+  sender_role TEXT NOT NULL,
+  sender_user_id TEXT,
+  body       TEXT NOT NULL,
+  posted_at  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (ticket_id) REFERENCES support_ticket(ticket_id),
+  FOREIGN KEY (sender_user_id) REFERENCES user(user_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_support_message_ticket
+  ON support_message(ticket_id, posted_at ASC);
