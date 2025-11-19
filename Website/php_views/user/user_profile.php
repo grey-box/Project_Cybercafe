@@ -1,18 +1,38 @@
 <?php
 declare(strict_types=1);
-// Set the page title dynamically
 $pageTitle = "User Profile";
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
 
-// Include the header
-require_once VIEWS_ROOT . '/asset_for_pages/user_header.php';
+/** @var PDO $pdo */
+$pdo = require $_SERVER['DOCUMENT_ROOT'] . '/Website/config/db.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/data_helpers.php';
 
-// Sample device data (you can fetch this from a database)
-$devices = [
-    ['device_name' => 'Device 2', 'data_used' => '3 GB'],
-    ['device_name' => 'Device 3', 'data_used' => '1 GB']
-];
+$requestedUserId = $_GET['user'] ?? 'user.mia';
+$profile = fetchUserProfile($pdo, $requestedUserId);
+$balances = $profile ? fetchUserBalances($pdo, $profile['user_id']) : [];
+$sessions = $profile ? fetchUserSessions($pdo, $profile['user_id']) : [];
+
+if ($profile === null) {
+    $pageTitle = "User Not Found";
+}
+
+$primaryBalance = $balances[0] ?? null;
+$bandwidthAllocated = $primaryBalance
+    ? $primaryBalance['download_speed_limit'] . ' Mbps'
+    : 'N/A';
+$transferRate = $primaryBalance
+    ? $primaryBalance['upload_speed_limit'] . ' Mbps'
+    : 'N/A';
+$latestStatus = $profile['current_status'] ?? 'Unknown';
+$statusChangedAt = $profile['status_changed_at']
+    ? date('Y-m-d H:i', strtotime((string)$profile['status_changed_at']))
+    : 'N/A';
+$monetaryBalance = $primaryBalance
+    ? number_format((float)$primaryBalance['monetary_balance'], 2)
+    : '0.00';
+
+require_once VIEWS_ROOT . '/asset_for_pages/user_header.php';
 ?>
 
 <div class="page-header">
@@ -48,68 +68,62 @@ $devices = [
                 <div class="card-title">Profile</div>
             </div>
             <div class="card-body">
-                <form method="POST" action="">
-                    <!-- Username Input -->
-                    <div class="form-group row">
-                        <label for="username" class="col-sm-2 col-form-label">Username:</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" id="username" name="username" value="Sudeep" readonly>
-                        </div>
+                <?php if ($profile === null): ?>
+                    <div class="alert alert-warning mb-0">
+                        No profile data found for user ID <strong><?= htmlspecialchars($requestedUserId) ?></strong>.
                     </div>
-
-                    <!-- Password Input -->
-                    <!-- <div class="form-group row">
-                        <label for="password" class="col-sm-2 col-form-label">Password:</label>
-                        <div class="col-sm-4">
-                            <input type="password" class="form-control" id="password" name="password" required>
+                <?php else: ?>
+                    <form method="POST" action="">
+                        <div class="form-group row">
+                            <label for="username" class="col-sm-2 col-form-label">User ID:</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="username" name="username" value="<?= htmlspecialchars($profile['user_id']) ?>" readonly>
+                            </div>
                         </div>
-                    </div> -->
-
-                    <!-- Confirm Password Input -->
-                    <!-- <div class="form-group row">
-                        <label for="confirmPassword" class="col-sm-2 col-form-label">Confirm Password:</label>
-                        <div class="col-sm-4">
-                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                        <div class="form-group row">
+                            <label for="fullName" class="col-sm-2 col-form-label">Full Name:</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="fullName" value="<?= htmlspecialchars($profile['full_name']) ?>" readonly>
+                            </div>
                         </div>
-                    </div> -->
-
-                   
-
-                    <!-- Password Field -->
-
-                    <div class="form-group row">
-                        <label for="password" class="col-sm-2 col-form-label">Password:</label>
-                        <div class="col-sm-3">
-                            <input type="text" class="form-control" id="password" name="password" readonly required>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Role:</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" value="<?= htmlspecialchars($profile['role_name']) ?>" readonly>
+                            </div>
                         </div>
-                    </div>
-
-                    <!-- Bandwidth Select -->
-
-                    <div class="form-group row">
-                        <label for="bandwidth" class="col-sm-2 col-form-label">Bandwidth Allocated:</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" id="bandwidth" name="bandwidth" value="150" readonly>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Current Status:</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" value="<?= htmlspecialchars($latestStatus) ?> (updated <?= htmlspecialchars($statusChangedAt) ?>)" readonly>
+                            </div>
                         </div>
-                    </div>
-
-                    <!-- Data Transfer Rate Select -->
-
-                    <div class="form-group row">
-                        <label for="transferRate" class="col-sm-2 col-form-label">Data Transfer Rate:</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" id="transferRate" name="transferRate" value="Slow Lane" readonly>
+                        <div class="form-group row">
+                            <label for="password" class="col-sm-2 col-form-label">Access Code:</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" id="password" name="password" value="<?= htmlspecialchars($profile['access_code'] ?? '') ?>" readonly>
+                            </div>
                         </div>
-                    </div>
-
-                    <!-- Save and Cancel Buttons -->
-                    <!-- <div class="form-group row">
-                        <div class="col-sm-12 text-right">
-                            <button type="button" class="btn btn-secondary">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Save</button>
+                        <div class="form-group row">
+                            <label for="bandwidth" class="col-sm-2 col-form-label">Bandwidth Allocated:</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="bandwidth" name="bandwidth" value="<?= htmlspecialchars($bandwidthAllocated) ?>" readonly>
+                            </div>
                         </div>
-                    </div> -->
-                </form>
+                        <div class="form-group row">
+                            <label for="transferRate" class="col-sm-2 col-form-label">Upload Rate:</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="transferRate" name="transferRate" value="<?= htmlspecialchars($transferRate) ?>" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Balance:</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" value="$<?= htmlspecialchars($monetaryBalance) ?>" readonly>
+                            </div>
+                        </div>
+                    </form>
+                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -127,24 +141,33 @@ $devices = [
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>Device Name</th>
-                                <th>Data Used</th>
-                                <th>Remove</th>
+                                <th>Device</th>
+                                <th>Total Data (GB)</th>
+                                <th>Last Activity</th>
+                                <th>Session</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Device 1</td>
-                                <td>2 GB</td>
-                                <td>Main Device</td>
-                            </tr>
-                             <?php foreach ($devices as $device) : ?>
+                            <?php if (empty($sessions)): ?>
                                 <tr>
-                                    <td><?php echo $device['device_name']; ?></td>
-                                    <td><?php echo $device['data_used']; ?></td>
-                                    <td><button class="btn btn-danger btn-sm" onclick="removeDevice(this)">Remove</button></td>
+                                    <td colspan="4" class="text-center text-muted">No sessions recorded yet.</td>
                                 </tr>
-                            <?php endforeach; ?> 
+                            <?php else: ?>
+                                <?php foreach ($sessions as $session): ?>
+                                    <tr>
+                                        <td><?= htmlspecialchars($session['host_name'] ?: $session['mac_address']) ?></td>
+                                        <td><?= htmlspecialchars(number_format((float)$session['total_gb'], 3)) ?></td>
+                                        <td>
+                                            <?php if ($session['logout_timestamp'] === null): ?>
+                                                Active now
+                                            <?php else: ?>
+                                                <?= htmlspecialchars(date('Y-m-d H:i', strtotime((string)$session['logout_timestamp']))) ?>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td><?= htmlspecialchars($session['session_id']) ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
@@ -157,27 +180,6 @@ $devices = [
 // Include the footer
 require_once VIEWS_ROOT . '/asset_for_pages/footer.php'
 ?>
-
-<script>
-
-function generatePassword() {
-    var words = ["Horse", "Battery", "Staple", "Cloud", "Secure", "Bridge", "River", "Table", "Laptop", "Coffee"];
-    var password = words[Math.floor(Math.random() * words.length)] + 
-                   words[Math.floor(Math.random() * words.length)] + 
-                   words[Math.floor(Math.random() * words.length)] + 
-                   Math.floor(Math.random() * 100);
-    document.getElementById("password").value = password;
-}
-
-// JavaScript function to remove a device with confirmation
-function removeDevice(button) {
-    const confirmation = confirm("Do you really want to remove this device?");
-    if (confirmation) {
-        const row = button.closest('tr');
-        row.parentNode.removeChild(row);
-    }
-}
-</script>
 
 <script>
 // Form validation and submission

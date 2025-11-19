@@ -1,19 +1,61 @@
 <?php
+declare(strict_types=1);
+
 // Set the page title dynamically
-$pageTitle = "A - Device Management"; 
+$pageTitle = "A - Device Management";
+
+$root = dirname(__DIR__, 2);
+
+/** @var PDO $pdo */
+$pdo = require $root . '/config/db.php';
+require_once $root . '/config/data_helpers.php';
+
+$rows = fetchDeviceStatusList($pdo, 50);
+
+$devices = [
+    ['Device ID', 'Device Name', 'User', 'Status', 'Last Seen', 'IP Address'],
+];
+
+$onlineDevices = 0;
+$offlineDevices = 0;
+$maintenanceDevices = 0;
+
+foreach ($rows as $row) {
+    $deviceId = (string)($row['session_id'] ?? '');
+    $deviceName = trim((string)($row['host_name'] ?? ''));
+    if ($deviceName === '') {
+        $deviceName = 'Unknown Device';
+    }
+    $userName = trim((string)($row['full_name'] ?? ''));
+    if ($userName === '') {
+        $userName = (string)($row['user_id'] ?? 'Unknown User');
+    }
+    $status = (string)($row['status'] ?? 'Unknown');
+    $lastSeen = (string)($row['last_seen_label'] ?? 'Unknown');
+    $ip = (string)($row['ip_address'] ?? 'N/A');
+
+    if ($status === 'Online') {
+        $onlineDevices++;
+    } elseif ($status === 'Offline') {
+        $offlineDevices++;
+    } elseif ($status === 'Maintenance') {
+        $maintenanceDevices++;
+    }
+
+    $devices[] = [
+        $deviceId,
+        $deviceName,
+        $userName,
+        $status,
+        $lastSeen,
+        $ip,
+    ];
+}
+
+$totalDevices = count($rows);
 
 // Include the header
 include('../asset_for_pages/admin_header.php');
-
-// Sample device data
-$devices = [
-    ['Device ID', 'Device Name', 'User', 'Status', 'Last Seen', 'IP Address'],
-    ['DEV001', 'Gaming PC 1', 'John Doe', 'Online', '2 mins ago', '192.168.1.101'],
-    ['DEV002', 'Laptop Station 2', 'Jane Smith', 'Online', '5 mins ago', '192.168.1.102'],
-    ['DEV003', 'Workstation 3', 'Mike Johnson', 'Offline', '1 hour ago', '192.168.1.103'],
-    ['DEV004', 'Gaming PC 2', 'Sarah Wilson', 'Online', '1 min ago', '192.168.1.104'],
-    ['DEV005', 'Laptop Station 1', 'Tom Brown', 'Maintenance', 'N/A', '192.168.1.105']
-];
 ?>
 
 <div class="page-inner">
@@ -45,7 +87,7 @@ $devices = [
         <div class="col-md-3">
             <div class="card">
                 <div class="card-body text-center">
-                    <h4 class="text-success">4</h4>
+                    <h4 class="text-success"><?php echo htmlspecialchars((string)$onlineDevices); ?></h4>
                     <p class="mb-0">Online Devices</p>
                 </div>
             </div>
@@ -53,7 +95,7 @@ $devices = [
         <div class="col-md-3">
             <div class="card">
                 <div class="card-body text-center">
-                    <h4 class="text-danger">1</h4>
+                    <h4 class="text-danger"><?php echo htmlspecialchars((string)$offlineDevices); ?></h4>
                     <p class="mb-0">Offline Devices</p>
                 </div>
             </div>
@@ -61,7 +103,7 @@ $devices = [
         <div class="col-md-3">
             <div class="card">
                 <div class="card-body text-center">
-                    <h4 class="text-warning">1</h4>
+                    <h4 class="text-warning"><?php echo htmlspecialchars((string)$maintenanceDevices); ?></h4>
                     <p class="mb-0">Maintenance</p>
                 </div>
             </div>
@@ -69,7 +111,7 @@ $devices = [
         <div class="col-md-3">
             <div class="card">
                 <div class="card-body text-center">
-                    <h4 class="text-info">5</h4>
+                    <h4 class="text-info"><?php echo htmlspecialchars((string)$totalDevices); ?></h4>
                     <p class="mb-0">Total Devices</p>
                 </div>
             </div>

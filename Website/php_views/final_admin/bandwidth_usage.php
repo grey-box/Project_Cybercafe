@@ -1,19 +1,74 @@
 <?php
+declare(strict_types=1);
+
 // Set the page title dynamically
-$pageTitle = "A - Bandwidth Usage"; 
+$pageTitle = "A - Bandwidth Usage";
+
+$root = dirname(__DIR__, 2);
+
+/** @var PDO $pdo */
+$pdo = require $root . '/config/db.php';
+require_once $root . '/config/data_helpers.php';
+
+$rows = fetchPerUserBandwidthSummary($pdo);
+
+// Shape data for the existing table rendering logic.
+$bandwidthData = [
+    ['User Name', 'Current Usage (GB)', 'Allocated (GB)', 'Usage %', 'Status'],
+];
+
+$totalUsed = 0.0;
+$totalAllocated = 0.0;
+$percentSum = 0.0;
+$percentCount = 0;
+$criticalCount = 0;
+
+foreach ($rows as $row) {
+    $name = trim((string)($row['full_name'] ?? ''));
+    if ($name === '') {
+        $name = (string)($row['user_id'] ?? 'Unknown User');
+    }
+
+    $used = (float)($row['used_gb'] ?? 0.0);
+    $allocated = (float)($row['allocated_gb'] ?? 0.0);
+    $percent = $row['usage_percent'];
+    $status = (string)($row['usage_status'] ?? 'Unknown');
+
+    $totalUsed += $used;
+    $totalAllocated += $allocated;
+
+    if ($percent !== null) {
+        $percentSum += (float)$percent;
+        $percentCount++;
+    }
+
+    if ($status === 'Critical') {
+        $criticalCount++;
+    }
+
+    $percentLabel = $percent !== null
+        ? number_format((float)$percent, 1) . '%'
+        : 'N/A';
+
+    $bandwidthData[] = [
+        $name,
+        number_format($used, 2),
+        $allocated > 0.0 ? number_format($allocated, 2) : 'N/A',
+        $percentLabel,
+        $status,
+    ];
+}
+
+$totalUsedLabel = number_format($totalUsed, 2) . ' GB';
+$totalAllocatedLabel = $totalAllocated > 0.0
+    ? number_format($totalAllocated, 2) . ' GB'
+    : 'N/A';
+$averageUsageLabel = $percentCount > 0
+    ? number_format($percentSum / $percentCount, 1) . '%'
+    : 'N/A';
 
 // Include the header
 include('../asset_for_pages/admin_header.php');
-
-// Sample bandwidth usage data
-$bandwidthData = [
-    ['User Name', 'Current Usage (GB)', 'Allocated (GB)', 'Usage %', 'Status'],
-    ['John Doe', '45', '100', '45%', 'Normal'],
-    ['Jane Smith', '78', '100', '78%', 'Warning'],
-    ['Mike Johnson', '95', '100', '95%', 'Critical'],
-    ['Sarah Wilson', '32', '50', '64%', 'Normal'],
-    ['Tom Brown', '48', '50', '96%', 'Critical']
-];
 ?>
 
 <div class="page-inner">
@@ -45,7 +100,7 @@ $bandwidthData = [
         <div class="col-md-3">
             <div class="card">
                 <div class="card-body text-center">
-                    <h4 class="text-primary">298 GB</h4>
+                    <h4 class="text-primary"><?php echo htmlspecialchars($totalUsedLabel); ?></h4>
                     <p class="mb-0">Total Used</p>
                 </div>
             </div>
@@ -53,7 +108,7 @@ $bandwidthData = [
         <div class="col-md-3">
             <div class="card">
                 <div class="card-body text-center">
-                    <h4 class="text-success">400 GB</h4>
+                    <h4 class="text-success"><?php echo htmlspecialchars($totalAllocatedLabel); ?></h4>
                     <p class="mb-0">Total Allocated</p>
                 </div>
             </div>
@@ -61,7 +116,7 @@ $bandwidthData = [
         <div class="col-md-3">
             <div class="card">
                 <div class="card-body text-center">
-                    <h4 class="text-warning">74.5%</h4>
+                    <h4 class="text-warning"><?php echo htmlspecialchars($averageUsageLabel); ?></h4>
                     <p class="mb-0">Average Usage</p>
                 </div>
             </div>
@@ -69,7 +124,7 @@ $bandwidthData = [
         <div class="col-md-3">
             <div class="card">
                 <div class="card-body text-center">
-                    <h4 class="text-danger">2</h4>
+                    <h4 class="text-danger"><?php echo htmlspecialchars((string)$criticalCount); ?></h4>
                     <p class="mb-0">Critical Users</p>
                 </div>
             </div>

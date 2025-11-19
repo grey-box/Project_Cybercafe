@@ -1,20 +1,26 @@
 <?php
-// Sample user data array
-$user_data = [
-    ['GBale', 'Gareth Bale', 'Active'],
-    ['RLouis', 'Louis Rai', 'Inactive'],
-    ['Saniket', 'Aniket Saroha', 'Active'],
-    ['JSmith', 'John Smith', 'Inactive'],
-    ['ADoe', 'Alice Doe', 'Active'],
-    ['TJohnson', 'Tom Johnson', 'Active'],
-    ['LWilliams', 'Liam Williams', 'Inactive'],
-    ['EBrown', 'Emily Brown', 'Active'],
-    ['MBaker', 'Mason Baker', 'Inactive'],
-    ['SWhite', 'Sophia White', 'Active']
-];
+declare(strict_types=1);
 
 // Set the page title dynamically
-$pageTitle = "A - Add User"; 
+$pageTitle = "A - User Management";
+
+$root = dirname(__DIR__, 2);
+
+/** @var PDO $pdo */
+$pdo = require $root . '/config/db.php';
+require_once $root . '/config/data_helpers.php';
+
+$users = fetchAllUsersWithStatus($pdo);
+
+// Shape data for the existing table rendering logic.
+$user_data = array_map(static function (array $row): array {
+    $status = $row['status_code'] ?? 'UNKNOWN';
+    return [
+        $row['user_id'] ?? '',
+        $row['full_name'] ?? '',
+        $status,
+    ];
+}, $users);
 
 // Include the header
 include('../asset_for_pages/admin_header.php');
