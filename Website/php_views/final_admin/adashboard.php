@@ -1,36 +1,33 @@
 <?php
-// Set the page title dynamically
-$pageTitle = "A - Dashboard"; 
+declare(strict_types=1);
+$pageTitle = "A - Dashboard";
 
-// Include the header
-include('../asset_for_pages/admin_header.php');
+$root = dirname(__DIR__, 2);
 
-// Define table data arrays
-$activeUsers = [
-    ["John Doe", "25 KB/s", "4 mins ago."],
-    ["Alex Doe", "13 KB/s", "1 min ago."],
-    ["Guest User 1", "9 KB/s", "Active Now."]
-];
+/** @var PDO $pdo */
+$pdo = require $root . '/config/db.php';
+require_once $root . '/config/data_helpers.php';
 
-$bandwidthUsage = [
-    ["John Doe", 50],
-    ["Jane Smith", 40],
-    ["Michael Lee", 30]
-];
+$activeSessions = fetchDashboardActiveSessions($pdo, 7);
+$bandwidthUsage = fetchDashboardBandwidthUsage($pdo);
+$systemEvents = fetchDashboardEventLog($pdo, 8);
+$activeDeviceCount = fetchActiveDeviceCount($pdo);
+$deviceUsage = fetchDeviceUsage($pdo, 5);
+$recentPayments = fetchRecentPayments($pdo, 5);
+$balanceAlerts = fetchBalanceAlerts($pdo, 5);
 
-$deviceStatus = [
-  ["Hotspot Uptime (Last 24 hrs)", "23h 45m"],
-  ["Hotspot Restarts (Last 24 hrs)", "1"],
-  ["Time Since Last Reboot", "5h 20m"],
-  ["Speed Tier (Low) - Bandwidth Used", "50 GB"],
-  ["Speed Tier (Medium) - Bandwidth Used", "40 GB"],
-  ["Speed Tier (High) - Bandwidth Used", "30 GB"]
-];
+$chartLabels = array_column($bandwidthUsage, 'full_name');
+$chartData = array_map(function (array $row): float {
+    return (float)$row['total_gb'];
+}, $bandwidthUsage);
+$totalBandwidth = array_sum($chartData);
+$deviceLabels = array_column($deviceUsage, 'label');
+$deviceData = array_map(static fn(array $row): float => $row['total_gb'], $deviceUsage);
 
+include '../asset_for_pages/admin_header.php';
 ?>
 
 <div class="page-inner">
-    <!-- Quick Links Section -->
     <div class="mb-4">
         <button class="btn btn-primary" id="toggleQuickLinks">Quick Links</button>
         <div id="quickLinks" class="mt-3">
@@ -55,16 +52,15 @@ $deviceStatus = [
         </div>
     </div>
 
-    <!-- Dashboard Main Content -->
     <div class="row">
         <div class="col-md-4">
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">Total Bandwidths Used Jan 2025 4th Week</div>
+                    <div class="card-title">Total Bandwidth (GB)</div>
                 </div>
                 <div class="card-body">
                     <canvas id="bandwidthChart"></canvas>
-                    <div class="mt-3">Total Used: 120 GB</div>
+                    <div class="mt-3">Total Used: <?php echo htmlspecialchars(number_format($totalBandwidth, 2)); ?> GB</div>
                 </div>
             </div>
         </div>
@@ -72,7 +68,7 @@ $deviceStatus = [
         <div class="col-md-4 d-flex">
             <div class="card flex-fill">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <div class="card-title">Active Users</div>
+                    <div class="card-title">Recent Sessions</div>
                     <a href="<?php echo $adminBase; ?>/add_user.php">
                         <button class="btn btn-success">Add User</button>
                     </a>
@@ -81,20 +77,31 @@ $deviceStatus = [
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
-                                <tr>
-                                    <th>Names</th>
-                                    <th>Data Rate [Avg of each 5mins]</th>
-                                    <th>Last Active</th>
-                                </tr>
+                            <tr>
+                                <th>Names</th>
+                                <th>Data Rate (KB/s)</th>
+                                <th>Last Active</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($activeUsers as $user): ?>
+                            <?php if (empty($activeSessions)): ?>
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted">No recent sessions to display.</td>
+                                </tr>
+                            <?php else: ?>
+                                <?php foreach ($activeSessions as $session): ?>
                                     <tr>
-                                        <td><a style="text-decoration: none; color: inherit;" href="<?php echo $adminBase; ?>/auser_info_add_and_edit.php"><?= $user[0] ?></a></td>
-                                        <td><?= $user[1] ?></td>
-                                        <td><?= $user[2] ?></td>
+                                        <td>
+                                            <a style="text-decoration: none; color: inherit;"
+                                               href="<?php echo $adminBase; ?>/auser_info_add_and_edit.php?user=<?php echo htmlspecialchars($session['user_id']); ?>">
+                                                <?php echo htmlspecialchars($session['full_name']); ?>
+                                            </a>
+                                        </td>
+                                        <td><?php echo htmlspecialchars(number_format((float)$session['avg_kb_s'], 1)); ?></td>
+                                        <td><?php echo htmlspecialchars($session['last_activity_label']); ?></td>
                                     </tr>
                                 <?php endforeach; ?>
+                            <?php endif; ?>
                             </tbody>
                         </table>
                     </div>
@@ -109,15 +116,18 @@ $deviceStatus = [
                 </div>
                 <div class="card-body">
                     <canvas id="devicesChart"></canvas>
-                    <div class="mt-3">Device Connected: <span id="totalDevices">5</span></div>
+                    <?php if (empty($deviceUsage)): ?>
+                        <p class="text-muted mt-3 mb-0">No device usage recorded yet.</p>
+                    <?php else: ?>
+                        <div class="mt-3">Devices Connected: <?php echo (int)$activeDeviceCount; ?></div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Bandwidth Usage Section -->
     <div class="row mt-4">
-        <div class="col-md-12">
+        <div class="col-lg-6">
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">Bandwidth Usage by Users</div>
@@ -126,18 +136,62 @@ $deviceStatus = [
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
-                                <tr>
-                                    <th>User Name</th>
-                                    <th>Data Used Per Day (GB)</th>
-                                </tr>
+                            <tr>
+                                <th>User Name</th>
+                                <th>Total Data (GB)</th>
+                            </tr>
                             </thead>
                             <tbody>
+                            <?php if (empty($bandwidthUsage)): ?>
+                                <tr>
+                                    <td colspan="2" class="text-center text-muted">No usage data available.</td>
+                                </tr>
+                            <?php else: ?>
                                 <?php foreach ($bandwidthUsage as $usage): ?>
                                     <tr>
-                                        <td><?= $usage[0] ?></td>
-                                        <td><?= $usage[1] ?></td>
+                                        <td><?php echo htmlspecialchars($usage['full_name']); ?></td>
+                                        <td><?php echo htmlspecialchars(number_format((float)$usage['total_gb'], 2)); ?></td>
                                     </tr>
                                 <?php endforeach; ?>
+                            <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Recent Payments</div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Amount</th>
+                                <th>Method</th>
+                                <th>Time</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php if (empty($recentPayments)): ?>
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted">No payments recorded.</td>
+                                </tr>
+                            <?php else: ?>
+                                <?php foreach ($recentPayments as $payment): ?>
+                                    <tr>
+                                        <td><?php echo htmlspecialchars($payment['full_name']); ?></td>
+                                        <td>$<?php echo htmlspecialchars(number_format((float)$payment['amount_charged'], 2)); ?></td>
+                                        <td><?php echo htmlspecialchars($payment['payment_method']); ?></td>
+                                        <td><?php echo htmlspecialchars(date('Y-m-d H:i', strtotime((string)$payment['payment_datetime']))); ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                             </tbody>
                         </table>
                     </div>
@@ -146,29 +200,74 @@ $deviceStatus = [
         </div>
     </div>
 
-    <!-- Device Status Section -->
     <div class="row mt-4">
-        <div class="col-md-12">
+        <div class="col-lg-6">
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">Device Status</div>
+                    <div class="card-title">Balance Alerts</div>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
-                                <tr>
-                                    <th>Status</th>
-                                    <th></th>
-                                </tr>
+                            <tr>
+                                <th>User</th>
+                                <th>Queue</th>
+                                <th>Balance</th>
+                                <th>Updated</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($deviceStatus as $status): ?>
+                            <?php if (empty($balanceAlerts)): ?>
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted">No negative balances detected.</td>
+                                </tr>
+                            <?php else: ?>
+                                <?php foreach ($balanceAlerts as $alert): ?>
                                     <tr>
-                                        <td><?= $status[0] ?></td>
-                                        <td><?= $status[1] ?></td>
+                                        <td><?php echo htmlspecialchars($alert['full_name']); ?></td>
+                                        <td><?php echo htmlspecialchars($alert['queue_name']); ?></td>
+                                        <td class="<?php echo $alert['monetary_balance'] < 0 ? 'text-danger' : 'text-warning'; ?>">
+                                            $<?php echo htmlspecialchars(number_format((float)$alert['monetary_balance'], 2)); ?>
+                                        </td>
+                                        <td><?php echo htmlspecialchars(date('Y-m-d H:i', strtotime((string)$alert['last_update_timestamp']))); ?></td>
                                     </tr>
                                 <?php endforeach; ?>
+                            <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Latest System Events</div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Event</th>
+                                <th>Occurred</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php if (empty($systemEvents)): ?>
+                                <tr>
+                                    <td colspan="2" class="text-center text-muted">No recent events.</td>
+                                </tr>
+                            <?php else: ?>
+                                <?php foreach ($systemEvents as $event): ?>
+                                    <tr>
+                                        <td><strong><?php echo htmlspecialchars($event['event_type']); ?>:</strong> <?php echo htmlspecialchars($event['description']); ?></td>
+                                        <td><?php echo htmlspecialchars(date('Y-m-d H:i', strtotime((string)$event['occurred_at']))); ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                             </tbody>
                         </table>
                     </div>
@@ -178,83 +277,86 @@ $deviceStatus = [
     </div>
 </div>
 
-<?php include('../asset_for_pages/footer.php'); ?>
-
+<?php include '../asset_for_pages/footer.php'; ?>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-        const ctx = document.getElementById('bandwidthChart').getContext('2d');
-        const data = {
-            labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"], // Updated labels
-            datasets: [{
-                label: "Bandwidth Used (GB)",
-                data: [15, 17, 12, 22, 20, 25, 30],
-                borderColor: "#007bff",
-                backgroundColor: "rgba(0, 123, 255, 0.1)",
-                borderWidth: 2,
-                fill: true,
-                tension: 0.3,
-                pointRadius: 5,
-                pointBackgroundColor: "#007bff"
-            }]
-        };
+const ctx = document.getElementById('bandwidthChart').getContext('2d');
+const dashboardData = {
+    labels: <?php echo json_encode($chartLabels, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>,
+    datasets: [{
+        label: "Bandwidth Used (GB)",
+        data: <?php echo json_encode($chartData, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>,
+        borderColor: "#007bff",
+        backgroundColor: "rgba(0, 123, 255, 0.1)",
+        borderWidth: 2,
+        fill: true,
+        tension: 0.3,
+        pointRadius: 5,
+        pointBackgroundColor: "#007bff"
+    }]
+};
 
-        new Chart(ctx, {
-            type: 'line',
-            data: data,
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'top'
-                    }
-                },
-                scales: {
-                    x: {
-                        grid: {
-                            display: false
-                        }
-                    },
-                    y: {
-                        beginAtZero: true
-                    }
+const config = {
+    type: "line",
+    data: dashboardData,
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: true, position: "top" },
+            tooltip: {
+                callbacks: {
+                    label: (ctx) => `${ctx.parsed.y.toFixed(2)} GB`
                 }
             }
-        });
-    </script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var ctx = document.getElementById('devicesChart').getContext('2d');
-
-        var deviceLabels = ["Device 1", "Device 2", "Device 3", "Device 4", "Device 5"];
-        var deviceData = [10, 15, 5, 20, 25]; // Data usage in GB
-
-        var devicesChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: deviceLabels,
-                datasets: [{
-                    label: 'Data Used (GB)',
-                    data: deviceData,
-                    backgroundColor: '#ffc107',
-                    borderColor: '#ffc107',
-                    borderWidth: 1
-                }]
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                title: { display: true, text: "Bandwidth (GB)" }
             },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
+            x: {
+                title: { display: true, text: "Users" }
             }
-        });
+        }
+    }
+};
 
-        // Update total devices count
-        document.getElementById('totalDevices').innerText = deviceData.length;
-    });
+new Chart(ctx, config);
+
+const devicesCtx = document.getElementById('devicesChart').getContext('2d');
+new Chart(devicesCtx, {
+    type: 'bar',
+    data: {
+        labels: <?php echo json_encode($deviceLabels, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>,
+        datasets: [{
+            label: 'Data Used (GB)',
+            data: <?php echo json_encode($deviceData, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>,
+            backgroundColor: '#ffc107',
+            borderRadius: 4,
+            maxBarThickness: 42
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: true, position: 'top' }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                title: { display: true, text: 'Data Used (GB)' }
+            },
+            x: {
+                title: { display: true, text: 'Devices' }
+            }
+        }
+    }
+});
+
+document.getElementById('toggleQuickLinks').addEventListener('click', function () {
+    const quickLinks = document.getElementById('quickLinks');
+    quickLinks.style.display = quickLinks.style.display === 'none' || quickLinks.style.display === '' ? 'block' : 'none';
+});
 </script>
