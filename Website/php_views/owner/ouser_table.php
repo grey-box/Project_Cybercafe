@@ -1,19 +1,25 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/auth.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/db_functions.php';
+
 require_roles(['owner']);
 // Sample user data array
-$user_data = [
-    ['GBale', 'Gareth Bale', 'Active'],
-    ['RLouis', 'Louis Rai', 'Inactive'],
-    ['Saniket', 'Aniket Saroha', 'Active'],
-    ['JSmith', 'John Smith', 'Inactive'],
-    ['ADoe', 'Alice Doe', 'Active'],
-    ['TJohnson', 'Tom Johnson', 'Active'],
-    ['LWilliams', 'Liam Williams', 'Inactive'],
-    ['EBrown', 'Emily Brown', 'Active'],
-    ['MBaker', 'Mason Baker', 'Inactive'],
-    ['SWhite', 'Sophia White', 'Active']
-];
+
+//Old data
+//$user_data = [
+//    ['GBale', 'Gareth Bale', 'Active'],
+//    ['RLouis', 'Louis Rai', 'Inactive'],
+//    ['Saniket', 'Aniket Saroha', 'Active'],
+//    ['JSmith', 'John Smith', 'Inactive'],
+//    ['ADoe', 'Alice Doe', 'Active'],
+//    ['TJohnson', 'Tom Johnson', 'Active'],
+//    ['LWilliams', 'Liam Williams', 'Inactive'],
+//    ['EBrown', 'Emily Brown', 'Active'],
+//    ['MBaker', 'Mason Baker', 'Inactive'],
+//    ['SWhite', 'Sophia White', 'Active']
+//];
+
+$user_data = getUserIdNameAndCurrentStatus();
 
 // Set the page title dynamically
 $pageTitle = "O - Add User"; 

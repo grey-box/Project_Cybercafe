@@ -1,22 +1,42 @@
 <?php
+
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+
 require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/auth.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/db_functions.php';
 require_roles(['owner']);
+
 // Sample user data array
-$user_data = [
-    ['GBale', 'Gareth Bale', 'Active'],
-    ['RLouis', 'Louis Rai', 'Inactive'],
-    ['Saniket', 'Aniket Saroha', 'Active'],
-    ['JSmith', 'John Smith', 'Inactive'],
-    ['ADoe', 'Alice Doe', 'Active'],
-    ['TJohnson', 'Tom Johnson', 'Active'],
-    ['LWilliams', 'Liam Williams', 'Inactive'],
-    ['EBrown', 'Emily Brown', 'Active'],
-    ['MBaker', 'Mason Baker', 'Inactive'],
-    ['SWhite', 'Sophia White', 'Active']
-];
+
+//Old data
+//$user_data = [
+//    ['GBale', 'Gareth Bale', 'Active'],
+//    ['RLouis', 'Louis Rai', 'Inactive'],
+//    ['Saniket', 'Aniket Saroha', 'Active'],
+//    ['JSmith', 'John Smith', 'Inactive'],
+//    ['ADoe', 'Alice Doe', 'Active'],
+//    ['TJohnson', 'Tom Johnson', 'Active'],
+//    ['LWilliams', 'Liam Williams', 'Inactive'],
+//    ['EBrown', 'Emily Brown', 'Active'],
+//    ['MBaker', 'Mason Baker', 'Inactive'],
+//    ['SWhite', 'Sophia White', 'Active']
+//];
+
+$user_data = getUserIdNameAndCurrentStatus();
+
+//echo '<pre>';
+//var_dump($user_data);
+//echo '</pre>';
+
+//die();
 
 // Set the page title dynamically
-$pageTitle = "O - Add User"; 
+$pageTitle = "O - Check User"; 
+
+
 
 // Include the header
 include $_SERVER['DOCUMENT_ROOT'] . '/Website/php_views/asset_for_pages/owner_header.php';

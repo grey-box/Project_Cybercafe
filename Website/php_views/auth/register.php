@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email'] ?? '');
     $phone_number = trim($_POST['phone_number'] ?? '');
     $access_code = trim($_POST['access_code'] ?? '');
-    $user_role = 'user'; 
+    $user_role = 'owner';           //All New Users are set as owner changed if needed
     $account_creation_date = date('Y-m-d H:i:s');
 
     if ($full_name === '' || $email === '' || $access_code === '') {

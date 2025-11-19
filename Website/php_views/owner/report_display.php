@@ -1,5 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/auth.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/db_functions.php';
+
 require_roles(['owner']);
 // Set the page title dynamically
 $pageTitle = "Report Page";
@@ -7,27 +9,34 @@ $pageTitle = "Report Page";
 // Include the header
 include $_SERVER['DOCUMENT_ROOT'] . '/Website/php_views/asset_for_pages/owner_header.php';
 
+
 // Example array of demo data (replace with actual project data later)
-$reportData = [
-  [
-    'User ID'      => 'Saniket',
-    'Usage (MB)'   => 750,
-    'Session Time' => '1h 20m',
-    'Status'       => 'Active'
-  ],
-  [
-    'User ID'      => 'GBale',
-    'Usage (MB)'   => 1200,
-    'Session Time' => '2h 05m',
-    'Status'       => 'Active'
-  ],
-  [
-    'User ID'      => 'RLouis',
-    'Usage (MB)'   => 500,
-    'Session Time' => '0h 45m',
-    'Status'       => 'Inactive'
-  ],
-];
+// $reportData = [
+//   [
+//     'User ID'      => 'Saniket',
+//     'Usage (MB)'   => 750,
+//     'Session Time' => '1h 20m',
+//     'Status'       => 'Active'
+//   ],
+//   [
+//     'User ID'      => 'GBale',
+//     'Usage (MB)'   => 1200,
+//     'Session Time' => '2h 05m',
+//     'Status'       => 'Active'
+//   ],
+//   [
+//     'User ID'      => 'RLouis',
+//     'Usage (MB)'   => 500,
+//     'Session Time' => '0h 45m',
+//     'Status'       => 'Inactive'
+//   ],
+// ];
+
+
+$result = getUserSessionSummary();
+
+var_dump($result);
+
 ?>
 
 <div class="page-header">
