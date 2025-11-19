@@ -1,6 +1,9 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/auth.php';
 require_roles(['owner']);
+require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/db_functions.php';
+
 // Set the page title dynamically
 $pageTitle = "O - Dashboard"; 
 
@@ -8,18 +11,25 @@ $pageTitle = "O - Dashboard";
 include $_SERVER['DOCUMENT_ROOT'] . '/Website/php_views/asset_for_pages/owner_header.php';
 
 // Define table data arrays
-$activeUsers = [
-    ["John Doe", "25 KB/s", "4 mins ago."],
-    ["Alex Doe", "13 KB/s", "1 min ago."],
-    ["Guest User 1", "9 KB/s", "Active Now."]
-];
+//$activeUsers = [
+//    ["John Doe", "25 KB/s", "4 mins ago."],
+//    ["Alex Doe", "13 KB/s", "1 min ago."],
+//    ["Guest User 1", "9 KB/s", "Active Now."]
+//];
 
-$bandwidthUsage = [
-    ["John Doe", 50],
-    ["Jane Smith", 40],
-    ["Michael Lee", 30]
-];
+$activeUsers = getUserQueueAndTime();
 
+
+//$bandwidthUsage = [
+//    ["John Doe", 50],
+//    ["Jane Smith", 40],
+//    ["Michael Lee", 30]
+//];
+
+$bandwidthUsage = getUserNameAndQuota();
+
+
+// ???????????????????????????????????
 $deviceStatus = [
   ["Hotspot Uptime (Last 24 hrs)", "23h 45m"],
   ["Hotspot Restarts (Last 24 hrs)", "1"],
@@ -28,6 +38,16 @@ $deviceStatus = [
   ["Speed Tier (Medium) - Bandwidth Used", "40 GB"],
   ["Speed Tier (High) - Bandwidth Used", "30 GB"]
 ];
+
+$allUser = getAllUsers();
+
+echo '<pre>';
+var_dump($activeUsers);
+var_dump($bandwidthUsage);
+var_dump($allUser);
+echo '</pre>';
+
+//die();
 
 ?>
 

@@ -1,5 +1,8 @@
 <?php
+declare(strict_types=1);
+require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/auth.php';
+
 require_roles(['owner']);
 // Set the page title dynamically
 $pageTitle = "O - Add User"; 
