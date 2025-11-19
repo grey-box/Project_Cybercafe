@@ -5,8 +5,189 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/auth.php';
 require_roles(['user']);
 require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
 
+$pdo = require $_SERVER['DOCUMENT_ROOT'] . '/Website/config/db.php';
+$userId = current_user_id();
+
 $pageTitle = "Calendar";
 
+function jenc($v): string {
+  return json_encode($v, JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_QUOT);
+}
+
+$events = [];
+
+/* ========== Billing events from payment_history ========== */
+try {
+  $stmt = $pdo->prepare("
+    SELECT DATE(timestamp) AS d,
+           amount_due,
+           payment_status
+      FROM payment_history
+     WHERE user_id = :uid
+     ORDER BY timestamp DESC
+     LIMIT 200
+  ");
+  $stmt->execute([':uid' => $userId]);
+  while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    $date = $row['d'];
+    if (!$date) continue;
+    $amt = $row['amount_due'] !== null ? (float)$row['amount_due'] : 0.0;
+    $status = $row['payment_status'] ?? '';
+    $title = sprintf(
+      'Bill %.2f (%s)',
+      $amt,
+      $status !== '' ? $status : 'status unknown'
+    );
+    $events[] = [
+      'date'  => $date,
+      'title' => $title,
+      'type'  => 'billing',
+    ];
+  }
+} catch (Throwable $e) {
+  // you might log this
+}
+
+/* ========== Payment events from payment table ========== */
+try {
+  $stmt = $pdo->prepare("
+    SELECT DATE(payment_datetime) AS d,
+           amount_charged,
+           invoice_number,
+           payment_method
+      FROM payment
+     WHERE user_id = :uid
+     ORDER BY payment_datetime DESC
+     LIMIT 200
+  ");
+  $stmt->execute([':uid' => $userId]);
+  while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    $date = $row['d'];
+    if (!$date) continue;
+    $amt = (float)$row['amount_charged'];
+    $invoice = $row['invoice_number'] ?: 'No invoice';
+    $method  = $row['payment_method'] ?: 'Method unknown';
+    $title = sprintf(
+      'Payment %.2f • %s • %s',
+      $amt,
+      $invoice,
+      $method
+    );
+    $events[] = [
+      'date'  => $date,
+      'title' => $title,
+      'type'  => 'payment',
+    ];
+  }
+} catch (Throwable $e) {
+  // log if needed
+}
+
+/* ========== Session summary events from internet_session ========== */
+try {
+  $stmt = $pdo->prepare("
+    WITH base AS (
+      SELECT DATE(login_timestamp) AS d,
+             CASE
+               WHEN logout_timestamp IS NOT NULL
+                 THEN CAST((JULIANDAY(logout_timestamp) - JULIANDAY(login_timestamp)) * 86400 AS INTEGER)
+               ELSE CAST((JULIANDAY(DATETIME('now')) - JULIANDAY(login_timestamp)) * 86400 AS INTEGER)
+             END AS sec
+        FROM internet_session
+       WHERE user_id = :uid
+    )
+    SELECT d,
+           COUNT(*) AS session_count,
+           COALESCE(SUM(sec),0) AS total_sec
+      FROM base
+     WHERE d IS NOT NULL
+     GROUP BY d
+     ORDER BY d DESC
+     LIMIT 180
+  ");
+  $stmt->execute([':uid' => $userId]);
+  while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    $date = $row['d'];
+    if (!$date) continue;
+    $count = (int)$row['session_count'];
+    $sec   = (int)$row['total_sec'];
+    $h = intdiv($sec, 3600);
+    $m = intdiv($sec % 3600, 60);
+    $dur = sprintf('%dh %02dm', $h, $m);
+    $title = sprintf('%d session%s total (%s)', $count, $count === 1 ? '' : 's', $dur);
+
+    $events[] = [
+      'date'  => $date,
+      'title' => $title,
+      'type'  => 'session',
+    ];
+  }
+} catch (Throwable $e) {
+  // log
+}
+
+/* ========== Maintenance or system events from system_event ========== */
+try {
+  $stmt = $pdo->query("
+    SELECT DATE(occurred_at) AS d,
+           event_type,
+           description
+      FROM system_event
+     ORDER BY occurred_at DESC
+     LIMIT 120
+  ");
+  while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    $date = $row['d'];
+    if (!$date) continue;
+    $type = $row['event_type'] ?? 'SYSTEM';
+    $desc = $row['description'] ?? '';
+    $title = $desc !== '' ? $desc : ('System event: '.$type);
+
+    $events[] = [
+      'date'  => $date,
+      'title' => $title,
+      'type'  => 'maintenance', // treat all as maintenance style for coloring
+    ];
+  }
+} catch (Throwable $e) {
+  // log
+}
+
+/* ========== Report events from report_run ========== */
+try {
+  $stmt = $pdo->prepare("
+    SELECT DATE(generated_at) AS d,
+           report_type,
+           COUNT(*) AS cnt
+      FROM report_run
+     WHERE user_id = :uid
+     GROUP BY d, report_type
+     ORDER BY d DESC
+     LIMIT 120
+  ");
+  $stmt->execute([':uid' => $userId]);
+  while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    $date = $row['d'];
+    if (!$date) continue;
+    $rtype = $row['report_type'] ?? 'REPORT';
+    $cnt   = (int)$row['cnt'];
+    $title = sprintf(
+      '%d %s report%s generated',
+      $cnt,
+      $rtype,
+      $cnt === 1 ? '' : 's'
+    );
+    $events[] = [
+      'date'  => $date,
+      'title' => $title,
+      'type'  => 'report',
+    ];
+  }
+} catch (Throwable $e) {
+  // log
+}
+
+$eventsJson = jenc($events);
 ?>
 <?php require_once VIEWS_ROOT . '/asset_for_pages/user_header.php'; ?>
 
@@ -78,7 +259,7 @@ $pageTitle = "Calendar";
       <div class="card-body">
         <div id="calendarGrid" class="calendar-grid"></div>
         <div class="small text-muted mt-2">
-          Demo data only. Later, populate events from your DB and render here.
+          Events are populated from your account data: billing history, payments, sessions, system events, and reports.
         </div>
       </div>
     </div>
@@ -92,7 +273,7 @@ $pageTitle = "Calendar";
       <div class="offcanvas-body">
         <div id="drawerDate" class="fw-bold mb-2"></div>
         <div id="drawerList" class="list-group list-group-flush"></div>
-        <div class="small text-muted mt-3">Actions are disabled in this demo.</div>
+        <div class="small text-muted mt-3">Actions are read only for now.</div>
       </div>
     </div>
 
@@ -101,21 +282,33 @@ $pageTitle = "Calendar";
 
 <style>
   .rounded-4{ border-radius:1rem; }
-  .calendar-grid{
-    display:grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap:.5rem;
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(40px, 1fr)); /* min width for mobile */
+    gap: 0.25rem;
+  }
+  @media (max-width: 768px) {
+    .calendar-grid {
+      grid-template-columns: repeat(7, minmax(30px, 1fr));
+      gap: 0.15rem;
+    }
   }
   .cal-cell{
     border:1px solid #e9ecef;
     border-radius:.75rem;
-    min-height:110px;
+    min-height: 80px;
     padding:1.6rem .5rem .5rem .5rem;
     background:#fff;
     position:relative;
+    overflow: hidden;
   }
-
- .cal-cell .day{
+  @media (max-width: 768px) {
+    .cal-cell {
+      min-height: 70px;
+      padding: 0.8rem 0.2rem 0.2rem 0.2rem;
+    }
+  }
+  .cal-cell .day{
     position:absolute;
     top:.35rem;
     right:.6rem;
@@ -138,6 +331,22 @@ $pageTitle = "Calendar";
     text-overflow:ellipsis;
     cursor:default;
   }
+  @media (max-width: 768px) {
+    .evt-pill {
+      font-size: 0.55rem;
+      padding: 0.1rem 0.25rem;
+      max-width: 100%;
+    }
+  }
+  @media (max-width: 768px) {
+    .card-body.d-flex.flex-wrap.align-items-end.gap-2 {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .input-group { flex: 1 1 100%; }
+    .evt-filter { font-size: 0.7rem; }
+  }
+
   .legend{ display:inline-block; width:.75rem; height:.75rem; border-radius:999px; margin-right:.25rem; vertical-align:middle; }
   .legend-billing{ background:#ffb547; }
   .legend-payment{ background:#198754; }
@@ -153,70 +362,46 @@ $pageTitle = "Calendar";
 </style>
 
 <script>
+const allEvents = <?= $eventsJson ?: '[]' ?>;
 
-const demoEvents = [
-  // Billing / invoices (e.g., next bill date monthly on 25th)
-  { date:'2025-11-25', title:'Monthly bill due ($19.99)', type:'billing' },
-
-  // Payments (from `payment`)
-  { date:'2025-10-25', title:'Payment $19.99  •  INV-1025', type:'payment' },
-  { date:'2025-09-25', title:'Payment $19.99  •  INV-0925', type:'payment' },
-
-  // Sessions (from `internet_session` – summarized)
-  { date:'2025-11-01', title:'3 sessions total (4h 12m)', type:'session' },
-  { date:'2025-11-03', title:'1 session (1h 08m)', type:'session' },
-
-  // Maintenance / outages (from `system_event`)
-  { date:'2025-11-15', title:'Planned maintenance 11:00–11:30 PM', type:'maintenance' },
-
-  // Reports (from `report_run`)
-  { date:'2025-10-31', title:'Report generated: Usage Summary', type:'report' },
-];
-
-/* ========= Calendar rendering ========= */
 const monthLabel = document.getElementById('monthLabel');
 const grid = document.getElementById('calendarGrid');
 const filters = Array.from(document.querySelectorAll('.evt-filter'));
 
-let current = new Date(); // today
+let current = new Date();
 
 function ymd(d){
   return d.toISOString().slice(0,10);
 }
-
 function startOfMonth(date){
   return new Date(date.getFullYear(), date.getMonth(), 1);
 }
 function endOfMonth(date){
   return new Date(date.getFullYear(), date.getMonth()+1, 0);
 }
-
 function monthName(year, monthIndex){
   return new Date(year, monthIndex, 1).toLocaleString(undefined, { month:'long', year:'numeric' });
 }
 
 function render(){
-  // header label
   monthLabel.value = monthName(current.getFullYear(), current.getMonth());
 
-  // compute visible range (start on Sunday)
   const first = startOfMonth(current);
   const last = endOfMonth(current);
   const firstDay = new Date(first);
-  firstDay.setDate(first.getDate() - first.getDay()); // back to Sunday
-  const cells = [];
+  firstDay.setDate(first.getDate() - first.getDay());
 
   const activeTypes = new Set(filters.filter(f => f.checked).map(f=>f.value));
+  const cells = [];
 
-  for (let i = 0; i < 42; i++){ // 6 weeks grid
+  for (let i = 0; i < 42; i++){
     const day = new Date(firstDay);
     day.setDate(firstDay.getDate() + i);
     const iso = ymd(day);
     const inMonth = day.getMonth() === current.getMonth();
     const isToday = iso === ymd(new Date());
 
-    // events for this day
-    const evts = demoEvents.filter(e => e.date === iso && activeTypes.has(e.type));
+    const evts = allEvents.filter(e => e.date === iso && activeTypes.has(e.type));
 
     const pills = evts.map(e => {
       const pillClass = {
@@ -226,8 +411,14 @@ function render(){
         maintenance:'pill-maint',
         report:'pill-report'
       }[e.type] || 'pill-report';
-      return `<span class="evt-pill ${pillClass}" title="${e.title.replace(/"/g,'&quot;')}">${e.title}</span>`;
+
+      // truncate display text to 25 chars, show full on hover
+      const maxLen = 25;
+      const displayTitle = e.title.length > maxLen ? e.title.slice(0, maxLen-1) + '…' : e.title;
+      const safeTitle = displayTitle.replace(/"/g,'&quot;');
+      return `<span class="evt-pill ${pillClass}" title="${e.title.replace(/"/g,'&quot;')}">${safeTitle}</span>`;
     }).join('');
+
 
     cells.push(`
       <div class="cal-cell ${isToday?'is-today':''}" data-date="${iso}" data-inmonth="${inMonth?'1':'0'}">
@@ -248,7 +439,6 @@ function render(){
     ${cells.join('')}
   `;
 
-  // open day drawer on cell click
   grid.querySelectorAll('.cal-cell').forEach(cell => {
     cell.addEventListener('click', () => openDrawer(cell.dataset.date));
   });
@@ -258,9 +448,11 @@ function openDrawer(dateStr){
   const list = document.getElementById('drawerList');
   const label = document.getElementById('drawerDate');
   const activeTypes = new Set(filters.filter(f => f.checked).map(f=>f.value));
-  const evts = demoEvents.filter(e => e.date === dateStr && activeTypes.has(e.type));
+  const evts = allEvents.filter(e => e.date === dateStr && activeTypes.has(e.type));
 
-  label.textContent = new Date(dateStr + 'T00:00:00').toLocaleDateString(undefined, { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+  label.textContent = new Date(dateStr + 'T00:00:00').toLocaleDateString(undefined, {
+    weekday:'long', year:'numeric', month:'long', day:'numeric'
+  });
 
   if (evts.length === 0){
     list.innerHTML = `<div class="list-group-item">No events.</div>`;
@@ -273,6 +465,7 @@ function openDrawer(dateStr){
         maintenance:'fa-tools text-danger',
         report:'fa-file-alt text-purple'
       }[e.type] || 'fa-circle';
+
       return `
         <div class="list-group-item d-flex align-items-start">
           <i class="fa ${icon} me-2 mt-1"></i>
@@ -280,24 +473,27 @@ function openDrawer(dateStr){
             <div class="fw-semibold">${e.title}</div>
             <div class="small text-muted">${e.type}</div>
           </div>
-          <div class="ms-auto d-none">
-            <button class="btn btn-sm btn-outline-secondary">Details</button>
-          </div>
         </div>
       `;
     }).join('');
   }
 
-  // show offcanvas
-  const drawer = new bootstrap.Offcanvas('#eventDrawer');
+  // reuse existing Offcanvas instance instead of creating new each time
+  const drawerEl = document.getElementById('eventDrawer');
+  const drawer = bootstrap.Offcanvas.getInstance(drawerEl) || new bootstrap.Offcanvas(drawerEl);
   drawer.show();
 }
 
-document.getElementById('prevBtn').addEventListener('click', () => { current.setMonth(current.getMonth()-1); render(); });
-document.getElementById('nextBtn').addEventListener('click', () => { current.setMonth(current.getMonth()+1); render(); });
+document.getElementById('prevBtn').addEventListener('click', () => {
+  current.setMonth(current.getMonth()-1);
+  render();
+});
+document.getElementById('nextBtn').addEventListener('click', () => {
+  current.setMonth(current.getMonth()+1);
+  render();
+});
 filters.forEach(f => f.addEventListener('change', render));
 
-// initial
 render();
 </script>
 

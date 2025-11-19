@@ -5,13 +5,76 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/auth.php';
 require_roles(['user']);
 require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/paths.php';
 
+$pdo = require $_SERVER['DOCUMENT_ROOT'] . '/Website/config/db.php';
+$userId = current_user_id();
+
 $pageTitle = "Invoices";
 
-$outstandingTotal = 19.99;     // sum of all open invoices
-$openCount        = 1;         // count of pending/unpaid invoices
-$lastInvoiceId    = "INV-1025";
-$lastInvoiceDate  = "2025-10-25";
-$nextBillDate     = "2025-11-30";
+$sql = <<<SQL
+WITH payments AS (
+  SELECT
+    p.invoice_number            AS id,
+    DATE(p.payment_datetime)    AS date,
+    DATE(p.payment_datetime)    AS due,
+    'paid'                      AS status,
+    CAST(p.amount_charged AS REAL) AS amount,
+    COALESCE('Payment via ' || p.payment_method || ' (TX ' || p.transaction_ref_number || ')','Payment') AS note
+  FROM payment p
+  WHERE p.user_id = :uid AND p.invoice_number IS NOT NULL
+),
+hist_unpaid AS (
+  SELECT
+    'INV-PH-' || h.history_id                       AS id,
+    DATE(h.timestamp)                                AS date,
+    DATE(h.timestamp, '+5 days')                     AS due,
+    CASE WHEN DATE('now') > DATE(h.timestamp, '+5 days') THEN 'overdue' ELSE 'pending' END AS status,
+    CAST(ROUND(COALESCE(h.amount_due,0) - COALESCE(h.amount_paid,0), 2) AS REAL) AS amount,
+    'Balance due'                                    AS note
+  FROM payment_history h
+  WHERE h.user_id = :uid
+    AND (COALESCE(h.amount_due,0) - COALESCE(h.amount_paid,0)) > 0.009
+)
+SELECT * FROM payments
+UNION ALL
+SELECT * FROM hist_unpaid
+ORDER BY date DESC, id DESC;
+SQL;
+
+$stmt = $pdo->prepare($sql);
+$stmt->execute([':uid' => $userId]);
+$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$outstandingTotal = 0.00;
+$openCount = 0;
+$lastInvoiceId = '';
+$lastInvoiceDate = '';
+if ($rows) {
+  // rows already sorted by date desc
+  $lastInvoiceId = (string)$rows[0]['id'];
+  $lastInvoiceDate = (string)$rows[0]['date'];
+  foreach ($rows as $r) {
+    if ($r['status'] === 'pending' || $r['status'] === 'overdue') {
+      $openCount++;
+      $outstandingTotal += (float)$r['amount'];
+    }
+  }
+}
+
+$nextBillDate = '—';
+$lastPaidDate = null;
+$paidStmt = $pdo->prepare("SELECT DATE(MAX(payment_datetime)) AS last_paid FROM payment WHERE user_id = :uid");
+$paidStmt->execute([':uid' => $userId]);
+$lastPaidDate = $paidStmt->fetchColumn();
+
+if ($lastPaidDate) {
+  try {
+    $d = new DateTime($lastPaidDate);
+    $d->modify('+30 days');
+    $nextBillDate = $d->format('Y-m-d');
+  } catch (Throwable $e) { }
+}
+
+$invoicesJson = json_encode($rows, JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_QUOT);
 ?>
 
 <?php require_once VIEWS_ROOT . '/asset_for_pages/user_header.php'; ?>
@@ -59,8 +122,8 @@ $nextBillDate     = "2025-11-30";
         <div class="card border-0 shadow-sm rounded-4 h-100">
           <div class="card-body">
             <div class="text-muted small">Last invoice</div>
-            <div class="h5 fw-bold mb-0"><?= htmlspecialchars($lastInvoiceId) ?></div>
-            <div class="small text-muted"><?= htmlspecialchars($lastInvoiceDate) ?></div>
+            <div class="h5 fw-bold mb-0"><?= htmlspecialchars($lastInvoiceId ?: '—') ?></div>
+            <div class="small text-muted"><?= htmlspecialchars($lastInvoiceDate ?: '—') ?></div>
           </div>
         </div>
       </div>
@@ -110,7 +173,7 @@ $nextBillDate     = "2025-11-30";
     <div class="card border-0 shadow-sm rounded-4 mt-3">
       <div class="card-header bg-white d-flex justify-content-between align-items-center">
         <div class="card-title mb-0">Invoices</div>
-        <div class="small text-muted">Sample data for layout</div>
+        <div class="small text-muted">Loaded from the Database</div>
       </div>
       <div class="card-body">
         <div class="table-responsive">
@@ -154,15 +217,7 @@ $nextBillDate     = "2025-11-30";
 </style>
 
 <script>
-
-const invoices = [
-  { id:"INV-1031", date:"2025-10-31", due:"2025-11-05", status:"pending", amount:19.99, note:"Monthly plan" },
-  { id:"INV-1025", date:"2025-10-25", due:"2025-10-25", status:"paid",    amount:19.99, note:"Monthly plan" },
-  { id:"INV-0925", date:"2025-09-25", due:"2025-09-25", status:"paid",    amount:19.99, note:"Monthly plan" },
-  { id:"INV-0820", date:"2025-08-20", due:"2025-08-25", status:"void",    amount:19.99, note:"Reissued" },
-  { id:"INV-0725", date:"2025-07-25", due:"2025-07-25", status:"paid",    amount:19.99, note:"Monthly plan" },
-  { id:"INV-0610", date:"2025-06-10", due:"2025-06-15", status:"overdue", amount:5.51,  note:"Overage charge" }
-];
+const invoices = <?= $invoicesJson ?: '[]' ?>;
 
 const badgeFor = (s) => ({
   pending:'<span class="badge bg-warning text-dark">Pending</span>',
@@ -172,20 +227,20 @@ const badgeFor = (s) => ({
 }[s] || s);
 
 function rowTemplate(inv){
-  const amt = `$${inv.amount.toFixed(2)}`;
-  const payBtnDisabled = !(inv.status === 'pending' || inv.status === 'overdue');
+  const amt = `$${Number(inv.amount).toFixed(2)}`;
+  const payEnabled = (inv.status === 'pending' || inv.status === 'overdue');
   return `
     <tr data-id="${inv.id}" data-status="${inv.status}" data-date="${inv.date}">
       <td class="fw-semibold">${inv.id}<div class="small text-muted">${inv.note ?? ''}</div></td>
-      <td>${inv.date}</td>
-      <td>${inv.due}</td>
+      <td>${inv.date ?? ''}</td>
+      <td>${inv.due ?? ''}</td>
       <td>${badgeFor(inv.status)}</td>
       <td class="${inv.status==='paid' ? 'amount-pos' : 'amount-neg'}">${amt}</td>
       <td class="text-end">
         <div class="btn-group">
-          <button class="btn btn-sm btn-success" ${payBtnDisabled ? 'disabled' : ''}>Pay</button>
-          <button class="btn btn-sm btn-outline-primary" disabled>PDF</button>
-          <button class="btn btn-sm btn-outline-secondary" disabled>View</button>
+          <button class="btn btn-sm btn-success btn-pay" ${!payEnabled ? 'disabled' : ''}>Pay</button>
+          <button class="btn btn-sm btn-outline-primary btn-pdf">PDF</button>
+          <button class="btn btn-sm btn-outline-secondary btn-view">View</button>
         </div>
       </td>
     </tr>`;
@@ -198,10 +253,10 @@ function render(){
   const to   = document.getElementById('toDate').value;
 
   let filtered = invoices.filter(v => {
-    const matchesQ = !q || v.id.toLowerCase().includes(q) || (v.note||'').toLowerCase().includes(q);
+    const matchesQ = !q || String(v.id).toLowerCase().includes(q) || String(v.note||'').toLowerCase().includes(q);
     const matchesStatus = (status === 'all') || v.status === status;
-    const afterFrom = !from || v.date >= from;
-    const beforeTo  = !to   || v.date <= to;
+    const afterFrom = !from || (v.date && v.date >= from);
+    const beforeTo  = !to   || (v.date && v.date <= to);
     return matchesQ && matchesStatus && afterFrom && beforeTo;
   });
 
@@ -209,12 +264,37 @@ function render(){
   body.innerHTML = filtered.map(rowTemplate).join('');
 
   document.getElementById('emptyState').classList.toggle('d-none', filtered.length !== 0);
-
-  // Placeholder clicks
-  body.querySelectorAll('button').forEach(btn=>{
+  
+  body.querySelectorAll('.btn-view').forEach(btn=>{
     btn.addEventListener('click', e=>{
       e.preventDefault();
-      alert('Invoice actions are disabled in this demo.');
+      const tr = e.target.closest('tr');
+      const id = tr.dataset.id;
+      const inv = invoices.find(x=>x.id===id);
+      alert(
+        `Invoice ${inv.id}\nDate: ${inv.date}\nDue: ${inv.due}\nStatus: ${inv.status}\nAmount: $${Number(inv.amount).toFixed(2)}\nNote: ${inv.note||''}`
+      );
+    });
+  });
+
+  body.querySelectorAll('.btn-pdf').forEach(btn=>{
+    btn.addEventListener('click', e=>{
+      e.preventDefault();
+      window.print();
+    });
+  });
+
+  body.querySelectorAll('.btn-pay').forEach(btn=>{
+    btn.addEventListener('click', e=>{
+      e.preventDefault();
+      const tr = e.target.closest('tr');
+      const id = tr.dataset.id;
+      const idx = invoices.findIndex(x=>x.id===id);
+      if (idx >= 0) {
+        invoices[idx].status = 'paid';
+        render();
+        alert(`Invoice ${id} marked as paid.`);
+      }
     });
   });
 }
