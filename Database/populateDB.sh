@@ -1,368 +1,190 @@
-#!/bin/bash
-mapfile -t FIRSTNAME < firstNames.txt
-mapfile -t LASTNAME < lastNames.txt
-mapfile -t WEBSITE < websiteList.txt
+#!/usr/bin/env bash
+set -euo pipefail
 
+#
+# Seed the CyberCafe SQLite database with rich test data for the 2025 schema.
+# Usage:
+#   ./populateDB.sh [--force] [--db /path/to/db.sqlite]
+#   ./populateDB.sh my_test.db --force
+#
 
-#Database Name
-echo "Enter the database name (default: example.db):"
-read db_name
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DEFAULT_DB="$SCRIPT_DIR/CyberCafeTest.db"
+SCHEMA_FILE="$SCRIPT_DIR/schema_2025_asu.sql"
 
-if [ -z "$db_name" ]; then
-    db_name="example.db"
+FORCE=0
+DB_FILE=""
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --force|-f)
+      FORCE=1
+      ;;
+    --db)
+      shift
+      DB_FILE="${1:-}"
+      if [[ -z "$DB_FILE" ]]; then
+        echo "error: --db requires a path argument" >&2
+        exit 1
+      fi
+      ;;
+    *)
+      if [[ -z "$DB_FILE" ]]; then
+        DB_FILE="$1"
+      else
+        echo "error: unexpected argument '$1'" >&2
+        exit 1
+      fi
+      ;;
+  esac
+  shift
+done
+
+if [[ -z "$DB_FILE" ]]; then
+  DB_FILE="$DEFAULT_DB"
 fi
 
-if [ -f "$db_name" ]; then
-    echo "Database '$db_name' already exists."
-
-else
-    echo "Database '$db_name' does not exist. Creating a new one..."
-    sqlite3 "$db_name" < Final_CyberCafe_Schema.sql   
+if [[ ! -f "$SCHEMA_FILE" ]]; then
+  echo "error: schema file not found at $SCHEMA_FILE" >&2
+  exit 1
 fi
 
-echo "Enter the number of users (default: 100):"
-read num_users
-
-if [ -z "$num_users" ]; then
-    num_users=100
+if ! command -v sqlite3 >/dev/null 2>&1; then
+  echo "error: sqlite3 command not found; please install SQLite3 first" >&2
+  exit 1
 fi
 
+if [[ "$DB_FILE" != /* ]]; then
+  DB_FILE="$SCRIPT_DIR/$DB_FILE"
+fi
 
-# Check if SQLite3 is installed
-if ! command -v sqlite3 &> /dev/null; then
-    echo "SQLite3 is not installed. Please install it first."
+if [[ -e "$DB_FILE" && $FORCE -eq 0 ]]; then
+  if [[ -t 0 ]]; then
+    read -r -p "Database '$DB_FILE' already exists. Overwrite? [y/N] " reply
+    if [[ ! "$reply" =~ ^([yY][eE][sS]?|[yY])$ ]]; then
+      echo "Aborting without changes."
+      exit 0
+    fi
+  else
+    echo "error: database '$DB_FILE' exists. Re-run with --force to overwrite." >&2
     exit 1
+  fi
 fi
 
-
-user_role_array=("Admin" "Owner" "Regular")
-user_status_array=("Active" "Suspended" "Banned")
-membership_level_array=("Member Level 1" "Member Level 2" "Member Level 3")
-
-
-for ((i=1; i<num_users; i++))
-do
-
-    first_name="${FIRSTNAME[RANDOM % ${#FIRSTNAME[@]}]}"
-    last_name="${LASTNAME[RANDOM % ${#LASTNAME[@]}]}"
-    full_name="$first_name $last_name"
-    email="${first_name}.${last_name}@gmail.com"
-    userID="userID_${first_name}_${i}"
-    phone_number=$(printf "1800%06d" "$i")
-    access_code=$(printf "%06d" "$i")
-    user_role="${user_role_array[RANDOM % ${#user_role_array[@]}]}"
-    user_status="${user_status_array[RANDOM % ${#user_status_array[@]}]}"
-    account_expiry_date=$(date '+%Y-%m-%d %H:%M:%S')
-    account_creation_date=$(date '+%Y-%m-%d %H:%M:%S')
-    last_login_timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-    membership_level="${membership_level_array[RANDOM % ${#membership_level_array[@]}]}"
-
-
-    levelID="levelID_${first_name}_${i}"
-    levelName=${membership_level}
-
-    description="The Membership Description is ${membership_level}"
-    if [ "$membership_level" == "Member Level 1" ]; then
-        benefits="The Membership Benefits is Basic"
-        speedAmount=10
-    elif [ "$membership_level" == "Member Level 2" ]; then
-        benefits="The Membership Benefits is Good"
-        speedAmount=100
-    else
-        benefits="The Membership Benefits is Great"
-        speedAmount=1000
-    fi
-
-    roleID="roleID_${first_name}_${i}"
-    roleName=$user_role
-
-    if [ "$user_role" == "Admin" ]; then
-        roleDescription="Admin Role Controls EveryThing"
-        permissionSet=0
-    elif [ "$user_role" == "Owner" ]; then
-        roleDescription="Device Owner"
-        permissionSet=1
-    else
-        roleDescription="Regular user"
-        permissionSet=2
-    fi
-
-    sqlite3 "$db_name" <<EOF
-    INSERT INTO user (
-      userID, fullName, email, phoneNumber, accessCode, userRole, userStatus,
-      accountExpiryDate, accountCreationDate, lastLoginTimestamp
-    ) VALUES (
-      '$userID', '$full_name', '$email', '$phone_number', '$access_code',
-      '$user_role', '$user_status', '$account_expiry_date', '$account_creation_date',
-      '$last_login_timestamp'
-    );
-
-    INSERT INTO membership_level (
-      levelID, levelName, description, benefits, speedAmount
-    ) VALUES (
-        '$levelID', '$levelName', '$description', '$benefits', '$speedAmount'
-    );
-
-    INSERT INTO user_role (
-      roleID, roleName, roleDescription, permissionSet
-    ) VALUES (
-        '$roleID', '$roleName', '$roleDescription', '$permissionSet'
-    );
-
-
-EOF
-# ADD USER_BALANCE, SPEED_QUEUE, SERVICE PLAN
-
-
-
-for ((j=0; j<$((RANDOM % 50 + 1)); j++))
-do
-
-sessionID="sessionID_${first_name}_${j}"
-ipAddress=$(printf "%d.%d.%d.%d\n" $((RANDOM%256)) $((RANDOM%256)) $((RANDOM%256)) $((RANDOM%256)))
-macAddress=$(printf '%02x:%02x:%02x:%02x:%02x:%02x\n' $((RANDOM%256)) $((RANDOM%256)) $((RANDOM%256)) $((RANDOM%256)) $((RANDOM%256)) $((RANDOM%256)))
-hostName="hostname_${first_name}${last_name}"
-loginTimestamp=$(date '+%Y-%m-%d %H:%M:%S')
-logoutTimestamp=$(date '+%Y-%m-%d %H:%M:%S')
-sessionLength=$((RANDOM % 120 + 1))
-speedQueueID="speedQueueID_${first_name}"
-
-
-logID=$(( i * 100000 + RANDOM % 100000 ))
-
-url="${WEBSITE[RANDOM % ${#WEBSITE[@]}]}"
-accessTime=$(date '+%Y-%m-%d %H:%M:%S')
-blocked=( RANDOM % 2 )
-
-restrictionID=$((logID + 1000000))
-isBlocked=( RANDOM % 2 )
-
-balanceIDTemp="${i}${j}"
-balanceID=$((balanceIDTemp))
-bytesRemaining=$((RANDOM % 1000000))
-monetaryBalance=$((RANDOM % 100000))
-lastUpdateTimestamp=$(date '+%Y-%m-%d %H:%M:%S')
-
-planID="${first_name}_plainID${j}"
-planName=${membership_level}
-
-queueID="${first_name}_queueID${j}"
-queueName=${membership_level}
-
-uploadSpeedLimit=${speedAmount}
-downloadSpeedLimit=$(( speedAmount / 2 ))
-bandwidthQuota=${speedAmount}
-
-if [ "$membership_level" == "Member Level 1" ]; then
-        monthlyPrice=100
-    elif [ "$membership_level" == "Member Level 2" ]; then
-        monthlyPrice=50
-    else
-        monthlyPrice=10
-    fi
-
-
-
-
-trafficIDTemp="${i}${j}"
-trafficID=$((trafficIDTemp))
-receivedBytes=$((RANDOM % 100))
-transmittedBytes=$((RANDOM % 100))
-
-sqlite3 "$db_name" <<EOF
-INSERT INTO internet_session  (
-      sessionID, userID, ipAddress, macAddress, hostname, loginTimestamp, logoutTimestamp, sessionLength, speedQueueID
-    ) VALUES (
-        '$sessionID', '$userID', '$ipAddress', '$macAddress', '$hostName', '$loginTimestamp'
-        , '$logoutTimestamp', '$sessionLength', '$speedQueueID'
-    );
-
-
-    INSERT INTO website_access_log (
-      logID, sessionID, url, accessTime, blocked
-    ) VALUES (
-        '$logID', '$sessionID', '$url', '$accessTime', '$blocked'
-    );
-
-    INSERT INTO url_restriction (
-    restrictionID , url, isBlocked
-    ) VALUES (
-        '$restrictionID', '$url', '$isBlocked'
-    );
-
-    INSERT INTO user_balance (
-      balanceID, userID, speedQueueID, bytesRemaining, monetaryBalance, lastUpdateTimestamp
-    ) VALUES (
-        '$balanceID','$userID', '$speedQueueID', '$byesRemaining', '$monetaryBalance', '$lastUpdateTimestamp'
-    );
-
-    INSERT INTO service_plan (
-        planID, planName, uploadSpeedLimit, bandwidthQuota, monthlyPrice
-    ) VALUES (
-        '$planID','$planName', '$uploadSpeedLimit', '$bandwidthQuota', '$monthlyPrice'
-    );
-
-    
-    INSERT INTO speed_queue (
-        queueID, queueName, uploadSpeedLimit, downloadSpeedLimit, bandwidthQuota, planID
-    ) VALUES (
-        '$queueID','$queueName', '$uploadSpeedLimit', '$downloadSpeedLimit', '$bandwidthQuota', '$planID'
-    );
-
-    INSERT INTO traffic_data (
-        trafficID, sessionID, receivedBytes, transmittedBytes
-        ) VALUES (
-            '$trafficID', '$sessionID', '$recievedBytes', '$transmittedBytes'
-        );
-
-EOF
-
-reason="TESTING"
-
-if (( j % 10 == 0 )); then
-    sqlite3 "$db_name" <<EOF
-    INSERT INTO device_restriction (
-        restrictionID, macAddress, reason, queueID
-    ) VALUES (
-        '$restrictionID', '$macAddress', '$reason', '$queueID'
-    );
-EOF
-fi
-
-done
-
-    for ((k=0; k<$((RANDOM % 50 + 1)); k++))
-do
-
-    historyIDTemp="${i}${k}"
-    historyID=$((historyIDTemp))
-    timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-    reason="TESTING"
-
-    sqlite3 "$db_name" <<EOF
-
-    INSERT INTO user_status_history (
-    historyID, userID, statusType, timestamp, reason
-    ) VALUES (
-        '$historyID','$userID','$statusType', '$timestamp', '$reason'
-    );
-
-
-
-EOF
-
-done
-
-
-for ((m=0; m<$((RANDOM % 50 + 1)); m++))
-do
-
-paymentID="${first_name}_paymentID${m}"
-paymentDateTime=$(date '+%Y-%m-%d %H:%M:%S')
-payment="CARD TESTING"
-amountCharged=$((RANDOM % 100 + 1))
-transactionRefNumber="${m}_${first_name}_transctionRefNumber"
-invoiceNumber="${i}${m}_invoiceNumber"
-
-
-historyIDTemp="${i}${m}000"
-historyID=$((historyIDTemp))
-timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-amountDue=$((RANDOM % 100 + 1))
-amountPaid=$((RANDOM % 100 + 1))
-paymentStatus="PAID TESTING"
-
-reportID="${first_name}${m}"
-reportType="TESTING REPORTTYPE"
-generationTime=$(date '+%Y-%m-%d %H:%M:%S')
-parameters="TESTING REPORT PARAMETERS"
-
-mappingID="${i}${m}000000"
-
-
-sqlite3 "$db_name" <<EOF
-
-INSERT INTO payment (
-    paymentID, userID, paymentDateTime, paymentMethod, amountCharged, transactionRefNumber, invoiceNumber
-    ) VALUES (
-        '$paymentID', '$userID', '$paymentDateTime', '$paymentMethod', '$amountCharged', '$transactionRefNumber', '$invoiceNumber'
-    );
-
-INSERT INTO payment_history (
-    historyID, userID, timestamp, amountDue, amountPaid, paymentStatus
-) VALUES (
-    '$historyID', '$userID', '$timestamp', '$amountDue', '$amountPaid', '$paymentStatus'
-);
-
-INSERT INTO report (
-    reportID, reportType, generationTime, parameters
-) VALUES (
-    '$reportID','$reportType','$generationTime','$parameters'
-);
-
-INSERT INTO user_report_mapping (
-    mappingID, userID, reportID, reportType, generationTime
-) VALUES (
-    '$mappingID','$userID','$reportID','$reportType','$generationTime'
-);
-
-EOF
-
-done
-
-
-
-for ((n=0; n<$((RANDOM % 50 + 1)); n++))
-do
-
-logIDTemp="${i}${n}000000000"
-logID=$((logIDTemp))
-statusIDTemp="${i}${n}"
-statusID=${statusIDTemp}
-eventType="TESTING"
-timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-description="TESTING MAINTENANCE LOG"
-
-
-if (( n % 10 == 0 )); then
-hostIPStatus="UP"
-else
-hostIPStatus="DOWN"
-fi
-
-restartCount=$((RANDOM % 100 + 1))
-lastRebootTime=$(date '+%Y-%m-%d %H:%M:%S')
-lastRefreshTime=$(date '+%Y-%m-%d %H:%M:%S')
-
-if((n % 2 == 0 ));then
-softwareVersion="WINDOWS"
-else
-softwareVersion="LINUX"
-fi
-
-
-sqlite3 "$db_name" <<EOF
-
-
-    INSERT INTO maintenance_log (
-        logID, statusID, eventType, timestamp, description
-    ) VALUES (
-    '$logID','$statusID','$eventType','$timestamp','$description'
-);
-
-INSERT INTO system_status (
-        statusID, hostIPStatus, localIPAddress, lastRefreshTime, uptime,restartCount,lastRebootTime,softwareVersion
-    ) VALUES (
-    '$statusID','$hostIPStatus','$ipAddress','$lastRefreshTime','$uptime','$restartCount','$lastRebootTime','$softwareVersion'
-);
-
-EOF
-
-
-done
-
-done
-
-
-
-
+rm -f "$DB_FILE"
+
+echo "Creating schema in $DB_FILE..."
+sqlite3 "$DB_FILE" < "$SCHEMA_FILE"
+
+echo "Populating reference and sample data..."
+sqlite3 "$DB_FILE" <<'SQL'
+PRAGMA foreign_keys = ON;
+BEGIN;
+
+INSERT INTO user_role (role_id, role_name, role_description, permission_set) VALUES
+  ('admin', 'Administrator', 'Full administrative access to the cyber cafe systems', '*'),
+  ('owner', 'Owner', 'Business owner with full visibility and high-level controls', 'core,analytics,finance'),
+  ('user',  'Registered User', 'Subscribed member with quota and billing privileges', 'member_portal'),
+  ('guest', 'Guest User', 'Time limited guest access with restricted browsing', 'guest_portal');
+
+INSERT INTO user_status_lookup (status_code, description) VALUES
+  ('ACTIVE',    'Active and in good standing'),
+  ('SUSPENDED', 'Temporarily blocked due to policy breaches or unpaid balance'),
+  ('BANNED',    'Permanently blocked from the cyber cafe network'),
+  ('EXPIRED',   'Account or pass has expired and needs renewal'),
+  ('PENDING',   'Pending verification or manual review');
+
+INSERT INTO speed_queue (queue_id, queue_name, upload_speed_limit, download_speed_limit, bandwidth_quota) VALUES
+  ('QUEUE_PREMIUM',  'Premium Express Lane', 200, 800, 500000),
+  ('QUEUE_STANDARD', 'Standard Member Lane', 100, 400, 250000),
+  ('QUEUE_GUEST',    'Guest Courtesy Lane',   20,  80,  25000);
+
+INSERT INTO service_plan (plan_id, plan_name, upload_speed_limit, bandwidth_quota, monthly_price) VALUES
+  ('PLAN_PREMIUM',  'Premium Unlimited', 200, 500000, 99.99),
+  ('PLAN_STANDARD', 'Standard Flex',    100, 250000, 59.99),
+  ('PLAN_GUEST',    'Guest Day Pass',    20,  25000,  9.99);
+
+INSERT INTO user (user_id, full_name, email, phone_number, access_code, user_role, account_expiry_date, account_creation_date, last_login_timestamp) VALUES
+  ('admin.alex',   'Alex Administrator', 'admin@example.com', '+1-555-0100', 'adminpass', 'admin', '2026-12-31 23:59:59', '2023-01-05 09:30:00', '2025-02-15 10:45:00'),
+  ('owner.olivia', 'Olivia Owner',       'owner@example.com', '+1-555-0101', 'ownerpass', 'owner', '2026-06-30 23:59:59', '2024-01-03 11:00:00', '2025-02-12 13:15:00'),
+  ('user.mia',     'Mia Member',         'user@example.com',  '+1-555-0102', 'userpass',  'user',  NULL,                   '2024-08-15 09:55:00', '2025-02-17 19:45:00'),
+  ('guest.gina',   'Gina Guest',         'guest@example.com', '+1-555-0103', 'guestpass', 'guest', '2024-08-21 12:00:00', '2024-08-20 11:00:00', NULL);
+
+INSERT INTO user_status_history (user_id, status_code, changed_by_user_id, changed_reason, changed_at) VALUES
+  ('admin.alex',   'ACTIVE',   'admin.alex',   'Initial administrator account provisioning', '2023-01-05 09:30:00'),
+  ('owner.olivia', 'PENDING',  'admin.alex',   'Invitation sent to new owner',               '2024-01-03 11:00:00'),
+  ('owner.olivia', 'ACTIVE',   'admin.alex',   'Owner verified business documents',          '2024-01-04 08:45:00'),
+  ('user.mia',     'PENDING',  'owner.olivia', 'Signed up at kiosk',                         '2024-08-15 09:55:00'),
+  ('user.mia',     'ACTIVE',   'owner.olivia', 'Government ID verified',                     '2024-08-15 10:30:00'),
+  ('guest.gina',   'PENDING',  'owner.olivia', 'Issued temporary guest pass',                '2024-08-20 11:05:00'),
+  ('guest.gina',   'EXPIRED',  'owner.olivia', 'Guest pass expired automatically',           '2024-08-21 12:00:00');
+
+INSERT INTO user_balance (user_id, speed_queue_id, monetary_balance, last_update_timestamp) VALUES
+  ('admin.alex',   'QUEUE_PREMIUM',  250.00, '2025-02-15 10:45:00'),
+  ('owner.olivia', 'QUEUE_PREMIUM',  180.50, '2025-02-12 13:15:00'),
+  ('user.mia',     'QUEUE_STANDARD',  15.20, '2025-02-17 19:45:00'),
+  ('guest.gina',   'QUEUE_GUEST',      0.00, '2024-08-20 11:05:00');
+
+INSERT INTO byte_quota_ledger (user_id, speed_queue_id, bytes_delta, reason, created_at) VALUES
+  ('admin.alex',   'QUEUE_PREMIUM',  104857600, 'Monthly premium quota grant',       '2025-02-01 00:00:00'),
+  ('owner.olivia', 'QUEUE_PREMIUM',   52428800, 'Owner courtesy boost',              '2025-02-10 09:00:00'),
+  ('user.mia',     'QUEUE_STANDARD',  10485760, 'Plan renewal',                      '2025-02-17 19:45:00'),
+  ('guest.gina',   'QUEUE_GUEST',      3145728, 'Guest complimentary quota',         '2024-08-20 11:05:00');
+
+INSERT INTO payment (payment_id, user_id, payment_datetime, payment_method, amount_charged, transaction_ref_number, invoice_number) VALUES
+  ('PAY-20240104-OO', 'owner.olivia', '2024-01-04 08:50:00', 'Credit Card', 199.99, 'REF-OO-240104', 'INV-OO-2401'),
+  ('PAY-20250215-AA', 'admin.alex',   '2025-02-15 10:40:00', 'Corporate',   249.99, 'REF-AA-250215', 'INV-AA-2502'),
+  ('PAY-20250217-UM', 'user.mia',     '2025-02-17 19:40:00', 'Debit Card',   59.99, 'REF-UM-250217', 'INV-UM-2502'),
+  ('PAY-20240820-GG', 'guest.gina',   '2024-08-20 11:05:00', 'Cash',          9.99, 'REF-GG-240820', 'INV-GG-2408');
+
+INSERT INTO monetary_ledger (user_id, speed_queue_id, amount_delta, reason, ref_payment_id, created_at) VALUES
+  ('owner.olivia', 'QUEUE_PREMIUM',  199.99,  'Initial owner subscription',          'PAY-20240104-OO', '2024-01-04 08:50:00'),
+  ('owner.olivia', 'QUEUE_PREMIUM',  -19.99,  'Promotional credit',                   NULL,              '2024-02-01 09:10:00'),
+  ('user.mia',     'QUEUE_STANDARD',  59.99,  'Standard plan renewal',               'PAY-20250217-UM', '2025-02-17 19:40:00'),
+  ('admin.alex',   'QUEUE_PREMIUM',  249.99,  'Corporate retainer',                  'PAY-20250215-AA', '2025-02-15 10:40:00'),
+  ('guest.gina',   'QUEUE_GUEST',      9.99,  'Guest day pass purchase',             'PAY-20240820-GG', '2024-08-20 11:05:00');
+
+INSERT INTO payment_history (user_id, timestamp, amount_due, amount_paid, payment_status) VALUES
+  ('owner.olivia', '2025-02-01 00:00:00', 199.99, 199.99, 'PAID'),
+  ('user.mia',     '2025-02-17 19:40:00',  59.99,  59.99, 'PAID'),
+  ('guest.gina',   '2024-08-20 11:05:00',   9.99,   9.99, 'PAID');
+
+INSERT INTO internet_session (session_id, user_id, ip_address, mac_address, host_name, login_timestamp, logout_timestamp, speed_queue_id) VALUES
+  ('SESS-ADMIN-001',  'admin.alex',   '10.0.0.10', 'AA:10:00:00:00:01', 'admin-console',     '2025-02-15 08:00:00', '2025-02-15 12:15:00', 'QUEUE_PREMIUM'),
+  ('SESS-OWNER-001',  'owner.olivia', '10.0.0.20', 'OO:20:00:00:00:01', 'owner-dashboard',   '2025-02-12 09:30:00', '2025-02-12 11:30:00', 'QUEUE_PREMIUM'),
+  ('SESS-USER-001',   'user.mia',     '10.0.1.30', 'UM:30:00:00:00:01', 'member-laptop',     '2025-02-17 18:30:00', '2025-02-17 20:00:00', 'QUEUE_STANDARD'),
+  ('SESS-GUEST-001',  'guest.gina',   '10.0.2.40', 'GG:40:00:00:00:01', 'guest-tablet',      '2024-08-20 11:10:00', NULL,                   'QUEUE_GUEST');
+
+INSERT INTO traffic_data (session_id, received_bytes, transmitted_bytes, last_updated_at) VALUES
+  ('SESS-ADMIN-001',  95000000,  12500000, '2025-02-15 12:15:00'),
+  ('SESS-OWNER-001',  72000000,   8200000, '2025-02-12 11:30:00'),
+  ('SESS-USER-001',  18000000,   4500000, '2025-02-17 20:00:00'),
+  ('SESS-GUEST-001',   2500000,    600000, '2024-08-20 12:30:00');
+
+INSERT INTO report_run (run_id, user_id, report_type, parameters, generated_at, share_flag) VALUES
+  ('RUN-20250215-SUMMARY', 'admin.alex',  'SYSTEM_SUMMARY', '{"range":"LAST_7_DAYS"}',  '2025-02-15 12:30:00', 1),
+  ('RUN-20250212-REVENUE', 'owner.olivia','REVENUE_DAILY',  '{"date":"2025-02-12"}',    '2025-02-12 12:00:00', 1),
+  ('RUN-20250217-QUOTA',   'user.mia',    'QUOTA_ALERTS',   '{"threshold":"LOW"}',      '2025-02-17 19:50:00', 0);
+
+INSERT INTO system_event (event_type, description, details, occurred_at) VALUES
+  ('SNAPSHOT',      'Daily health snapshot',        'All systems operational',                '2025-02-15 06:00:00'),
+  ('ALERT',         'Low quota warning',            'user.mia has less than 2GB remaining',   '2025-02-15 15:30:00'),
+  ('CONFIG_CHANGE', 'Queue tuning applied',         'Adjusted QUEUE_STANDARD bandwidth',      '2025-02-14 09:45:00'),
+  ('MAINTENANCE',   'Planned maintenance window',   'Network switch firmware upgrade',        '2025-02-10 01:00:00'),
+  ('OUTAGE',        'Unexpected outage resolved',   'Power cycle completed in zone 2',        '2025-02-05 14:20:00');
+
+INSERT INTO url_restriction (url, is_blocked, created_at, created_by_user_id) VALUES
+  ('https://www.education-portal.org', 0, '2024-08-01 09:00:00', 'admin.alex'),
+  ('https://www.streamingplus.tv',     1, '2024-08-02 12:15:00', 'owner.olivia'),
+  ('https://www.onlinegaminghub.com',  1, '2024-08-03 14:25:00', 'owner.olivia'),
+  ('https://www.local-library.gov',    0, '2024-08-04 10:30:00', 'owner.olivia');
+
+INSERT INTO device_restriction (mac_address, reason) VALUES
+  ('AA:BB:CC:DD:EE:01', 'Suspected malware activity'),
+  ('AA:BB:CC:DD:EE:02', 'Reported stolen device'),
+  ('AA:BB:CC:DD:EE:03', 'Exceeded guest device limit');
+
+COMMIT;
+SQL
+
+echo "Database seed complete. Generated file: $DB_FILE"

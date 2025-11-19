@@ -1,4 +1,7 @@
 <?php
+<<<<<<< HEAD
+declare(strict_types=1);
+=======
 require_once $_SERVER['DOCUMENT_ROOT'] . '/Website/config/auth.php';
 require_roles(['admin']);
 // Sample user data array
@@ -14,9 +17,28 @@ $user_data = [
     ['MBaker', 'Mason Baker', 'Inactive'],
     ['SWhite', 'Sophia White', 'Active']
 ];
+>>>>>>> main
 
 // Set the page title dynamically
-$pageTitle = "A - Add User"; 
+$pageTitle = "A - User Management";
+
+$root = dirname(__DIR__, 2);
+
+/** @var PDO $pdo */
+$pdo = require $root . '/config/db.php';
+require_once $root . '/config/data_helpers.php';
+
+$users = fetchAllUsersWithStatus($pdo);
+
+// Shape data for the existing table rendering logic.
+$user_data = array_map(static function (array $row): array {
+    $status = $row['status_code'] ?? 'UNKNOWN';
+    return [
+        $row['user_id'] ?? '',
+        $row['full_name'] ?? '',
+        $status,
+    ];
+}, $users);
 
 // Include the header
 include('../asset_for_pages/admin_header.php');
