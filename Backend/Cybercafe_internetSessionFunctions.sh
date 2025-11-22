@@ -3,6 +3,9 @@
 #File: internetSessionFunctions
 #Description: Contains all internet session functions that are necessary for updating and managing the system and website
 
+# The below STATUS_PATH variable may not be needed in future integration. This seems to be a temporary path used to indicate the hotspot status.
+#STATUS_PATH="/data/data/com.android.myapplication/files/tmp/cybercafe.confirmed"
+
 ##FUNCTIONS##
 ##Removal Functions##
 function clear_internet_sessions
@@ -22,11 +25,77 @@ function delete_user_iptable_rules
 #subfunction of remove_session used to remove user access
 {
 	# Argument1: $1 -> user_ip
+
+	# Maybe need to change ${USER_IP} to ${1} in the two filter rules below - not changing this function yet, keeping as is
 	iptables -t mangle -D iptmon_rx -o ${HS_INTERFACE} -d ${1} > /dev/null 2>> error.log # delete rules since this user is effectively logged out
 	iptables -t mangle -D iptmon_tx -i ${HS_INTERFACE} -s ${1} > /dev/null 2>> error.log # same as above
 	iptables -t nat -D PREROUTING -p all -s ${1} -i ${HS_INTERFACE} -j RETURN > /dev/null 2>> error.log
 	iptables -t filter -D FORWARD -p all -s ${USER_IP} -i ${HS_INTERFACE} -j ACCEPT > /dev/null 2>> error.log
 	iptables -t filter -D FORWARD -p all -d ${USER_IP} -o ${HS_INTERFACE} -j ACCEPT > /dev/null 2>> error.log
+}
+
+function shutdown_infra {
+    printf "%s" "$(date +%T)" && echo ": Shutdown, I suppose"
+    echo "Stopping captive portal webserver"
+    pkill lighttpd
+
+	###############
+	#### NEW ######
+	###############
+	# CAPTURE IP: We need this to delete the specific NAT rules created in setupFunctions
+    local local_ip_cache=$(ip -4 addr show dev ${HS_INTERFACE} | grep inet | awk '{print $2}' | cut -d '/' -f 1)
+	###############
+
+    echo "Putting variables back to default values"
+    LOCAL_IP=''
+    TIME_TO_REFRESH=false
+    HS_STATUS='down'
+
+    echo "Removing status path"
+    #rm -f $STATUS_PATH -> This is not going to be needed for current implementation of shutdown_infra (Unique to Chris' implementation)
+
+    echo "Cleaning up iptables"
+    #iptables -t mangle -D FORWARD -j iptmon_tx
+    #iptables -t mangle -D FORWARD -j iptmon_rx
+	iptables -t mangle -D FORWARD -i ${HS_INTERFACE} -j iptmon_tx #changed to POSTROUTING to match John's setup
+    iptables -t mangle -D POSTROUTING -o ${HS_INTERFACE} -j iptmon_rx #changed to PREROUTING to match John's setup
+
+	# Remove all rules in iptmon_rx
+    while true; do
+        iptables -t mangle -D iptmon_rx 1
+        if [[ $? == 1 ]]; then
+            break
+        fi
+    done
+    iptables -t mangle -X iptmon_rx
+
+	# Remove all rules in iptmon_tx
+    while true; do
+        iptables -t mangle -D iptmon_tx 1
+        if [[ $? == 1 ]]; then
+            break
+        fi
+    done
+    iptables -t mangle -X iptmon_tx
+
+	# Remove all PREROUTING rules
+    while true; do
+        iptables -t nat -D PREROUTING 2
+        if [[ $? == 1 ]]; then
+            break
+        fi
+    done
+
+	# Cleanup specific NAT and Filter rules created by setup_infrastructure
+	iptables -t nat -D PREROUTING -p tcp -i ${HS_INTERFACE} -j DNAT --to-destination ${local_ip_cache}:80 2>/dev/null
+    iptables -t filter -D FORWARD -p all -i ${HS_INTERFACE} -j DROP 2>/dev/null
+    iptables -t filter -D FORWARD -p all -o ${HS_INTERFACE} ! -s ${local_ip_cache} -j DROP 2>/dev/null
+
+    echo "Cleaning up wlan1 qdisc"
+    tc qdisc delete dev ${HS_INTERFACE} root
+
+    echo
+    echo "Done."
 }
 
 
