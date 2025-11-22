@@ -9,76 +9,17 @@ LOCAL_IP=''
 HS_STATUS='down'
 HS_STATUS_PREV='down'
 
-# Between increments of this value we will not perform a more expensive check of
-# the status of the CyberCafe infrastructure. Once passed, we perform the checks
-# then reset the counter. In seconds.
-REFRESH_TIME=3600
-
-# Path to the file used to indicate the time we last did an expensive check of
-# the hotspot/CyberCafe infrastructure status. If the file doesn't exist, it's
-# assumed we're not ready to act as a CyberCafe router.
-# Android Test
-# STATUS_PATH="/data/data/com.android.myapplication/files/tmp/cybercafe.confirmed"
-
-# Windows Test
-STATUS_PATH="./tmp/cybercafe.confirmed"
-
-# When 'true', we perform the expensive CyberCafe infrastructure check.
-TIME_TO_REFRESH=false
-
 ##FUNCTIONS##
 function check_hotspot_status
 #Checks whether the device's hotspot feature has been turned on or off
 {
-	# Save previous status from last check so we capture previous state for Daemon to know change (From John's)
-	HS_STATUS_PREV=$HS_STATUS 
-
-	# From Chris's with better probing method to grab a specific IP pattern for the hotspot
-	ip add show dev wlan0 | grep 192\.168\.43\. > /dev/null 2>> error.log # Does it appear the hotspot is active?
-	wlan_ip_status=$?
-
-	# Set current status of the infrastructrure 
-	if [[ $wlan_ip_status -eq 0 ]]; then
+	HS_STATUS_PREV=$HS_STATUS #save previous status from last check
+	ip add show dev $HS_INTERFACE | grep UP > /dev/null 2>> error.log # Does it appear the hotspot is active?
+	if [[ $? -eq 0 ]]; then
 		HS_STATUS='up'
-
-	#To detect any drift/small crashes or glitches when hotspot goes down, but our state var. is still 'up'.
-    elif [[ $wlan_ip_status -ne 0 && $HS_STATUS == 'up' ]]; then
-        # Assume hotspot has recently gone done.
-        HS_STATUS='down'
-        TIME_TO_REFRESH=true
 	else
 		HS_STATUS='down'
-		TIME_TO_REFRESH=false
 	fi
-
-	# Timestamp Guard (From Chris's) to indicate refreshing if the file is not found or stale
-	# Stale: If the File's age > REFRESH_TIME, then set TIME_TO_REFRESH=true
-
-	# HS_STATUS is down: TIME_TO_REFRESH is false, HS_STATUS=down
-    # HS_STATUS is up, but the STATUS_PATH does not exist: Indicate refresh
-    # HS_STATUS is up, and STATUS_PATH exists: Check STATUS_PATH age
-        # STATUS_PATH age > REFRESH_TIME: Indicate refresh
-        # STATUS_PATH age < REFRESH_TIME: Indicate no refresh
-
-
-    if [[ $HS_STATUS == 'up' && ! -e $STATUS_PATH ]]; then
-        TIME_TO_REFRESH=true
-
-    elif [[ $HS_STATUS == 'up' && -e $STATUS_PATH ]]; then
-        # If the CyberCafe status file exists and the hotspot is up
-        # calculate how old it is (in s)
-		cf_status_path_age=$(echo "$(date +%s) - $(date -r ${STATUS_PATH} +%s)" | bc)
-
-		# if it's older than REFRESH_TIME, indicate time to refresh
-		if [[ $cf_status_path_age -gt $REFRESH_TIME ]]; then
-			TIME_TO_REFRESH=true
-		else
-			TIME_TO_REFRESH=false
-		fi
-	else 
-		# Hotspot is down, no need for refresh to save resources
-		TIME_TO_REFRESH=false
-    fi
 }
 
 function setup_infrastructure
