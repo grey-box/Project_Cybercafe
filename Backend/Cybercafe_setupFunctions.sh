@@ -21,7 +21,8 @@ function check_hotspot_status
 		HS_STATUS='down'
 	fi
 }
-}
+
+
 function setup_infrastructure
 #Setup any necessary infrastructure for the Cybercafe system
 {
