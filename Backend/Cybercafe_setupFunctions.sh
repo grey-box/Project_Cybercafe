@@ -80,6 +80,7 @@ function check_hotspot_status
 		TIME_TO_REFRESH=false
     fi
 }
+
 function setup_infrastructure
 #Setup any necessary infrastructure for the Cybercafe system
 {
