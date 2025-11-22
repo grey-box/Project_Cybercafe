@@ -8,7 +8,6 @@ LOCAL_IP=''
 # The status of the hotspot interface on the device
 HS_STATUS='down'
 HS_STATUS_PREV='down'
-
 ##FUNCTIONS##
 function check_hotspot_status
 #Checks whether the device's hotspot feature has been turned on or off
