@@ -81,36 +81,121 @@ function setup_infrastructure
 function shutdown_infrastructure
 #remove any necessary infrastructure for running the CyberCafe system
 {
+    # preserve existing trap / error logging
 	trap 'echo -e "$(date) Error in Cybercafe_setupFunction.sh: Line ${LINENO}\n" >> error.log' ERR > /dev/null 2>> error.log
-	#kill the captive server so that no additional requests can be pushed through while the system is going down
-    pkill lighttpd > /dev/null 2>> error.log
-	#Get hotspot ip for dismantling iptable rules
-	LOCAL_IP=$(ifconfig $HS_INTERFACE | grep 'inet addr' | awk '{print $2}' | cut -d: -f2) > /dev/null 2>> error.log
 
-	#references to iptmon tables need to be removed first
-    iptables -t mangle -D FORWARD -i ${HS_INTERFACE} -j iptmon_tx > /dev/null 2>> error.log
-    iptables -t mangle -D POSTROUTING -o ${HS_INTERFACE} -j iptmon_rx > /dev/null 2>> error.log
-	#flush system defined tables
-	iptables -t mangle -F iptmon_rx > /dev/null 2>> error.log
-	iptables -t mangle -X iptmon_rx > /dev/null 2>> error.log
-	iptables -t mangle -F iptmon_tx > /dev/null 2>> error.log
-	iptables -t mangle -X iptmon_tx > /dev/null 2>> error.log
-	
-	#check to see if the special redirection rules made by the cybercafe system still exist
-	iptables -t nat -C PREROUTING -p tcp -i ${HS_INTERFACE} -j DNAT --to-destination ${LOCAL_IP}:80 > /dev/null 2>> error.log
-	if [[ $? -eq 0 ]]; then
-		#remove special redirection rules that are used to service the cybercafe system
-		iptables -t nat -D PREROUTING -p udp -i ${HS_INTERFACE} -d ${LOCAL_IP} --dport 53 -j RETURN > /dev/null 2>> error.log
-		iptables -t nat -D PREROUTING -p udp -i ${HS_INTERFACE} -s 0.0.0.0/32 -d 255.255.255.255/32 --dport 67 -j RETURN > /dev/null 2>> error.log
-		iptables -t nat -D PREROUTING -p tcp -i ${HS_INTERFACE} -j DNAT --to-destination ${LOCAL_IP}:80 > /dev/null 2>> error.log
-		iptables -t filter -D FORWARD -p all -i ${HS_INTERFACE} -j DROP > /dev/null 2>> error.log
-		iptables -t filter -D FORWARD -p all -o ${HS_INTERFACE} ! -s ${LOCAL_IP} -j DROP > /dev/null 2>> error.log
-	fi
-	
-	#reset variables
+    # dry-run support (export DRY_RUN=true to simulate)
+    DRY_RUN=${DRY_RUN:-false}
+    run_cmd() {
+      if [[ "${DRY_RUN}" == "true" ]]; then
+        echo "[DRY-RUN] $*"
+      else
+        # execute and append stderr to error.log so we keep original behavior
+        eval "$@" 2>> error.log || true
+      fi
+    }
+
+    log() { echo "[shutdown_infrastructure] $*"; }
+    warn() { echo "[shutdown_infrastructure][WARN] $*" >&2; }
+
+	#Get hotspot ip for dismantling iptable rules (best-effort)
+	LOCAL_IP=$(ifconfig $HS_INTERFACE | grep 'inet addr' | awk '{print $2}' | cut -d: -f2) > /dev/null 2>> error.log || LOCAL_IP=''
+
+    log "Beginning shutdown_infrastructure (dry-run=${DRY_RUN})"
+
+	# 1) Stop captive server (safe)
+    log "Stopping captive portal webserver (pkill lighttpd)"
+    run_cmd "pkill lighttpd > /dev/null || true"
+
+	# 2) Remove status file if present (if config defines STATUS_PATH)
+    : "${STATUS_PATH:=${STATUS_PATH:-}}"
+    if [[ -n "${STATUS_PATH}" ]] && [[ -e "${STATUS_PATH}" ]]; then
+      log "Removing status path: ${STATUS_PATH}"
+      run_cmd "rm -f -- '${STATUS_PATH}' || true"
+    else
+      log "No STATUS_PATH present or file missing; skipping"
+    fi
+
+	# 3) Remove mangle references (Chris: iptmon_tx, iptmon_rx)
+    if command -v iptables >/dev/null 2>&1; then
+      log "Attempting to remove mangle table references to iptmon_tx / iptmon_rx"
+
+      # remove FORWARD -j iptmon_tx (if present)
+      run_cmd "iptables -t mangle -D FORWARD -i ${HS_INTERFACE} -j iptmon_tx > /dev/null 2>> error.log || true"
+      run_cmd "iptables -t mangle -D POSTROUTING -o ${HS_INTERFACE} -j iptmon_rx > /dev/null 2>> error.log || true"
+
+      # flush & delete chains safely (will ignore if not present)
+      for c in iptmon_rx iptmon_tx; do
+        # flush chain if exists
+        if iptables -t mangle -L "${c}" > /dev/null 2>> error.log; then
+          log "Flushing and deleting chain: ${c}"
+          run_cmd "iptables -t mangle -F ${c} > /dev/null 2>> error.log || true"
+          run_cmd "iptables -t mangle -X ${c} > /dev/null 2>> error.log || true"
+        else
+          log "Chain ${c} not present; skipping"
+        fi
+      done
+    else
+      warn "iptables not found; skipping mangle cleanup"
+    fi
+
+	# 4) Remove NAT PREROUTING redirect rules (Chris)
+    if command -v iptables >/dev/null 2>&1; then
+      log "Cleaning NAT PREROUTING redirect rules (best-effort)"
+      # Attempt to find PREROUTING DNAT entries and delete them
+      # We parse iptables-save style output and convert -A to -D for deletion
+      iptables -t nat -S 2>> error.log | grep -i "PREROUTING" | grep -E "DNAT|--to-destination" 2>> error.log | while read -r r; do
+        delcmd=$(echo "$r" | sed 's/^-A/-D/')
+        log "Deleting nat rule: $delcmd"
+        run_cmd "iptables -t nat $delcmd > /dev/null 2>> error.log || true"
+      done
+
+      # also attempt to delete the specific rules added by John's setup (tcp redirect & FORWARD DROP) if present
+      run_cmd "iptables -t nat -D PREROUTING -p tcp -i ${HS_INTERFACE} -j DNAT --to-destination ${LOCAL_IP}:80 > /dev/null 2>> error.log || true"
+      run_cmd "iptables -t filter -D FORWARD -p all -i ${HS_INTERFACE} -j DROP > /dev/null 2>> error.log || true"
+      run_cmd "iptables -t filter -D FORWARD -p all -o ${HS_INTERFACE} ! -s ${LOCAL_IP} -j DROP > /dev/null 2>> error.log || true"
+    fi
+
+	# 5) Remove John's mirrored chains and per-user chains (best-effort)
+    if command -v iptables >/dev/null 2>&1; then
+      MIRROR_PREFIX="${MIRROR_PREFIX:-CYBERCAFE-MIRROR-}"
+      USER_CHAIN_PREFIX="${USER_CHAIN_PREFIX:-cybercafe-user-}"
+
+      log "Removing mirror chains with prefix ${MIRROR_PREFIX} (if any)"
+      iptables -S 2>> error.log | awk '{print $2}' | grep -E "^${MIRROR_PREFIX}" 2>> error.log | sort -u | while read -r ch; do
+        [[ -z "$ch" ]] && continue
+        log "Found mirror chain: $ch -- flushing & deleting"
+        run_cmd "iptables -F ${ch} > /dev/null 2>> error.log || true"
+        run_cmd "iptables -X ${ch} > /dev/null 2>> error.log || true"
+      done
+
+      log "Removing per-user chains with prefix ${USER_CHAIN_PREFIX} (if any)"
+      iptables -S 2>> error.log | awk '{print $2}' | grep -E "^${USER_CHAIN_PREFIX}" 2>> error.log | sort -u | while read -r uch; do
+        [[ -z "$uch" ]] && continue
+        log "Found user chain: $uch -- flushing & deleting"
+        run_cmd "iptables -F ${uch} > /dev/null 2>> error.log || true"
+        run_cmd "iptables -X ${uch} > /dev/null 2>> error.log || true"
+      done
+    fi
+
+	# 6) Remove qdisc on hotspot interface (Chris)
+    if command -v tc >/dev/null 2>&1; then
+      if ip link show "${HS_INTERFACE}" > /dev/null 2>> error.log; then
+        log "Deleting qdisc on ${HS_INTERFACE}"
+        run_cmd "tc qdisc del dev ${HS_INTERFACE} root > /dev/null 2>> error.log || true"
+      else
+        log "Interface ${HS_INTERFACE} not present; skipping tc cleanup"
+      fi
+    else
+      warn "tc not found; skipping qdisc cleanup"
+    fi
+
+	# 7) Reset runtime variables to safe defaults
     LOCAL_IP=''
     HS_STATUS='down'
 	HS_STATUS_PREV='down'
+
+    log "shutdown_infrastructure completed (dry-run=${DRY_RUN})"
 }
 
 function start_captive_webserver
