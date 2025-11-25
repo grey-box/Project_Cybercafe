@@ -83,18 +83,6 @@ function check_hotspot_status
 
 
 
-		# if it's older than REFRESH_TIME, indicate time to refresh
-		if [[ $cf_status_path_age -gt $REFRESH_TIME ]]; then
-			TIME_TO_REFRESH=true
-		else
-			TIME_TO_REFRESH=false
-		fi
-	else 
-		# Hotspot is down, no need for refresh to save resources
-		TIME_TO_REFRESH=false
-    fi
-
-
 
 function setup_infrastructure
 #Setup any necessary infrastructure for the Cybercafe system
