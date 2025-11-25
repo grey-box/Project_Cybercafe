@@ -81,6 +81,7 @@ function check_hotspot_status
     fi
 }
 
+
 function setup_infrastructure
 #Setup any necessary infrastructure for the Cybercafe system
 {
