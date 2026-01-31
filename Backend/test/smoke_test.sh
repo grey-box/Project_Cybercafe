@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-# Smoke test: proves discovery + runner execution works.
-exit 0
-    
+source "$(dirname "$0")/helpers/assert.sh"
+source "../Cybercafe_setupFunctions.sh"
+
+test_shutdown_prints_banner() {
+  output="$(shutdown_infrastructure 2>&1 || true)"
+  assert_contains "$output" "Beginning shutdown_infrastructure"
+}
+
+test_shutdown_prints_banner
