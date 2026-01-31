@@ -51,13 +51,11 @@ else
     fi
     # Find tests named *_test.sh under Backend/test/
     # mapfile reads lines into an array without splitting on spaces
-    mapfile -t TESTS < <(find "$TEST_DIR" -type f -name "*_test.sh" | sort)
-fi
-
-
-# Optional substring filtering
-if [[ -n "$FILTER" ]]; then
-    TESTS="$(echo "$TESTS" | grep "$FILTER" || true)"
+    mapfile -t TESTS < <(
+    {
+    find "$TEST_DIR" -type f -name "*_test.sh"
+    find "$TEST_DIR" -type f -name "*.bats" 
+    } | sort)
 fi
 
 # Optional filter (still safe: operates line-by-line)
@@ -76,6 +74,26 @@ if (( ${#TESTS[@]} == 0 )); then
     exit 0
 fi
 
+# run a single test based on file type
+run_one_test() {
+    local t="$1"
+    case "$t" in
+        *.bats)
+            if command -v bats >/dev/null 2>&1; then
+                bats "$t"
+            else
+                echo "ERROR: Found .bats test but bats is not installed:" >&2
+                echo "  ${t#$ROOT_DIR/}" >&2
+                echo "Install bats or convert this test to *_test.sh" >&2
+                return 2
+            fi
+            ;;
+        *)
+            bash "$t"
+            ;;
+    esac
+}
+
 pass=0
 fail=0
 failures=()
@@ -87,7 +105,7 @@ echo "================"
 # Pass/fail is determined by the script's exit code (0=pass, non-0=fail)
 for t in "${TESTS[@]}"; do
     echo "Running test: $t"
-    if bash "$t"; then
+    if run_one_test "$t"; then
         echo "PASS: ${t#$ROOT_DIR/}"
         pass=$((pass + 1))
     else
