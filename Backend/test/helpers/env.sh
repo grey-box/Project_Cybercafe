@@ -1,4 +1,4 @@
-#!usr/bin/env bash
+#!/usr/bin/env bash
 
 # Test environment bootstrap for CyberCafe Backend tests
 # Goals:
@@ -7,6 +7,9 @@
 # - set safe defaults (DRY_RUN=true)
 # - avoid relying on current working directory
 # - cleanup automatically unless KEEP_TEST_TMP=1
+
+# Usage: 
+# - Source this file in test scripts: source ./env.sh
 
 set -Eeuo pipefail
 
@@ -30,7 +33,7 @@ export TEST_TMPDIR
 FAKEBIN="$TEST_TMPDIR/fakebin"
 mkdir -p "$FAKEBIN"
 export FAKEBIN
-export path="$FAKEBIN:$PATH"
+export PATH="$FAKEBIN:$PATH"
 
 # Common scratch locations (tests can use these by default)
 TEST_LOGDIR="$TEST_TMPDIR/logs"

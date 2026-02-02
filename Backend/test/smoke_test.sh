@@ -1,4 +1,13 @@
 #!/usr/bin/env bash
+
+# Purpose:
+# - Fast “sanity” test that Cybercafe_setupFunctions.sh can be sourced and key functions run
+# - Runs shutdown_infrastructure in DRY_RUN mode using PATH mocks (FAKEBIN)
+# - Verifies expected output + proves mocked system commands were invoked
+#
+# This test MUST NOT touch real system state (no real iptables/tc changes).
+# It is safe to run on a dev machine and in CI.
+
 set -Eeuo pipefail
 
 # Example to demonstrate usage of helpers in a smoke test:

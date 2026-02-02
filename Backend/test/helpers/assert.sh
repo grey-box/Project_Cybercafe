@@ -3,6 +3,8 @@
 # Simple assertion helper functions for bash test scripts
 # Each assertion prints a clear message and exits non-zero on failure
 # Intended to be used with: set -Eeuo pipefail
+# Usage: 
+# - Source this file in test scripts: source ./assert.sh
 
 # Print a failure message and exit
 _assert_fail() {
