@@ -75,14 +75,6 @@ teardown() {
     HS_STATUS_PREV='up'
     TIME_TO_REFRESH='false'
 
-    # Then simulate wlan0 interface going offline (mock test of ip failure)
-    # For mock, create a subshell to fail the ip check
-    #function ip() {
-   ## }
-    #export -f $wlan_ip_status
-
-   # check_hotspot_status
-
    wlan_ip_status=1     # Non-zero means IP not found
    HS_STATUS_PREV=$HS_STATUS
 
