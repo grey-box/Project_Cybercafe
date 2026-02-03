@@ -12,9 +12,9 @@ TEST_DIR="$ROOT_DIR/test"
 usage() {
     cat << 'EOF'
 Usage:
-    test/run                    Run all tests
-    test/run path/to/test.sh    Run a specific test script
-    test/run --filter text      Run tests whose path contains 'text'
+    test/run.sh                    Run all tests
+    test/run.sh path/to/test.sh    Run a specific test script
+    test/run.sh --filter text      Run tests whose path contains 'text'
 EOF
 }
 
