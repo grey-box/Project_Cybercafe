@@ -25,13 +25,15 @@ function delete_user_iptable_rules
 #subfunction of remove_session used to remove user access
 {
 	# Argument1: $1 -> user_ip
+	# FIX: Changed all rules to use $1 (passed argument) instead of mixing $1 and $USER_IP (global).
+	#      This ensures all 5 iptables rules are deleted for the correct IP address.
+	#      Previously, the last 2 filter rules used $USER_IP which could be stale/empty.
 
-	# Maybe need to change ${USER_IP} to ${1} in the two filter rules below - not changing this function yet, keeping as is
 	iptables -t mangle -D iptmon_rx -o ${HS_INTERFACE} -d ${1} > /dev/null 2>> error.log # delete rules since this user is effectively logged out
 	iptables -t mangle -D iptmon_tx -i ${HS_INTERFACE} -s ${1} > /dev/null 2>> error.log # same as above
 	iptables -t nat -D PREROUTING -p all -s ${1} -i ${HS_INTERFACE} -j RETURN > /dev/null 2>> error.log
-	iptables -t filter -D FORWARD -p all -s ${USER_IP} -i ${HS_INTERFACE} -j ACCEPT > /dev/null 2>> error.log
-	iptables -t filter -D FORWARD -p all -d ${USER_IP} -o ${HS_INTERFACE} -j ACCEPT > /dev/null 2>> error.log
+	iptables -t filter -D FORWARD -p all -s ${1} -i ${HS_INTERFACE} -j ACCEPT > /dev/null 2>> error.log  # Fixed: was ${USER_IP}
+	iptables -t filter -D FORWARD -p all -d ${1} -o ${HS_INTERFACE} -j ACCEPT > /dev/null 2>> error.log  # Fixed: was ${USER_IP}
 }
 
 function shutdown_infra {
