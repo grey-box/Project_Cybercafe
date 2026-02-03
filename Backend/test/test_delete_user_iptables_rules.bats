@@ -1,11 +1,11 @@
 #!/usr/bin/env bats
 
 # BATS test file for delete_user_iptable_rules
-# Run with: bats Backend/test/test_delete_user_iptables_rules.bats
+# Run with: ./test/run.sh test/test_delete_user_iptables_rules.bats
 
 setup() {
     # Create mock directory
-    MOCKBIN="$(pwd)/Backend/test/mocks"
+    MOCKBIN="$(pwd)/test/mocks"
     rm -rf "$MOCKBIN"
     mkdir -p "$MOCKBIN"
     
@@ -32,7 +32,7 @@ EOT
     export USER_IP=""
     
     # Source the functions
-    source Backend/Cybercafe_internetSessionFunctions.sh
+    source Cybercafe_internetSessionFunctions.sh
 }
 
 teardown() {
