@@ -188,14 +188,17 @@ iptables_was_called_with() {
     [ "$(count_iptables_calls)" -eq 5 ]
 }
 
-@test "delete_user_iptable_rules: uses argument $1 for first 3 rules" {
+@test "delete_user_iptable_rules: uses argument $1 for all 5 rules (ignores global USER_IP)" {
     export USER_IP="SHOULD_NOT_USE_THIS"
     
     delete_user_iptable_rules "192.168.100.200"
     
-    # First 3 rules should use the passed argument
+    # All 5 rules should use the passed argument, not the global USER_IP
     iptables_was_called_with "-d 192.168.100.200"
     iptables_was_called_with "-s 192.168.100.200"
+    
+    # Verify the global USER_IP was NOT used in any command
+    ! grep -q "SHOULD_NOT_USE_THIS" "$MOCKBIN/iptables.log"
 }
 
 #################
