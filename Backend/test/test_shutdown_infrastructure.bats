@@ -1,45 +1,47 @@
 #!/usr/bin/env bats
+
+
 setup() {
-  MOCKBIN="$(pwd)/Backend/test/mocks"
-  rm -rf "$MOCKBIN"
-  mkdir -p "$MOCKBIN"
-
-  cat > "$MOCKBIN/iptables" <<'EOT'
-#!/usr/bin/env bash
-echo "[MOCK iptables] $*"
-exit 0
-EOT
-  chmod +x "$MOCKBIN/iptables"
-
-  cat > "$MOCKBIN/tc" <<'EOT'
-#!/usr/bin/env bash
-echo "[MOCK tc] $*"
-exit 0
-EOT
-  chmod +x "$MOCKBIN/tc"
-
-  cat > "$MOCKBIN/pkill" <<'EOT'
-#!/usr/bin/env bash
-echo "[MOCK pkill] $*"
-exit 0
-EOT
-  chmod +x "$MOCKBIN/pkill"
-
-  export PATH="$MOCKBIN:$PATH"
+  # Use DRY_RUN so no real system state is touched
   export DRY_RUN=true
-  export HS_INTERFACE="${HS_INTERFACE:-wlan0}"
-  export STATUS_PATH="$(pwd)/Backend/test_status_file"
+
+  # Minimal required environment
+  export HS_INTERFACE="wlan0"
+  export STATUS_PATH="./tmp/test_shutdown_status"
+
+  mkdir -p ./tmp
   touch "$STATUS_PATH"
 
-  source Backend/Cybercafe_setupFunctions.sh
+  # Source the code under test
+  source "$BATS_TEST_DIRNAME/../Cybercafe_setupFunctions.sh"
 }
 
 teardown() {
-  rm -rf Backend/test/mocks Backend/test_status_file || true
+  rm -rf ./tmp || true
 }
 
-@test "shutdown_infrastructure runs and prints starting message (dry-run mocked)" {
+@test "shutdown_infrastructure runs cleanly in dry-run mode" {
+  run shutdown_infrastructure
+
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"Beginning shutdown_infrastructure"* ]]
+  [[ "$output" == *"shutdown_infrastructure completed"* ]]
+}
+
+@test "shutdown_infrastructure is idempotent (can run twice)" {
   run shutdown_infrastructure
   [ "$status" -eq 0 ]
-  echo "$output" | grep -q "Beginning shutdown_infrastructure (dry-run=true)"
+
+  run shutdown_infrastructure
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"shutdown_infrastructure completed"* ]]
+}
+
+@test "shutdown_infrastructure does not fail when resources are missing" {
+  rm -f "$STATUS_PATH"
+
+  run shutdown_infrastructure
+
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"shutdown_infrastructure completed"* ]]
 }
