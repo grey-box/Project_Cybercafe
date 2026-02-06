@@ -1,0 +1,26 @@
+name: CI - ShellCheck & BATS Tests
+
+on:
+  pull_request:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y shellcheck bats
+
+      - name: Run ShellCheck on Backend scripts
+        run: |
+          shellcheck Backend/*.sh Backend/test/*.sh Backend/test/*.bats
+
+      - name: Run BATS unit tests
+        run: |
+          bats Backend/test
+
