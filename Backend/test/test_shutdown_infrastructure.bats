@@ -1,6 +1,5 @@
 #!/usr/bin/env bats
 
-
 setup() {
   # Use DRY_RUN so no real system state is touched
   export DRY_RUN=true
@@ -44,4 +43,27 @@ teardown() {
 
   [ "$status" -eq 0 ]
   [[ "$output" == *"shutdown_infrastructure completed"* ]]
+}
+
+@test "shutdown_infrastructure succeeds even if STATUS_PATH directory is missing" {
+  rm -rf ./tmp
+
+  run shutdown_infrastructure
+
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"shutdown_infrastructure completed"* ]]
+}
+
+@test "shutdown_infrastructure prints dry-run indication" {
+  run shutdown_infrastructure
+
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"dry-run"* ]]
+}
+
+@test "shutdown_infrastructure produces some output (not silent)" {
+  run shutdown_infrastructure
+
+  [ "$status" -eq 0 ]
+  [ -n "$output" ]
 }
