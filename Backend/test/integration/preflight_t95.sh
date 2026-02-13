@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -Eeuo pipefail
+set -euo pipefail
 
 # T95 Preflight Validater
 # Purpose: Verify the T95 is in a known ready state before running system level tests.
