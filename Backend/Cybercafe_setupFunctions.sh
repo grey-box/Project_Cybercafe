@@ -1,3 +1,4 @@
+#!/bin/bash
 #Organization: Grey-box
 #Project: Cybercafe
 #File: setupFunctions
@@ -5,7 +6,6 @@
 
 ##VARIABLES##
 LOCAL_IP=''
-# The status of the hotspot interface on the device
 HS_STATUS='down'
 HS_STATUS_PREV='down'
 
@@ -81,6 +81,43 @@ function check_hotspot_status
     fi
 }
 
+function setup_infrastructure {
+    trap 'echo -e "$(date) Error in Cybercafe_setupFunctions.sh: Line ${LINENO}\n" >> error.log' ERR > /dev/null 2>> error.log
+
+    LOCAL_IP=$(ifconfig $HS_INTERFACE | grep 'inet addr' | awk '{print $2}' | cut -d: -f2) > /dev/null 2>> error.log
+
+    ############################################################
+    # iptmon_tx
+    ############################################################
+    iptables -t mangle -C FORWARD -i ${HS_INTERFACE} -j iptmon_tx > /dev/null 2>> error.log
+    if [[ $? -ne 0 ]]; then
+        iptables -t mangle -N iptmon_tx > /dev/null 2>> error.log
+        iptables -t mangle -A FORWARD -i ${HS_INTERFACE} -j iptmon_tx > /dev/null 2>> error.log
+    fi
+
+    ############################################################
+    # iptmon_rx
+    ############################################################
+    iptables -t mangle -C POSTROUTING -o ${HS_INTERFACE} -j iptmon_rx > /dev/null 2>> error.log
+    if [[ $? -ne 0 ]]; then
+        iptables -t mangle -N iptmon_rx > /dev/null 2>> error.log
+        iptables -t mangle -I iptmon_rx 1 -s ${LOCAL_IP} -j RETURN > /dev/null 2>> error.log
+        iptables -t mangle -A POSTROUTING -o ${HS_INTERFACE} -j iptmon_rx > /dev/null 2>> error.log
+    fi
+
+    ############################################################
+    # NAT redirect rules (captive portal)
+    ############################################################
+    iptables -t nat -C PREROUTING -p tcp -i ${HS_INTERFACE} -j DNAT --to-destination ${LOCAL_IP}:80 > /dev/null 2>> error.log
+    if [[ $? -ne 0 ]]; then
+        iptables -t nat -I PREROUTING 1 -p tcp -i ${HS_INTERFACE} -j DNAT --to-destination ${LOCAL_IP}:80 > /dev/null 2>> error.log
+
+        iptables -t nat -A PREROUTING -p udp -i ${HS_INTERFACE} -d ${LOCAL_IP} --dport 53 -j RETURN > /dev/null 2>> error.log
+        iptables -t nat -A PREROUTING -p udp -i ${HS_INTERFACE} -s 0.0.0.0/32 -d 255.255.255.255/32 --dport 67 -j RETURN > /dev/null 2>> error.log
+
+        iptables -t filter -I FORWARD 1 -p all -i ${HS_INTERFACE} -j DROP > /dev/null 2>> error.log
+        iptables -t filter -I FORWARD 1 -p all -o ${HS_INTERFACE} ! -s ${LOCAL_IP} -j DROP > /dev/null 2>> error.log
+    fi
 
 
 
