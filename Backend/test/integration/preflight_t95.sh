@@ -57,25 +57,6 @@ check_connectivity() {
     fi
 }
 
-check_listeners() {
-    # ss output on Android may not include process names, we only report known risk ports
-    local listeners
-    listeners="$(ss -ltn 2>/dev/null || true)"
-
-    if [[ -z "$listeners" ]]; then
-        warn "Could not read listeners via ss, skipping port checks"
-        return 0
-    fi
-
-    if echo "$listeners" | grep -qE '(:| )5555( |$)'; then
-        warn "Port 5555 is listening (ADB over TCP). Recommend disabling when not needed."
-    fi
-
-    if echo "$listeners" | grep -qE '(:| )14035( |$)'; then
-    warn "Port 14035 is listening (unknown service). Verify it won't conflict with test runs."
-    fi
-}
-
 main() {
     log "=== T95 Preflight Checks ==="
     require_root
@@ -90,7 +71,6 @@ main() {
     check_iface "eth0"
     
     # Nonfatal checks
-    check_listeners
     check_connectivity
     
     log "=== Preflight PASSED: T95 appears integration ready ==="
