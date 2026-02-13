@@ -22,7 +22,13 @@ require_root() {
     local uid
     uid="$(id -u)"
     if [[ "$uid" -ne 0 ]]; then
-        die "Must run as root. Try: su -c '$0'"
+        echo "ERROR: This script must be run as root."
+        echo "Run the following:"
+        echo ""
+        echo "  su"
+        echo "  /data/data/com.termux/files/usr/bin/bash Backend/test/integration/preflight_t95.sh"
+        echo ""
+        die "Must run as root"
     fi
 }
 
