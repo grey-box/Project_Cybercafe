@@ -36,6 +36,11 @@ require_cmd() {
     command -v "$1" >/dev/null 2>&1 || die "Missing required command: $1"
 }
 
+require_bin() {
+    local p="$1"
+    [[ -x "$p" ]] || die "Missing required binary: $p"
+}
+
 check_iface() {
     local iface="$1"
     ip link show "$iface" >/dev/null 2>&1 || die "Expected network interface not found: $iface"
@@ -61,11 +66,11 @@ main() {
     log "=== T95 Preflight Checks ==="
     require_root
     # Required commands for CyberCafe integration readiness
-    require_cmd ip
+    require_cmd ip || require_bin /system/bin/ip
     require_cmd ss
-    require_cmd iptables
-    require_cmd tc
-    require_cmd sqlite3
+    require_bin /system/bin/iptables
+    require_bin /system/bin/tc
+    require_bin /system/bin/sqlite3
     
     # Expected primary interface on your T95 baseline
     check_iface "eth0"
