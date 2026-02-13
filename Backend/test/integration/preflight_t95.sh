@@ -32,13 +32,16 @@ require_root() {
     fi
 }
 
-require_cmd() {
-    command -v "$1" >/dev/null 2>&1 || die "Missing required command: $1"
+have_cmd() {
+    command -v "$1" >/dev/null 2>&1;
 }
 
-require_bin() {
-    local p="$1"
-    [[ -x "$p" ]] || die "Missing required binary: $p"
+require_cmd_or_bin() {
+    local cmd="$1" bin="$2"
+    if have_cmd "$cmd"; then
+        return 0
+    fi
+    [[ -x "$bin" ]] || die "Missing required command/binary: $cmd ($bin not found)"
 }
 
 check_iface() {
@@ -48,6 +51,17 @@ check_iface() {
     if ! ip link show "$iface" | grep -q "state UP"; then
         warn "Network interface $iface exists butis not up"
     fi
+}
+
+check_iptables_access() {
+    # Confirms iptables works and tables are readable (permissions + binary sanity)
+    iptables -S >/dev/null 2>&1 || die "iptables filter table not readable (permission or binary issue)"
+    iptables -t nat -S >/dev/null 2>&1 || die "iptables nat table not readable (permission or binary issue)"
+}
+
+check_tc_access() {
+    # Confirms tc works and qdisc can be read (permissions + binary sanity)
+    tc qdisc show dev eth0 >/dev/null 2>&1 || die "tc cannot read qdisc for eth0"
 }
 
 check_connectivity() {
@@ -62,22 +76,32 @@ check_connectivity() {
     fi
 }
 
+warn_if_no_hotspot_iface() {
+    # We do NOT fail here because baseline may not have hotspot enabled yet.
+    # We just warn that hotspot dependent tests are gated.
+    if ip link show wlan0 >/dev/null 2>&1 || ip link show ap0 >/dev/null 2>&1; then
+        return 0
+    fi
+    warn "No obvious hotspot/Wi-Fi interface found (wlan0/ap0). Hotspot dependent tests are gated."
+}
+
+
 main() {
     log "=== T95 Preflight Checks ==="
     require_root
     # Required commands for CyberCafe integration readiness
-    require_cmd ip || require_bin /system/bin/ip
-    require_cmd ss
-    require_bin /system/bin/iptables
-    require_bin /system/bin/tc
-    require_bin /system/bin/sqlite3
-    
-    # Expected primary interface on your T95 baseline
+    require_cmd_or_bin ip      /system/bin/ip
+    require_cmd_or_bin ss      /system/bin/ss
+    require_cmd_or_bin iptables /system/bin/iptables
+    require_cmd_or_bin tc      /system/bin/tc
+    require_cmd_or_bin sqlite3 /system/bin/sqlite3
+
     check_iface "eth0"
-    
-    # Nonfatal checks
+    check_iptables_access
+    check_tc_access
     check_connectivity
-    
+    warn_if_no_hotspot_iface
+
     log "=== Preflight PASSED: T95 appears integration ready ==="
     exit 0
 }
