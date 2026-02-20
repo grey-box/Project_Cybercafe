@@ -58,10 +58,9 @@ EOF
 
     # Override the global error.log path used inside the function
     # by cd-ing into the temp dir so relative "error.log" writes land there.
-    cd "${TEST_DIR}"
+    cd "${TEST_DIR}" || exit
 
-    # Track background PIDs spawned by stubs so teardown can reap them
-    SPAWNED_PIDS=()
+   
 }
 
 teardown() {
@@ -299,7 +298,7 @@ EOF
     cat > "${LIGHTTPD_PATH}" <<'EOF'  
 #!/bin/bash  
 exec -a lighttpd bash -c "while true; do sleep 1; done"  
-EOF  
+EOF
     chmod +x "${LIGHTTPD_PATH}"
 
     "${LIGHTTPD_PATH}" &
