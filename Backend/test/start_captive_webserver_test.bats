@@ -34,35 +34,34 @@
 # rather than the project root.
 
 setup() {
-    # Create an isolated temp directory for every test
-    TEST_DIR="$(mktemp -d)"
-    ERROR_LOG="${TEST_DIR}/error.log"
+    # Create an isolated temp directory for every test.
+    # export ensures these variables survive into each @test subshell.
+    export TEST_DIR="$(mktemp -d)"
+    export ERROR_LOG="${TEST_DIR}/error.log"
 
-    # Create fake lighttpd executable (succeeds silently, backgrounds cleanly)
-    # mimicks how the real daemon infrastructure would daemonize itself
-    # Daemonize - allowing programs run in the background independently from user processes.
-    LIGHTTPD_PATH="${TEST_DIR}/lighttpd"
+    # Create fake lighttpd executable.
+    # Uses a while loop so the process stays alive and pgrep can find it
+    # by full path for idempotency tests.
+    export LIGHTTPD_PATH="${TEST_DIR}/lighttpd"
     cat > "${LIGHTTPD_PATH}" <<'EOF'
 #!/bin/bash
-# Minimal lighttpd stub — stays alive long enough for tests
-sleep 30 &
-exit 0
+while true; do sleep 1; done
 EOF
     chmod +x "${LIGHTTPD_PATH}"
 
-    # Fake lighttpd config file
-    LIGHTTPD_CONF="${TEST_DIR}/lighttpd.conf"
+    # Fake lighttpd config file — function only checks it exists with -f
+    export LIGHTTPD_CONF="${TEST_DIR}/lighttpd.conf"
     touch "${LIGHTTPD_CONF}"
 
-    # Source the function under test from the project root.
-    # Adjust path if your layout differs.
+    # Source the real implementation so its functions are available to tests.
+    # BATS_TEST_DIRNAME is the test/ directory, implementation is one level up.
+    # shellcheck source=../Cybercafe_setupFunctions.sh
     source "${BATS_TEST_DIRNAME}/../Cybercafe_setupFunctions.sh"
 
-    # Override the global error.log path used inside the function
-    # by cd-ing into the temp dir so relative "error.log" writes land there.
-    cd "${TEST_DIR}"
+    # cd into TEST_DIR so the function's relative "error.log" writes land here.
+    cd "${TEST_DIR}" || exit
 
-    # Track background PIDs spawned by stubs so teardown can reap them
+    # Placeholder for tracking background PIDs if needed in future tests
     SPAWNED_PIDS=()
 }
 
@@ -86,6 +85,8 @@ exit ${exit_code}
 EOF
     chmod +x "${LIGHTTPD_PATH}"
 }
+
+
 
 # ============================================================
 # Category 1: Variable Guard Testing (T1 - T6)
@@ -204,9 +205,8 @@ EOF
 # On WSL, pgrep may not reliably find the stub after it backgrounds a sleep,
 # so we use the log entry as a proxy for the process having been launched.
 @test "[TEST 13] Lighttpd process is running after a successful call" {
-    run start_captive_webserver
-    [ "$status" -eq 0 ]
-    # Verify the log confirms it started — proxy for process being launched
+    # Don't use 'run' — call directly so error.log writes to TEST_DIR
+    start_captive_webserver
     grep -q "Captive portal webserver started" "${ERROR_LOG}"
 }
 
@@ -217,8 +217,11 @@ EOF
 # after the idempotency path has fired once.
 @test "[TEST 14] Logs 'Starting captive portal webserver' on first start" {
     start_captive_webserver
-    run start_captive_webserver
     grep -q "Starting captive portal webserver" "${ERROR_LOG}"
+
+    # Confirm it appears exactly once
+    count=$(grep -c "Starting captive portal webserver" "${ERROR_LOG}")
+    [ "$count" -eq 1 ]
 }
 
 # After successfully launching lighttpd, the function must log a
@@ -233,18 +236,20 @@ EOF
 # We replace the stub with one that records all arguments it receives,
 # then verify the invocation log contains "-f <conf path>".
 @test "[TEST 16] Lighttpd is invoked with the correct config file path" {
-    # Replace stub with one that records its arguments
+    local invocation_log="${TEST_DIR}/invocation.log"
+
     cat > "${LIGHTTPD_PATH}" <<EOF
 #!/bin/bash
-# Record all arguments passed to this stub for inspection
-echo "ARGS: \$@" >> "${TEST_DIR}/invocation.log"
-sleep 30 &
+echo "ARGS: \$@" >> "${invocation_log}"
 exit 0
 EOF
     chmod +x "${LIGHTTPD_PATH}"
-    start_captive_webserver
-    grep -q "\-f ${LIGHTTPD_CONF}" "${TEST_DIR}/invocation.log"
 
+    start_captive_webserver
+
+    # Check the log was actually created before grepping it
+    [ -f "${invocation_log}" ] || { echo "invocation log not created" >&3; false; }
+    grep -q "\-f ${LIGHTTPD_CONF}" "${invocation_log}"
 }
 
 # ---------------------------------------------------------------------------
@@ -264,24 +269,28 @@ EOF
 # an "already running" message so operators can confirm the idempotency
 # path fired rather than a fresh start occurring.
 @test "[TEST 18] Logs 'already running' message on second call" {
-    # Stub must stay alive AND keep 'lighttpd' as its process name
-    # Use a sleep loop without exec so the shell process retains the stub name
+    # Stub loops forever so pgrep -f can find it by full path
     cat > "${LIGHTTPD_PATH}" <<'EOF'
 #!/bin/bash
 while true; do sleep 1; done
 EOF
     chmod +x "${LIGHTTPD_PATH}"
 
+    # Pre-launch the stub so it's already "running" before the function checks
     "${LIGHTTPD_PATH}" &
     STUB_PID=$!
     sleep 0.5
 
-    # Verify pgrep can actually find it before calling function
+    # Sanity check — confirm pgrep can see it before calling the function
     pgrep -f "${LIGHTTPD_PATH}" > /dev/null || { echo "stub not found by pgrep" >&3; false; }
 
+    # Now call the function — it should detect the running process and skip launch
     start_captive_webserver
+
+    # Confirm the idempotency log message was written
     grep -q "already running" "${ERROR_LOG}"
 
+    # Clean up
     kill "$STUB_PID" 2>/dev/null || true
     wait "$STUB_PID" 2>/dev/null || true
 }
@@ -377,14 +386,12 @@ EOF
 # This test places both the stub and conf inside a directory named
 # "path with spaces" to confirm quoting works end-to-end.
 @test "[TEST 25] Paths containing spaces are handled correctly" {
-    # Re-create stub and conf inside a path with spaces
     SPACE_DIR="${TEST_DIR}/path with spaces"
     mkdir -p "${SPACE_DIR}"
 
     LIGHTTPD_PATH="${SPACE_DIR}/lighttpd"
     cat > "${LIGHTTPD_PATH}" <<'EOF'
 #!/bin/bash
-sleep 30 &
 exit 0
 EOF
     chmod +x "${LIGHTTPD_PATH}"

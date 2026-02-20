@@ -279,7 +279,7 @@ function start_captive_webserver
 	fi
 
 	#Idempotency check: ensure server is not already running
-	if pgrep lighttpd > /dev/null 2>> error.log; then
+	if pgrep -f lighttpd > /dev/null 2>> error.log; then
 		echo "$(date -Is) Captive portal webserver already running." >> error.log
 		return 0
 	fi
