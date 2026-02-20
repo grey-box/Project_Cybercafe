@@ -89,7 +89,7 @@ test_shutdown() {
 
 demo_shellcheck_break() {
     local name="Sprint 7"
-    echo $name
+    echo "$name"
 }
 
 test_shutdown
