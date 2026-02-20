@@ -196,6 +196,8 @@ EOF
 @test "[TEST 12] Returns a 0 when all preconditions are satisfied" {
     run start_captive_webserver
     [ "$status" -eq 0 ]
+    # Also confirm the success log message appeared, not just a silent exit 0
+    grep -q "Captive portal webserver started" "${ERROR_LOG}"
 }
 
 # We confirm the webserver was launched by checking the success log message.
@@ -214,9 +216,15 @@ EOF
 # We call the function twice here to ensure the log line appears even
 # after the idempotency path has fired once.
 @test "[TEST 14] Logs 'Starting captive portal webserver' on first start" {
+    # Call only once — a fresh start with no server running
     start_captive_webserver
-    run start_captive_webserver
+
+    # Confirm the "Starting" message appears
     grep -q "Starting captive portal webserver" "${ERROR_LOG}"
+
+    # Confirm it appears exactly once — not from a duplicate launch
+    count=$(grep -c "Starting captive portal webserver" "${ERROR_LOG}")
+    [ "$count" -eq 1 ]
 }
 
 # After successfully launching lighttpd, the function must log a
