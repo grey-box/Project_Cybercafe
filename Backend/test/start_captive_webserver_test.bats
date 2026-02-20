@@ -44,9 +44,7 @@ setup() {
     LIGHTTPD_PATH="${TEST_DIR}/lighttpd"
     cat > "${LIGHTTPD_PATH}" <<'EOF'
 #!/bin/bash
-# Minimal lighttpd stub — stays alive long enough for tests
-sleep 30 &
-exit 0
+exec -a lighttpd bash -c "sleep 30 & wait $!"
 EOF
     chmod +x "${LIGHTTPD_PATH}"
 
@@ -268,7 +266,7 @@ EOF
     # Use a sleep loop without exec so the shell process retains the stub name
     cat > "${LIGHTTPD_PATH}" <<'EOF'
 #!/bin/bash
-while true; do sleep 1; done
+exec -a lighttpd bash -c "while true; do sleep 1; done"
 EOF
     chmod +x "${LIGHTTPD_PATH}"
 
@@ -290,10 +288,10 @@ EOF
 # a second instance. We count processes matching the stub path and
 # assert there is exactly 1.
 @test "[TEST 19] Does not spawn a second lighttpd process on second call" {
-    cat > "${LIGHTTPD_PATH}" <<'EOF'
-#!/bin/bash
-while true; do sleep 1; done
-EOF
+    cat > "${LIGHTTPD_PATH}" <<'EOF'  
+#!/bin/bash  
+exec -a lighttpd bash -c "while true; do sleep 1; done"  
+EOF  
     chmod +x "${LIGHTTPD_PATH}"
 
     "${LIGHTTPD_PATH}" &
