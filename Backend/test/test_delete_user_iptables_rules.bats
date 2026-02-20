@@ -3,6 +3,8 @@
 # BATS test file for delete_user_iptable_rules
 # Run with: ./test/run.sh test/test_delete_user_iptables_rules.bats
 
+bats_require_minimum_version 1.5.0
+
 setup() {
     # Create mock directory
     MOCKBIN="$(pwd)/test/mocks"
@@ -23,7 +25,7 @@ EOT
     chmod +x "$MOCKBIN/iptables"
     
     # Clear/create log file
-    > "$MOCKBIN/iptables.log"
+    : > "$MOCKBIN/iptables.log"
     
     # Set up environment
     export PATH="$MOCKBIN:$PATH"
@@ -32,6 +34,7 @@ EOT
     export USER_IP=""
     
     # Source the functions
+    # shellcheck source=../Cybercafe_internetSessionFunctions.sh
     source Cybercafe_internetSessionFunctions.sh
 }
 
@@ -131,6 +134,7 @@ iptables_was_called_with() {
 #################
 
 @test "delete_user_iptable_rules: works with different HS_INTERFACE" {
+    # shellcheck disable=SC2030
     export HS_INTERFACE="eth0"
     
     delete_user_iptable_rules "172.16.0.5"
@@ -140,6 +144,7 @@ iptables_was_called_with() {
 }
 
 @test "delete_user_iptable_rules: uses HS_INTERFACE from environment" {
+    # shellcheck disable=SC2031
     export HS_INTERFACE="wlan0"
     
     delete_user_iptable_rules "10.20.30.40"
@@ -179,6 +184,7 @@ iptables_was_called_with() {
 
 @test "delete_user_iptable_rules: USER_IP global not required if argument passed" {
     # Ensure USER_IP is empty
+    # shellcheck disable=SC2030
     export USER_IP=""
     
     run delete_user_iptable_rules "10.10.10.10"
@@ -188,7 +194,8 @@ iptables_was_called_with() {
     [ "$(count_iptables_calls)" -eq 5 ]
 }
 
-@test "delete_user_iptable_rules: uses argument $1 for all 5 rules (ignores global USER_IP)" {
+@test "delete_user_iptable_rules: uses argument \$1 for all 5 rules (ignores global USER_IP)" {
+    # shellcheck disable=SC2031
     export USER_IP="SHOULD_NOT_USE_THIS"
     
     delete_user_iptable_rules "192.168.100.200"
@@ -198,7 +205,7 @@ iptables_was_called_with() {
     iptables_was_called_with "-s 192.168.100.200"
     
     # Verify the global USER_IP was NOT used in any command
-    ! grep -q "SHOULD_NOT_USE_THIS" "$MOCKBIN/iptables.log"
+    run ! grep -q "SHOULD_NOT_USE_THIS" "$MOCKBIN/iptables.log"
 }
 
 #################
@@ -215,10 +222,11 @@ iptables_was_called_with() {
 
 @test "delete_user_iptable_rules: multiple different IPs can be deleted sequentially" {
     delete_user_iptable_rules "192.168.1.10"
-    local first_count=$(count_iptables_calls)
+    count_iptables_calls > /dev/null  # first call
     
     delete_user_iptable_rules "192.168.1.20"
-    local second_count=$(count_iptables_calls)
+    local second_count
+    second_count=$(count_iptables_calls)
     
     # Should have 10 total calls (5 per IP)
     [ "$second_count" -eq 10 ]
@@ -240,7 +248,8 @@ iptables_was_called_with() {
     delete_user_iptable_rules "192.168.1.70"
     
     # Verify all expected calls are in the log
-    local call_count=$(count_iptables_calls)
+    local call_count
+    call_count=$(count_iptables_calls)
     [ "$call_count" -eq 5 ]
     
     # Check that mangle, nat, and filter tables are all addressed

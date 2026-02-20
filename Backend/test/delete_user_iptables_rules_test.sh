@@ -109,7 +109,7 @@ test_delete_rules_idempotent() {
     
     # Call twice - second call should still succeed (no-op)
     delete_user_iptable_rules "$test_ip"
-    > "$MOCK_DIR/iptables_calls.log"  # Clear log
+    : > "$MOCK_DIR/iptables_calls.log"  # Clear log
     
     delete_user_iptable_rules "$test_ip"
     local exit_code=$?

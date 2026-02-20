@@ -107,13 +107,14 @@ test_clear_multiple_sessions() {
     assert_user_data_usage_exists 102 # user from seed
 
     # 3. iptables should have been called
-    if [ ! -f "$MOCK_DIR/iptables_calls.log" ]; then
+    if [[ ! -f "$MOCK_DIR/iptables_calls.log" ]]; then
          echo "FAIL: iptables was not called"
          teardown_env
          return 1
     fi
     
-    local ipt_calls=$(wc -l < "$MOCK_DIR/iptables_calls.log")
+    local ipt_calls
+    ipt_calls=$(wc -l < "$MOCK_DIR/iptables_calls.log")
     if [[ "$ipt_calls" -lt 1 ]]; then
         echo "FAIL: Expected iptables calls, got $ipt_calls"
         teardown_env

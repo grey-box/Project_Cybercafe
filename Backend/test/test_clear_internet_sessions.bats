@@ -16,7 +16,6 @@
 setup() {
     MOCKBIN="$(pwd)/test/mocks"
     TMPDIR_TEST="$(pwd)/test/tmp"
-    FIXTURE_DIR="$(pwd)/test/fixtures"
     SCHEMA_FILE="$(pwd)/../Database/CyberCafe_Database_Schema.sql"
 
     rm -rf "$MOCKBIN" "$TMPDIR_TEST"
@@ -29,7 +28,7 @@ echo "$*" >> "${MOCKBIN}/iptables.log"
 exit 0
 EOT
     chmod +x "$MOCKBIN/iptables"
-    > "$MOCKBIN/iptables.log"
+    : > "$MOCKBIN/iptables.log"
 
     # ---- Database ----
     export DATABASE_PATH="$TMPDIR_TEST/test.db"
@@ -41,6 +40,7 @@ EOT
     export HS_INTERFACE="wlan1"
 
     # ---- Source SUT ----
+    # shellcheck source=../Cybercafe_internetSessionFunctions.sh
     source Cybercafe_internetSessionFunctions.sh
 }
 
