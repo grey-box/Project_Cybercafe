@@ -53,6 +53,15 @@ EOF
     export LIGHTTPD_CONF="${TEST_DIR}/lighttpd.conf"
     touch "${LIGHTTPD_CONF}"
 
+    # Override pgrep so Tests 18 and 19 pass on macOS, since pgrep lighttpd doesn't match the bash stub
+    pgrep() {
+        if [[ "$1" == "lighttpd" ]]; then
+            command pgrep -f "${LIGHTTPD_PATH}"
+        else
+            command pgrep "$@"
+        fi
+    }
+
     # Source the real implementation so its functions are available to tests.
     # BATS_TEST_DIRNAME is the test/ directory, implementation is one level up.
     # shellcheck source=../Cybercafe_setupFunctions.sh
@@ -246,6 +255,9 @@ EOF
     chmod +x "${LIGHTTPD_PATH}"
 
     start_captive_webserver
+    
+    # macOS background processes might take a split second to launch the stub, so give it a tiny delay
+    sleep 1
 
     # Check the log was actually created before grepping it
     [ -f "${invocation_log}" ] || { echo "invocation log not created" >&3; false; }

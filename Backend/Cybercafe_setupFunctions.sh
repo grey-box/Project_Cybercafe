@@ -88,7 +88,7 @@ function setup_infrastructure
 #Setup any necessary infrastructure for the Cybercafe system
 {
 	#trap will catch any errors that occur and write the line number to the error.log file
-	trap 'echo -e "$(date) Error in Cybercafe_setupFunction.sh: Line ${LINENO}\n" >> error.log' ERR > /dev/null 2>> error.log
+	trap 'echo -e "$(date '+%Y-%m-%dT%H:%M:%S%z') Error in Cybercafe_setupFunction.sh: Line ${LINENO}\n" >> error.log' ERR > /dev/null 2>> error.log
 	#This will grab the ip address of the given hotspot interface so that it can be used for setup
 	LOCAL_IP=$(ifconfig $HS_INTERFACE | grep 'inet addr' | awk '{print $2}' | cut -d: -f2) > /dev/null 2>> error.log
 
@@ -134,7 +134,7 @@ function setup_infrastructure
 
 	# Ensure captive portal HTTPD server is running
 	if ! start_captive_webserver; then
-		echo "$(date) Error in Cybercafe_setupFunction.sh: Line ${LINENO} - Failed to start captive webserver" >> error.log
+		echo "$(date '+%Y-%m-%dT%H:%M:%S%z') Error in Cybercafe_setupFunction.sh: Line ${LINENO} - Failed to start captive webserver" >> error.log
 	fi
 }
 
@@ -143,7 +143,7 @@ function shutdown_infrastructure
 #remove any necessary infrastructure for running the CyberCafe system
 {
     # preserve existing trap / error logging
-	trap 'echo -e "$(date) Error in Cybercafe_setupFunction.sh: Line ${LINENO}\n" >> error.log' ERR > /dev/null 2>> error.log
+	trap 'echo -e "$(date '+%Y-%m-%dT%H:%M:%S%z') Error in Cybercafe_setupFunction.sh: Line ${LINENO}\n" >> error.log' ERR > /dev/null 2>> error.log
 
     # dry-run support (export DRY_RUN=true to simulate)
     DRY_RUN=${DRY_RUN:-false}
@@ -264,30 +264,30 @@ function start_captive_webserver
 {
 	#Make sure required variables are set
 	if [ -z "${LIGHTTPD_PATH:-}" ] || [ -z "${LIGHTTPD_CONF:-}" ]; then
-		echo "$(date) Error in Cybercafe_setupFunction.sh: Line ${LINENO} - LIGHTTPD_PATH or LIGHTTPD_CONF_PATH variable not set" >> error.log
+		echo "$(date '+%Y-%m-%dT%H:%M:%S%z') Error in Cybercafe_setupFunction.sh: Line ${LINENO} - LIGHTTPD_PATH or LIGHTTPD_CONF_PATH variable not set" >> error.log
 		return 1
 	fi
 
 	#Make sure paths are valid
 	if [ ! -x "${LIGHTTPD_PATH}" ]; then
-		echo "$(date) Error in Cybercafe_setupFunction.sh: Line ${LINENO} - lighttpd executable not found at LIGHTTPD_PATH: ${LIGHTTPD_PATH}" >> error.log
+		echo "$(date '+%Y-%m-%dT%H:%M:%S%z') Error in Cybercafe_setupFunction.sh: Line ${LINENO} - lighttpd executable not found at LIGHTTPD_PATH: ${LIGHTTPD_PATH}" >> error.log
 		return 1
 	fi
 	if [ ! -f "${LIGHTTPD_CONF}" ]; then
-		echo "$(date) Error in Cybercafe_setupFunction.sh: Line ${LINENO} - lighttpd configuration file not found at LIGHTTPD_CONF_PATH: ${LIGHTTPD_CONF}" >> error.log
+		echo "$(date '+%Y-%m-%dT%H:%M:%S%z') Error in Cybercafe_setupFunction.sh: Line ${LINENO} - lighttpd configuration file not found at LIGHTTPD_CONF_PATH: ${LIGHTTPD_CONF}" >> error.log
 		return 1
 	fi
 
 	#Idempotency check: ensure server is not already running
 	if pgrep lighttpd > /dev/null 2>> error.log; then
-		echo "$(date) Captive portal webserver already running." >> error.log
+		echo "$(date '+%Y-%m-%dT%H:%M:%S%z') Captive portal webserver already running." >> error.log
 		return 0
 	fi
 
 	#Start webserver in background, minimal logging
-	echo "$(date) Starting captive portal webserver..." >> error.log
+	echo "$(date '+%Y-%m-%dT%H:%M:%S%z') Starting captive portal webserver..." >> error.log
 	"${LIGHTTPD_PATH}" -f "${LIGHTTPD_CONF}" > /dev/null 2>> error.log &
 
-	echo "$(date) Captive portal webserver started." >> error.log
+	echo "$(date '+%Y-%m-%dT%H:%M:%S%z') Captive portal webserver started." >> error.log
 	return 0
 }
