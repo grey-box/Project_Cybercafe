@@ -87,4 +87,10 @@ test_shutdown() {
   assert_contains "$calls" "ip link show wlan0"
 }
 
+demo_shellcheck_break() {
+    local name="Sprint 7"
+    echo $name
+}
+
 test_shutdown
+demo_shellcheck_break
