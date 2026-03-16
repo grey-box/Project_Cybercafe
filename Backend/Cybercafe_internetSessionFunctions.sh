@@ -1,4 +1,8 @@
 #Organization: Grey-box
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+source "${SCRIPT_DIR}/test/utils/logging.sh"
+source "${SCRIPT_DIR}/test/utils/net_helpers.sh"
 #Project: Cybercafe
 #File: internetSessionFunctions
 #Description: Contains all internet session functions that are necessary for updating and managing the system and website

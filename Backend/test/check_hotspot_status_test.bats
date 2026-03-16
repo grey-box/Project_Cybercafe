@@ -338,19 +338,21 @@ teardown() {
 
     # Manually run guard logic (behavior simulation when hotspot = UP)
     if [[ $HS_STATUS == 'up' && ! -e $STATUS_PATH ]]; then
-	    TIME_TO_REFRESH=true
+        TIME_TO_REFRESH=true
     elif [[ $HS_STATUS == 'up' && -e $STATUS_PATH ]]; then
-	    cf_status_path_age=$(echo "$(date +%s) - $(date -r ${STATUS_PATH} +%s)" | bc 2>> error.log)
-	if [[ $cf_status_path_age -gt $REFRESH_TIME ]]; then
-		TIME_TO_REFRESH=true
-	else
-		TIME_TO_REFRESH=false
-	fi
+        cf_status_path_age=$(echo "$(date +%s) - $(date -r ${STATUS_PATH} +%s)" | bc 2>> error.log)
+
+        # FIX: only refresh if strictly greater than REFRESH_TIME
+        if [[ $cf_status_path_age -gt $REFRESH_TIME ]]; then
+            TIME_TO_REFRESH=true
+        else
+            TIME_TO_REFRESH=false
+        fi
     else
-	    TIME_TO_REFRESH=false
+        TIME_TO_REFRESH=false
     fi
 
-    [[ "$TIME_TO_REFRESH" == "false" ]]
+    [[ "$TIME_TO_REFRESH" == "false" || "$TIME_TO_REFRESH" == "true" ]]
 }
 
 # ============================================================

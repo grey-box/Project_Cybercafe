@@ -32,7 +32,7 @@ setup() {
   export -f ifconfig
   export -f iptables
 
-  source ../Cybercafe_setupFunctions.sh
+  source "${BATS_TEST_DIRNAME}/../Cybercafe_setupFunctions.sh"
 
   start_captive_webserver() {
     echo "webserver_started" >> webserver_invoked.log

@@ -1,4 +1,7 @@
 #Organization: Grey-box
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "${SCRIPT_DIR}/test/utils/logging.sh"
+source "${SCRIPT_DIR}/test/utils/net_helpers.sh"
 #Project: Cybercafe
 #File: setupFunctions
 #Description: Contains all the bash functions necessary to setup the Cybercafe architecture. This script is included by the daemon script which actually calls the setup.
@@ -67,10 +70,10 @@ function check_hotspot_status
     elif [[ $HS_STATUS == 'up' && -e $STATUS_PATH ]]; then
         # If the CyberCafe status file exists and the hotspot is up
         # calculate how old it is (in s)
-		cf_status_path_age=$(echo "$(date +%s) - $(date -r ${STATUS_PATH} +%s)" | bc)
+		cf_status_path_age=$(( $(date +%s) - $(date -r "${STATUS_PATH}" +%s) ))
 
 		# if it's older than REFRESH_TIME, indicate time to refresh
-		if [[ $cf_status_path_age -gt $REFRESH_TIME ]]; then
+		if (( cf_status_path_age > REFRESH_TIME )); then
 			TIME_TO_REFRESH=true
 		else
 			TIME_TO_REFRESH=false
@@ -96,7 +99,7 @@ function setup_infrastructure
 	#this table will be used to record all transmitted data by adding rules for each user
 	iptables -t mangle -C FORWARD -i ${HS_INTERFACE} -j iptmon_tx > /dev/null 2>> error.log
 	if [[ $? -ne 0 ]]; then
-		iptables -t mangle -N iptmon_tx > /dev/null 2>> error.log
+		create_chain "setup_infrastructure" "iptmon_tx"
 		#packets that come in on the hotspot interface (-i flag) and are destined for a different host than the hotspot host will be forwarded to iptmon_tx
 		iptables -t mangle -A FORWARD -i ${HS_INTERFACE} -j iptmon_tx > /dev/null 2>> error.log
 	fi
