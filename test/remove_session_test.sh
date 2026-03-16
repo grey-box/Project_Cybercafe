@@ -58,7 +58,7 @@ test_idempotency() {
 }
 
 test_missing_db() {
-    ./remove_session --db missing.db --session-id s1 && exit 1
+    ./remove_session --db missing.db --session-id s1 && exit 1 || [ $? -eq 1 ]
 }
 
 echo "Running remove_session tests..."
