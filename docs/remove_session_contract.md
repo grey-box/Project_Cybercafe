@@ -38,7 +38,7 @@ Database remains valid and consistent.
 
 ## Expected DB Changes
 
-DELETE FROM sessions WHERE session_id = ?
+DELETE FROM internet_sessions WHERE session_id = ?
 
 No other tables are modified.
 
