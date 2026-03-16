@@ -18,5 +18,5 @@ EOF
 }
 
 count_sessions() {
-    sqlite3 "$1" "SELECT COUNT(*) FROM sessions;"
+    sqlite3 "$1" "SELECT COUNT(*) FROM internet_sessions;"
 }
