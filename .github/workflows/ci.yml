@@ -1,4 +1,4 @@
-name: CI - ShellCheck & BATS Tests
+name: CI - ShellCheck & Tests
 
 on:
   pull_request:
@@ -18,9 +18,10 @@ jobs:
 
       - name: Run ShellCheck on Backend scripts
         run: |
-          shellcheck Backend/*.sh Backend/test/*.sh Backend/test/*.bats
+          shellcheck -x Backend/*.sh Backend/test/*.sh
 
-      - name: Run BATS unit tests
+      - name: Run test runner
         run: |
-          bats Backend/test
+          chmod +x Backend/test/run.sh
+          bash Backend/test/run.sh
 

@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 #Organization: Grey-box
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 

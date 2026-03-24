@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #Organization: Grey-box
 #Project: Cybercafe
 #File: testbed

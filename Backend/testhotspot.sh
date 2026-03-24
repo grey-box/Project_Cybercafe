@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Test script for check_hotspot_status function
 # Tests the merged John + Chris implementation
 

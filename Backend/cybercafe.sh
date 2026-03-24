@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 #Organization: Grey-box
 #Project: Cybercafe
 #File: Control File
