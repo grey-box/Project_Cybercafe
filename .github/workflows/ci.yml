@@ -18,6 +18,7 @@ jobs:
 
       - name: Run ShellCheck on Backend scripts
         run: |
+          cd Backend
           shellcheck -x Backend/*.sh Backend/test/*.sh
 
       - name: Run test runner
