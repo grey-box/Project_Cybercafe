@@ -20,17 +20,17 @@ display_information()
 	iptables -t mangle -L iptmon_rx -vxn
 	echo -e "\t---sqlite3---"
 	echo -e "\t\t---internet_sessions---"
-	sqlite3 $DATABASE_PATH -header "SELECT * FROM internet_sessions"
+	sqlite3 "$DATABASE_PATH" -header "SELECT * FROM internet_sessions"
 	echo -e "\t\t---user_data_usage---"
-	sqlite3 $DATABASE_PATH -header "SELECT * FROM user_data_usage"
-	read -p "Press any key to continue..."
+	sqlite3 "$DATABASE_PATH" -header "SELECT * FROM user_data_usage"
+	read -r -p "Press any key to continue..."
 }
 
 DATETIME=$(date '+%Y-%m-%d %H:%M:%S')
 DATETIME_LASTREQUEST=$(date '+%Y-%m-%d %H:%M:%S')
-sqlite3 $DATABASE_PATH "INSERT INTO internet_sessions VALUES (0,1,'a838fjdlkc908sdjfk3jnk2wjnef','192.168.1.45',100,100,1,'${DATETIME}','${DATETIME_LASTREQUEST}')"
-sqlite3 $DATABASE_PATH "INSERT INTO internet_sessions VALUES (1,2,'b838fjdlkc908sdjfk3jnk2wjnef','192.168.1.46',100,100,0,'${DATETIME}','${DATETIME_LASTREQUEST}')"
-sqlite3 $DATABASE_PATH "INSERT INTO internet_sessions VALUES (2,3,'c838fjdlkc908sdjfk3jnk2wjnef','192.168.1.47',100,100,0,'${DATETIME}','${DATETIME_LASTREQUEST}')"
+sqlite3 "$DATABASE_PATH" "INSERT INTO internet_sessions VALUES (0,1,'a838fjdlkc908sdjfk3jnk2wjnef','192.168.1.45',100,100,1,'${DATETIME}','${DATETIME_LASTREQUEST}')"
+sqlite3 "$DATABASE_PATH" "INSERT INTO internet_sessions VALUES (1,2,'b838fjdlkc908sdjfk3jnk2wjnef','192.168.1.46',100,100,0,'${DATETIME}','${DATETIME_LASTREQUEST}')"
+sqlite3 "$DATABASE_PATH" "INSERT INTO internet_sessions VALUES (2,3,'c838fjdlkc908sdjfk3jnk2wjnef','192.168.1.47',100,100,0,'${DATETIME}','${DATETIME_LASTREQUEST}')"
 echo ""
 display_information '1'
 
@@ -48,5 +48,5 @@ display_information '4'
 
 shutdown_infrastructure
 
-sqlite3 $DATABASE_PATH "DELETE FROM internet_sessions WHERE 1=1"
-sqlite3 $DATABASE_PATH "DELETE FROM user_data_usage WHERE 1=1"
+sqlite3 "$DATABASE_PATH" "DELETE FROM internet_sessions WHERE 1=1"
+sqlite3 "$DATABASE_PATH" "DELETE FROM user_data_usage WHERE 1=1"

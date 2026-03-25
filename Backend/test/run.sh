@@ -83,7 +83,7 @@ run_one_test() {
                 bats "$t"
             else
                 echo "ERROR: Found .bats test but bats is not installed:" >&2
-                echo "  ${t#$ROOT_DIR/}" >&2
+                echo "  ${t#"$ROOT_DIR"/}" >&2
                 echo "Install bats or convert this test to *_test.sh" >&2
                 return 2
             fi
@@ -106,13 +106,13 @@ echo "================"
 for t in "${TESTS[@]}"; do
     echo "Running test: $t"
     if run_one_test "$t"; then
-        echo "PASS: ${t#$ROOT_DIR/}"
+        echo "PASS: ${t#"$ROOT_DIR"/}"
         pass=$((pass + 1))
     else
         rc=$?
-        echo "FAIL: ${t#$ROOT_DIR/} (exit=$rc)"
+        echo "FAIL: ${t#"$ROOT_DIR"/} (exit=$rc)"
         fail=$((fail + 1))
-        failures+=("${t#$ROOT_DIR/}")
+        failures+=("${t#"$ROOT_DIR"/}")
     fi
     echo "----------------"
 done
