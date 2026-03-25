@@ -14,14 +14,17 @@
 ###############################################################################
 
 setup() {
-    MOCKBIN="$(pwd)/test/mocks"
-    TMPDIR_TEST="$(pwd)/test/tmp"
-    SCHEMA_FILE="$(pwd)/../Database/CyberCafe_Database_Schema.sql"
+    TEST_DIR="$(cd "$(dirname "${BATS_TEST_FILENAME}")" && pwd)"
+    BACKEND_DIR="$(cd "$TEST_DIR/.." && pwd)"
+    REPO_ROOT="$(cd "$BACKEND_DIR/.." && pwd)"
+
+    MOCKBIN="$TEST_DIR/mocks"
+    TMPDIR_TEST="$TEST_DIR/tmp"
+    SCHEMA_FILE="$REPO_ROOT/Database/CyberCafe_Database_Schema.sql"
 
     rm -rf "$MOCKBIN" "$TMPDIR_TEST"
     mkdir -p "$MOCKBIN" "$TMPDIR_TEST"
 
-    # ---- Mock iptables ----
     cat > "$MOCKBIN/iptables" <<'EOT'
 #!/usr/bin/env bash
 echo "$*" >> "${MOCKBIN}/iptables.log"
@@ -30,18 +33,14 @@ EOT
     chmod +x "$MOCKBIN/iptables"
     : > "$MOCKBIN/iptables.log"
 
-    # ---- Database ----
     export DATABASE_PATH="$TMPDIR_TEST/test.db"
     sqlite3 "$DATABASE_PATH" < "$SCHEMA_FILE"
 
-    # ---- Environment ----
     export PATH="$MOCKBIN:$PATH"
     export MOCKBIN
     export HS_INTERFACE="wlan1"
 
-    # ---- Source SUT ----
-    # shellcheck source=../Cybercafe_internetSessionFunctions.sh
-    source Cybercafe_internetSessionFunctions.sh
+    source "$BACKEND_DIR/Cybercafe_internetSessionFunctions.sh"
 }
 
 teardown() {
