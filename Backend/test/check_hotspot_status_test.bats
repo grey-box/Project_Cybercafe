@@ -6,15 +6,17 @@
 setup() {
 
 ###INCLUDES###
-    . ./cybercafe.conf
-    . ./Cybercafe_setupFunctions.sh
+    TEST_DIR="$(cd "$(dirname "${BATS_TEST_FILENAME}")" && pwd)"
+    BACKEND_DIR="$(cd "$TEST_DIR/.." && pwd)"
+    . "$TEST_DIR/cybercafe.conf"
+    . "$BACKEND_DIR/Cybercafe_setupFunctions.sh"
 
     # Create temp directories for test files
-    export STATUS_PATH="./tmp/cybercafe.confirmed"
-    export REFRESH_TIME=${REFRESH_TIME:-3600}   # 1 Hour Resets as default
+    export STATUS_PATH="$TEST_DIR/tmp/cybercafe.confirmed"
+    export REFRESH_TIME="${REFRESH_TIME:-3600}"   # 1 Hour Resets as default
 
     # Validate directory exists
-    mkdir -p "$(dirname $STATUS_PATH)"
+    mkdir -p "$(dirname "$STATUS_PATH")"
 
     # Initializing State Variables
     export HS_STATUS='down'

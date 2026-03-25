@@ -13,7 +13,11 @@ set -Eeuo pipefail
 # Example to demonstrate usage of helpers in a smoke test:
 # - env.sh gives us a per-test temp directory + mockable PATH (FAKEBIN) + safe defaults
 # - assert.sh gives us simple assertion functions with clear failure messages (like unit tests)
+
+# shellcheck source=test/helpers/assert.sh
 source "$(dirname "$0")/helpers/env.sh"
+
+# shellcheck source=test/helpers/assert.sh
 source "$(dirname "$0")/helpers/assert.sh"
 
 # Source functions first (some scripts reset PATH)

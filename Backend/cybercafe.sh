@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 #Organization: Grey-box
 #Project: Cybercafe
 #File: Control File
@@ -15,7 +16,9 @@ BASE_PATH="/data/data/com.termux/files/usr/var/www/backend"
 function command_run
 {
 	#test to see if daemon is already running
+	# shellcheck disable=SC2009
 	ps -eo name,cmdline | grep "bash ${BASE_PATH}/Cybercafe_daemon.sh" | grep -v grep > /dev/null 2>&1 # if this returns 0 it implies that the script exists and is running
+	# shellcheck disable=SC2181
 	if [[ $? -eq 0 ]]; then
 		echo "Cybercafe infrastructure already running."
 	else
@@ -27,6 +30,7 @@ function command_run
 		
 		#Send warning if hotspot is down
 		ip add show dev $HS_INTERFACE | grep UP > /dev/null # Does it appear the hotspot is active?
+		# shellcheck disable=SC2181
 		if [[ $? -ne 0 ]]; then
 			echo "Warning the designated hotspot interface is not currently up."
 		fi
@@ -38,19 +42,23 @@ function command_status
 	echo ""
     printf "%s" "$(date '+%Y-%m-%d %H:%M:%S')"
 	echo ""
+	# shellcheck disable=SC2009
 	ps -eo name,cmdline | grep "bash ${BASE_PATH}/Cybercafe_daemon.sh" | grep -v grep > /dev/null 2>&1 # if this returns 0 it implies that the script exists and is running
+	# shellcheck disable=SC2181
 	if [[ $? -eq 0 ]]; then
 		echo "Status: Running"
 		echo ""
 		echo "Process Info:"
+		# shellcheck disable=SC2009
 		ps -o user,pid,ppid,uid,stime,stat,name,cmdline | head -n 1
+		# shellcheck disable=SC2009
 		ps -eo user,pid,ppid,uid,stime,stat,name,cmdline | grep "bash ${BASE_PATH}/Cybercafe_daemon.sh" | grep -v grep
 	else
 		echo "Status: Stopped"
 	fi
 	echo ""
 	echo "Hotspot Interface Info:"
-	ip add show dev $HS_INTERFACE
+	ip add show dev "$HS_INTERFACE"
 	echo ""
 }
 
@@ -105,7 +113,9 @@ function command_errorlog
 
 function command_shutdown
 {
+	# shellcheck disable=SC2009
 	ps -eo stat,name,cmdline | grep "bash ${BASE_PATH}/Cybercafe_daemon.sh" | grep -v grep > /dev/null 2>&1 # if this returns 0 it implies that the script exists and is running
+	# shellcheck disable=SC2181
 	if [[ $? -eq 0 ]]; then
 		printf "%s" "$(date +%T)"
 		echo ""
@@ -113,7 +123,9 @@ function command_shutdown
 		touch shutdown.confirmed
 		while true; do
 			sleep 1
+			# shellcheck disable=SC2009
 			ps -eo stat,name,cmdline | grep "bash ${BASE_PATH}/Cybercafe_daemon.sh" | grep -v grep > /dev/null 2>&1 # if this returns 1 it implies that the script has stopped
+			# shellcheck disable=SC2181
 			if [[ $? -eq 1 ]]; then
 				rm shutdown.confirmed
 				printf "%s" "$(date +%T)"
@@ -157,7 +169,7 @@ if [[ $# -gt 0 ]]; then
 	trap 'echo "Error: Line ${LINENO}" >> error.log' ERR
 	#run non-interactive mode
 	args=("$@")
-	argc=$(($#))
+	#argc=$(($#))
 	if [[ ${args[0]} == 'run' ]]; then
 		command_run
 	elif [[ ${args[0]} == 'status' ]]; then
@@ -183,12 +195,12 @@ else
 	while true; do
 		trap 'echo "Error: Line ${LINENO}" >> error.log' ERR
 		echo -n ">> "
-		read user_input
+		read -r user_input
 		args=()
 		for i in $user_input; do
-			args+=($i)
+			args+=("$i")
 		done
-		argc=$((${#args[@]}))
+		#argc=$((${#args[@]}))
 		if [[ ${args[0]} == 'run' ]]; then
 			command_run
 		elif [[ ${args[0]} == 'status' ]]; then

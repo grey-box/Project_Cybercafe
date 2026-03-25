@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 #Organization: Grey-box
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/test/utils/logging.sh"
@@ -34,7 +35,7 @@ function check_hotspot_status
 #Checks whether the device's hotspot feature has been turned on or off
 {
 	# Save previous status from last check so we capture previous state for Daemon to know change (From John's)
-	HS_STATUS_PREV=$HS_STATUS 
+	HS_STATUS_PREV="$HS_STATUS" 
 
 	# From Chris's with better probing method to grab a specific IP pattern for the hotspot
 	ip add show dev wlan0 | grep 192\.168\.43\. > /dev/null 2>> error.log # Does it appear the hotspot is active?
@@ -64,10 +65,10 @@ function check_hotspot_status
         # STATUS_PATH age < REFRESH_TIME: Indicate no refresh
 
 
-    if [[ $HS_STATUS == 'up' && ! -e $STATUS_PATH ]]; then
+    if [[ "$HS_STATUS" == 'up' && ! -e "$STATUS_PATH" ]]; then
         TIME_TO_REFRESH=true
 
-    elif [[ $HS_STATUS == 'up' && -e $STATUS_PATH ]]; then
+    elif [[ "$HS_STATUS" == 'up' && -e "$STATUS_PATH" ]]; then
         # If the CyberCafe status file exists and the hotspot is up
         # calculate how old it is (in s)
 		cf_status_path_age=$(( $(date +%s) - $(date -r "${STATUS_PATH}" +%s) ))
@@ -80,7 +81,7 @@ function check_hotspot_status
 		fi
 	else 
 		# Hotspot is down, no need for refresh to save resources
-		TIME_TO_REFRESH=false
+		export TIME_TO_REFRESH=false
     fi
 }
 
@@ -90,54 +91,63 @@ function check_hotspot_status
 function setup_infrastructure
 #Setup any necessary infrastructure for the Cybercafe system
 {
-	#trap will catch any errors that occur and write the line number to the error.log file
-	trap 'echo -e "$(date '+%Y-%m-%dT%H:%M:%S%z') Error in Cybercafe_setupFunction.sh: Line ${LINENO}\n" >> error.log' ERR > /dev/null 2>> error.log
-	#This will grab the ip address of the given hotspot interface so that it can be used for setup
-	LOCAL_IP=$(ifconfig $HS_INTERFACE | grep 'inet addr' | awk '{print $2}' | cut -d: -f2) > /dev/null 2>> error.log
+	{
+		#trap will catch any errors that occur and write the line number to the error.log file
+		trap 'echo -e "$(date '+%Y-%m-%dT%H:%M:%S%z') Error in Cybercafe_setupFunction.sh: Line ${LINENO}\n" >> error.log' ERR
+		#This will grab the ip address of the given hotspot interface so that it can be used for setup
+		LOCAL_IP=$(ifconfig "$HS_INTERFACE" | grep 'inet addr' | awk '{print $2}' | cut -d: -f2)
+	} > /dev/null 2>> error.log
 
 	#check if iptmon_tx table exists
 	#this table will be used to record all transmitted data by adding rules for each user
-	iptables -t mangle -C FORWARD -i ${HS_INTERFACE} -j iptmon_tx > /dev/null 2>> error.log
+	iptables -t mangle -C FORWARD -i "${HS_INTERFACE}" -j iptmon_tx > /dev/null 2>> error.log
+	# shellcheck disable=SC2181
 	if [[ $? -ne 0 ]]; then
 		create_chain "setup_infrastructure" "iptmon_tx"
 		#packets that come in on the hotspot interface (-i flag) and are destined for a different host than the hotspot host will be forwarded to iptmon_tx
-		iptables -t mangle -A FORWARD -i ${HS_INTERFACE} -j iptmon_tx > /dev/null 2>> error.log
+		iptables -t mangle -A FORWARD -i "${HS_INTERFACE}" -j iptmon_tx > /dev/null 2>> error.log
 	fi
 
 	#create iptmon_rx
-	iptables -t mangle -C POSTROUTING -o ${HS_INTERFACE} -j iptmon_rx > /dev/null 2>> error.log
+	iptables -t mangle -C POSTROUTING -o "${HS_INTERFACE}" -j iptmon_rx > /dev/null 2>> error.log
+	# shellcheck disable=SC2181
 	if [[ $? -ne 0 ]]; then
-		iptables -t mangle -N iptmon_rx > /dev/null 2>> error.log
-		#if data is coming from the host itself then don't count it towards the rx total
-		iptables -t mangle -I iptmon_rx 1 -s ${LOCAL_IP} -j RETURN > /dev/null 2>> error.log
-		#
-		iptables -t mangle -A POSTROUTING -o ${HS_INTERFACE} -j iptmon_rx > /dev/null 2>> error.log
+		{
+			iptables -t mangle -N iptmon_rx
+			#if data is coming from the host itself then don't count it towards the rx total
+			iptables -t mangle -I iptmon_rx 1 -s "${LOCAL_IP}" -j RETURN
+			# if data is going out the hotspot interface (-o flag) and is not from the host itself then it will be forwarded to iptmon_rx
+			iptables -t mangle -A POSTROUTING -o "${HS_INTERFACE}" -j iptmon_rx
+		} > /dev/null 2>> error.log
 	fi
 
 	#special rules that service the cybercafe system by blocking certain traffic over hotspot interface
-	iptables -t nat -C PREROUTING -p tcp -i ${HS_INTERFACE} -j DNAT --to-destination ${LOCAL_IP}:80 > /dev/null 2>> error.log #checks to see that rules don't exist
+	iptables -t nat -C PREROUTING -p tcp -i "${HS_INTERFACE}" -j DNAT --to-destination "${LOCAL_IP}":80 > /dev/null 2>> error.log #checks to see that rules don't exist
+	# shellcheck disable=SC2181
 	if [[ $? -ne 0 ]]; then
-		#redirects all tcp traffic to captive webserver port so that 'sign-in' notification is displayed to user when device does http checks
-		#also blocks typically web navigation
-		#Note: Since the protocol is tcp it won't mess up any important DNS or other services
-		iptables -t nat -I PREROUTING 1 -p tcp -i ${HS_INTERFACE} -j DNAT --to-destination ${LOCAL_IP}:80 > /dev/null 2>> error.log
+		{
+			#redirects all tcp traffic to captive webserver port so that 'sign-in' notification is displayed to user when device does http checks
+			#also blocks typically web navigation
+			#Note: Since the protocol is tcp it won't mess up any important DNS or other services
+			iptables -t nat -I PREROUTING 1 -p tcp -i "${HS_INTERFACE}" -j DNAT --to-destination "${LOCAL_IP}":80
 		
-		#deprecated rules
-		##safeguard: allows solicitation to DNS server (note this will show up as rule #2 on PREROUTING if uncommeneted)
-		#iptables -t nat -I PREROUTING 1 -p all -i ${HS_INTERFACE} -s 0.0.0.0/32 -d 255.255.255.255/32 --dport 67 -j RETURN > /dev/null 2>> error.log
-		##safeguard: allows domain name resolution for things like google.com (note this will show up as rule #1 on PREROUTING if uncommeneted)
-		#iptables -t nat -I PREROUTING 1 -p all -i ${HS_INTERFACE} -d ${LOCAL_IP} --dport 53 -j RETURN > /dev/null 2>> error.log
-		#
+			#deprecated rules
+			##safeguard: allows solicitation to DNS server (note this will show up as rule #2 on PREROUTING if uncommeneted)
+			#iptables -t nat -I PREROUTING 1 -p all -i ${HS_INTERFACE} -s 0.0.0.0/32 -d 255.255.255.255/32 --dport 67 -j RETURN > /dev/null 2>> error.log
+			##safeguard: allows domain name resolution for things like google.com (note this will show up as rule #1 on PREROUTING if uncommeneted)
+			#iptables -t nat -I PREROUTING 1 -p all -i ${HS_INTERFACE} -d ${LOCAL_IP} --dport 53 -j RETURN > /dev/null 2>> error.log
+			#
 		
-		#blocks requests incoming on the hotspot interface that is not destined for the hotspot host (exceptions will be made on a user basis once they sign in)
-		iptables -t filter -I FORWARD 1 -p all -i ${HS_INTERFACE} -j DROP > /dev/null 2>> error.log
-		#in the uncommon event that traffic going out onto the hotspot interface that isn't from the host (exceptions will be made on a user basis once they sign in)
-		iptables -t filter -I FORWARD 1 -p all -o ${HS_INTERFACE} ! -s ${LOCAL_IP} -j DROP > /dev/null 2>> error.log
+			#blocks requests incoming on the hotspot interface that is not destined for the hotspot host (exceptions will be made on a user basis once they sign in)
+			iptables -t filter -I FORWARD 1 -p all -i "${HS_INTERFACE}" -j DROP
+			#in the uncommon event that traffic going out onto the hotspot interface that isn't from the host (exceptions will be made on a user basis once they sign in)
+			iptables -t filter -I FORWARD 1 -p all -o "${HS_INTERFACE}" ! -s "${LOCAL_IP}" -j DROP
+		} > /dev/null 2>> error.log
 	fi
 
 	# Ensure captive portal HTTPD server is running
 	if ! start_captive_webserver; then
-		echo "$(date '+%Y-%m-%dT%H:%M:%S%z') Error in Cybercafe_setupFunction.sh: Line ${LINENO} - Failed to start captive webserver" >> error.log
+		echo "$(date '+%Y-%m-%dT%H:%M:%S%z') Error in Cybercafe_setupFunction.sh: Line '${LINENO}' - Failed to start captive webserver" >> error.log
 	fi
 }
 
@@ -146,7 +156,7 @@ function shutdown_infrastructure
 #remove any necessary infrastructure for running the CyberCafe system
 {
     # preserve existing trap / error logging
-	trap 'echo -e "$(date '+%Y-%m-%dT%H:%M:%S%z') Error in Cybercafe_setupFunction.sh: Line ${LINENO}\n" >> error.log' ERR > /dev/null 2>> error.log
+	trap 'echo -e "$(date '+%Y-%m-%dT%H:%M:%S%z') Error in Cybercafe_setupFunction.sh: Line '${LINENO}' \n" >> error.log' ERR > /dev/null 2>> error.log
 
     # dry-run support (export DRY_RUN=true to simulate)
     DRY_RUN=${DRY_RUN:-false}
@@ -155,7 +165,7 @@ function shutdown_infrastructure
         echo "[DRY-RUN] $*"
       else
         # execute and append stderr to error.log so we keep original behavior
-        eval "$@" 2>> error.log || true
+        "$@" 2>> error.log || true
       fi
     }
 
@@ -163,7 +173,7 @@ function shutdown_infrastructure
     warn() { echo "[shutdown_infrastructure][WARN] $*" >&2; }
 
 	#Get hotspot ip for dismantling iptable rules (best-effort)
-	LOCAL_IP=$(ifconfig $HS_INTERFACE | grep 'inet addr' | awk '{print $2}' | cut -d: -f2) > /dev/null 2>> error.log || LOCAL_IP=''
+	LOCAL_IP=$(ifconfig "$HS_INTERFACE" | grep 'inet addr' | awk '{print $2}' | cut -d: -f2) > /dev/null 2>> error.log || LOCAL_IP=''
 
     log "Beginning shutdown_infrastructure (dry-run=${DRY_RUN})"
 
@@ -185,8 +195,8 @@ function shutdown_infrastructure
       log "Attempting to remove mangle table references to iptmon_tx / iptmon_rx"
 
       # remove FORWARD -j iptmon_tx (if present)
-      run_cmd "iptables -t mangle -D FORWARD -i ${HS_INTERFACE} -j iptmon_tx > /dev/null 2>> error.log || true"
-      run_cmd "iptables -t mangle -D POSTROUTING -o ${HS_INTERFACE} -j iptmon_rx > /dev/null 2>> error.log || true"
+      run_cmd "iptables -t mangle -D FORWARD -i '${HS_INTERFACE}' -j iptmon_tx > /dev/null 2>> error.log || true"
+      run_cmd "iptables -t mangle -D POSTROUTING -o '${HS_INTERFACE}' -j iptmon_rx > /dev/null 2>> error.log || true"
 
       # flush & delete chains safely (will ignore if not present)
       for c in iptmon_rx iptmon_tx; do
@@ -209,15 +219,15 @@ function shutdown_infrastructure
       # Attempt to find PREROUTING DNAT entries and delete them
       # We parse iptables-save style output and convert -A to -D for deletion
       iptables -t nat -S 2>> error.log | grep -i "PREROUTING" | grep -E "DNAT|--to-destination" 2>> error.log | while read -r r; do
-        delcmd=$(echo "$r" | sed 's/^-A/-D/')
+        delcmd="${r/-A/-D}"
         log "Deleting nat rule: $delcmd"
         run_cmd "iptables -t nat $delcmd > /dev/null 2>> error.log || true"
       done
 
       # also attempt to delete the specific rules added by John's setup (tcp redirect & FORWARD DROP) if present
-      run_cmd "iptables -t nat -D PREROUTING -p tcp -i ${HS_INTERFACE} -j DNAT --to-destination ${LOCAL_IP}:80 > /dev/null 2>> error.log || true"
-      run_cmd "iptables -t filter -D FORWARD -p all -i ${HS_INTERFACE} -j DROP > /dev/null 2>> error.log || true"
-      run_cmd "iptables -t filter -D FORWARD -p all -o ${HS_INTERFACE} ! -s ${LOCAL_IP} -j DROP > /dev/null 2>> error.log || true"
+      run_cmd "iptables -t nat -D PREROUTING -p tcp -i '${HS_INTERFACE}' -j DNAT --to-destination '${LOCAL_IP}':80 > /dev/null 2>> error.log || true"
+      run_cmd "iptables -t filter -D FORWARD -p all -i '${HS_INTERFACE}' -j DROP > /dev/null 2>> error.log || true"
+      run_cmd "iptables -t filter -D FORWARD -p all -o '${HS_INTERFACE}' ! -s '${LOCAL_IP}' -j DROP > /dev/null 2>> error.log || true"
     fi
 
 	# 5) Remove John's mirrored chains and per-user chains (best-effort)
@@ -255,9 +265,9 @@ function shutdown_infrastructure
     fi
 
 	# 7) Reset runtime variables to safe defaults
-    LOCAL_IP=''
-    HS_STATUS='down'
-	HS_STATUS_PREV='down'
+    export LOCAL_IP=''
+    export HS_STATUS='down'
+    export HS_STATUS_PREV='down'
 
     log "shutdown_infrastructure completed (dry-run=${DRY_RUN})"
 }

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Test script for check_hotspot_status function
 # Tests the merged John + Chris implementation
 
@@ -45,7 +45,7 @@ echo ""
 echo "[TEST 3] Simulate hotspot UP - should detect transition"
 echo "Note: This requires hotspot to actually be enabled on your system"
 echo "To test: Enable WiFi hotspot, then press Enter"
-read -p "Ready? Press Enter to continue..."
+read -r -p "Ready? Press Enter to continue..."
 echo ""
 echo "Expected: HS_STATUS='up', HS_STATUS_PREV='down' (transition detected)"
 check_hotspot_status

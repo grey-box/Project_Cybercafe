@@ -6,16 +6,16 @@
 bats_require_minimum_version 1.5.0
 
 setup() {
-    # Create mock directory
-    MOCKBIN="$(pwd)/test/mocks"
+    TEST_DIR="$(cd "$(dirname "${BATS_TEST_FILENAME}")" && pwd)"
+    BACKEND_DIR="$(cd "$TEST_DIR/.." && pwd)"
+    MOCKBIN="$TEST_DIR/mocks"
+
     rm -rf "$MOCKBIN"
     mkdir -p "$MOCKBIN"
-    
-    # Create mock iptables that captures calls
+
     cat > "$MOCKBIN/iptables" <<'EOT'
 #!/usr/bin/env bash
 echo "$*" >> "$MOCKBIN/iptables.log"
-# Simulate failure for specific test IPs
 if [[ "$*" == *"10.0.0.999"* ]]; then
     echo "iptables: Rule does not exist." >&2
     exit 1
@@ -23,19 +23,15 @@ fi
 exit 0
 EOT
     chmod +x "$MOCKBIN/iptables"
-    
-    # Clear/create log file
+
     : > "$MOCKBIN/iptables.log"
-    
-    # Set up environment
+
     export PATH="$MOCKBIN:$PATH"
     export MOCKBIN
     export HS_INTERFACE="wlan1"
     export USER_IP=""
-    
-    # Source the functions
-    # shellcheck source=../Cybercafe_internetSessionFunctions.sh
-    source Cybercafe_internetSessionFunctions.sh
+
+    source "$BACKEND_DIR/Cybercafe_internetSessionFunctions.sh"
 }
 
 teardown() {

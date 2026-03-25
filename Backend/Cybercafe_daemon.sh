@@ -1,13 +1,14 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #Organization: Grey-box
 #Project: Cybercafe
 #File: daemon
 #Description: Main script that is run at start. This script is invoked by Cybercafe_commandLine.sh
 
 ###INCLUDES###
-. ./cybercafe.conf
-. ./Cybercafe_setupFunctions.sh
-. ./Cybercafe_internetSessionFunctions.sh
+BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+. "$BASE_DIR/cybercafe.conf"
+. "$BASE_DIR/Cybercafe_setupFunctions.sh"
+. "$BASE_DIR/Cybercafe_internetSessionFunctions.sh"
 
 ### START OF PROGRAM EXECUTION ###
 while true; do
