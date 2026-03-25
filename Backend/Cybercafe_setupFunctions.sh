@@ -112,11 +112,13 @@ function setup_infrastructure
 	iptables -t mangle -C POSTROUTING -o "${HS_INTERFACE}" -j iptmon_rx > /dev/null 2>> error.log
 	# shellcheck disable=SC2181
 	if [[ $? -ne 0 ]]; then
-		iptables -t mangle -N iptmon_rx > /dev/null 2>> error.log
-		#if data is coming from the host itself then don't count it towards the rx total
-		iptables -t mangle -I iptmon_rx 1 -s "${LOCAL_IP}" -j RETURN > /dev/null 2>> error.log
-		# if data is going out the hotspot interface (-o flag) and is not from the host itself then it will be forwarded to iptmon_rx
-		iptables -t mangle -A POSTROUTING -o "${HS_INTERFACE}" -j iptmon_rx > /dev/null 2>> error.log
+		{
+			iptables -t mangle -N iptmon_rx
+			#if data is coming from the host itself then don't count it towards the rx total
+			iptables -t mangle -I iptmon_rx 1 -s "${LOCAL_IP}" -j RETURN
+			# if data is going out the hotspot interface (-o flag) and is not from the host itself then it will be forwarded to iptmon_rx
+			iptables -t mangle -A POSTROUTING -o "${HS_INTERFACE}" -j iptmon_rx
+		} > /dev/null 2>> error.log
 	fi
 
 	#special rules that service the cybercafe system by blocking certain traffic over hotspot interface

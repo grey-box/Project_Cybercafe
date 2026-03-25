@@ -255,10 +255,10 @@ function check_internet_sessions
 		# 4. Update the current session tx and rx based on the associated iptables rule (for this user) on the database
 		SESSION_ACCESS=$(echo "$RESPONSE" | cut -f 7 -d '|')
 		{
-			SESSION_TX=$(($(iptables -t mangle -L iptmon_tx -vxn | grep "${USER_IP}" | awk '{print $2}'))) > /dev/null
-			SESSION_RX=$(($(iptables -t mangle -L iptmon_rx -vxn | grep "${USER_IP}" | awk '{print $2}'))) > /dev/null
-			sqlite3 "${DATABASE_PATH}" "UPDATE internet_sessions SET session_tx='${SESSION_TX}',session_rx='${SESSION_RX}' WHERE table_index=${I}" > /dev/null
-		} 2>> error.log
+			SESSION_TX=$(($(iptables -t mangle -L iptmon_tx -vxn | grep "${USER_IP}" | awk '{print $2}')))
+			SESSION_RX=$(($(iptables -t mangle -L iptmon_rx -vxn | grep "${USER_IP}" | awk '{print $2}')))
+			sqlite3 "${DATABASE_PATH}" "UPDATE internet_sessions SET session_tx='${SESSION_TX}',session_rx='${SESSION_RX}' WHERE table_index=${I}"
+		} > /dev/null 2>> error.log
 
 		#5. Send data entry for this check to user_data_usage
 		#Necessary data from internet_session row
@@ -295,8 +295,8 @@ function check_internet_sessions
 				RESPONSE=$(sqlite3 "${DATABASE_PATH}" "SELECT timediff((SELECT datetime_created FROM internet_sessions WHERE table_index=${I}),datetime(datetime(),'localtime'))") > /dev/null 2>> error.log
 				RESPONSE2=$(sqlite3 "${DATABASE_PATH}" "SELECT timediff((SELECT datetime_sinceLastRequest FROM internet_sessions WHERE table_index=${I}),datetime(datetime(),'localtime'))")
 				if [[ "$RESPONSE" != '' && "$RESPONSE2" != '' ]]; then
-					SESSION_AGE=86400*$((10#$(echo "${RESPONSE}" | awk '{print $1}' | cut -f 4 -d '-')))+3600*$((10#$(echo "${RESPONSE}" | awk '{print $2}' | cut -f 1 -d ':')))+60*$((10#$(echo "${RESPONSE}" | awk '{print $2}' | cut -f 2 -d ':')))+$((10#$(echo "${RESPONSE}" | awk '{print $2}' | cut -f 3 -d ':' | cut -f 1 -d '.'))) > /dev/null 2>> error.log
-					SESSION_IDLETIME=86400*$((10#$(echo "${RESPONSE2}" | awk '{print $1}' | cut -f 4 -d '-')))+3600*$((10#$(echo "${RESPONSE2}" | awk '{print $2}' | cut -f 1 -d ':')))+60*$((10#$(echo "${RESPONSE2}" | awk '{print $2}' | cut -f 2 -d ':')))+$((10#$(echo "${RESPONSE2}" | awk '{print $2}' | cut -f 3 -d ':' | cut -f 1 -d '.'))) > /dev/null 2>> error.log
+					SESSION_AGE=86400*$((10#$(echo "${RESPONSE}" | awk '{print $1}' | cut -f 4 -d '-')))+3600*$((10#$(echo "${RESPONSE}" | awk '{print $2}' | cut -f 1 -d ':')))+60*$((10#$(echo "${RESPONSE}" | awk '{print $2}' | cut -f 2 -d ':')))+$((10#$(echo "${RESPONSE}" | awk '{print $2}' | cut -f 3 -d ':' | cut -f 1 -d '.'))) 
+					SESSION_IDLETIME=86400*$((10#$(echo "${RESPONSE2}" | awk '{print $1}' | cut -f 4 -d '-')))+3600*$((10#$(echo "${RESPONSE2}" | awk '{print $2}' | cut -f 1 -d ':')))+60*$((10#$(echo "${RESPONSE2}" | awk '{print $2}' | cut -f 2 -d ':')))+$((10#$(echo "${RESPONSE2}" | awk '{print $2}' | cut -f 3 -d ':' | cut -f 1 -d '.')))
 					if [[ "$SESSION_AGE" -gt "$SESSION_MAX_AGE" ]] || [[ "$SESSION_IDLETIME" -gt "$SESSION_MAX_IDLETIME" ]]; then #if session is older than 12 hours or has been idle for more than 1hr then delete session
 						remove_session $I #session has aged or idled out
 					fi
