@@ -122,14 +122,14 @@ function setup_infrastructure
 	fi
 
 	#special rules that service the cybercafe system by blocking certain traffic over hotspot interface
-	iptables -t nat -C PREROUTING -p tcp -i "${HS_INTERFACE}" -j DNAT --to-destination "${LOCAL_IP}":80 > /dev/null 2>> error.log #checks to see that rules don't exist
+	iptables -t nat -C PREROUTING -p tcp -i "${HS_INTERFACE}" -j DNAT --to-destination "${LOCAL_IP}:80" > /dev/null 2>> error.log #checks to see that rules don't exist
 	# shellcheck disable=SC2181
 	if [[ $? -ne 0 ]]; then
 		{
 			#redirects all tcp traffic to captive webserver port so that 'sign-in' notification is displayed to user when device does http checks
 			#also blocks typically web navigation
 			#Note: Since the protocol is tcp it won't mess up any important DNS or other services
-			iptables -t nat -I PREROUTING 1 -p tcp -i "${HS_INTERFACE}" -j DNAT --to-destination "${LOCAL_IP}":80
+			iptables -t nat -I PREROUTING 1 -p tcp -i "${HS_INTERFACE}" -j DNAT --to-destination "${LOCAL_IP}:80"
 		
 			#deprecated rules
 			##safeguard: allows solicitation to DNS server (note this will show up as rule #2 on PREROUTING if uncommeneted)
@@ -165,7 +165,8 @@ function shutdown_infrastructure
         echo "[DRY-RUN] $*"
       else
         # execute and append stderr to error.log so we keep original behavior
-        "$@" 2>> error.log || true
+		# shellcheck disable=SC2294 
+        eval "$@" 2>> error.log || true
       fi
     }
 
@@ -225,7 +226,7 @@ function shutdown_infrastructure
       done
 
       # also attempt to delete the specific rules added by John's setup (tcp redirect & FORWARD DROP) if present
-      run_cmd "iptables -t nat -D PREROUTING -p tcp -i '${HS_INTERFACE}' -j DNAT --to-destination '${LOCAL_IP}':80 > /dev/null 2>> error.log || true"
+      run_cmd "iptables -t nat -D PREROUTING -p tcp -i '${HS_INTERFACE}' -j DNAT --to-destination '${LOCAL_IP}:80' > /dev/null 2>> error.log || true"
       run_cmd "iptables -t filter -D FORWARD -p all -i '${HS_INTERFACE}' -j DROP > /dev/null 2>> error.log || true"
       run_cmd "iptables -t filter -D FORWARD -p all -o '${HS_INTERFACE}' ! -s '${LOCAL_IP}' -j DROP > /dev/null 2>> error.log || true"
     fi

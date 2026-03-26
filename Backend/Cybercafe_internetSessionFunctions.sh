@@ -122,7 +122,7 @@ function remove_session
 		#1. Get all the data
 		#Necessary data from internet_session row
 		{
-			RESPONSE=$(sqlite3 "${DATABASE_PATH}" "SELECT * FROM internet_sessions WHERE table_index=${I}") > /dev/null 2>> error.log
+			RESPONSE=$(sqlite3 "${DATABASE_PATH}" "SELECT * FROM internet_sessions WHERE table_index=${1}") > /dev/null 2>> error.log
 			DATETIME=$(date '+%Y-%m-%d %H:%M:%S') > /dev/null
 			SESSION_TX=$(echo "$RESPONSE" | cut -f 5 -d '|') > /dev/null
 			SESSION_RX=$(echo "$RESPONSE" | cut -f 6 -d '|') > /dev/null
