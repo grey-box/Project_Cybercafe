@@ -5,12 +5,12 @@
 #Description: Acts as the interface between the administrator/developer and the Cybercafe backend.
 
 ##VARIABLES##
-BASE_PATH="/data/data/com.termux/files/usr/var/www/backend"
+BASE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 ##INCLUDES##
-. $BASE_PATH/cybercafe.conf
-. $BASE_PATH/Cybercafe_setupFunctions.sh
-. $BASE_PATH/Cybercafe_internetSessionFunctions.sh
+. "$BASE_PATH/cybercafe.conf"
+. "$BASE_PATH/Cybercafe_setupFunctions.sh"
+. "$BASE_PATH/Cybercafe_internetSessionFunctions.sh"
 
 ##COMMANDS##
 function command_run
