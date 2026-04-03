@@ -108,7 +108,7 @@ function command_list
 }
 function command_errorlog
 {
-	cat "$BASE_PATH/error.log" | tail -n 30
+	tail -n 30 "$BASE_PATH/error.log"
 }
 
 function command_shutdown
