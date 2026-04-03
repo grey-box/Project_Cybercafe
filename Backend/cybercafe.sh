@@ -24,7 +24,7 @@ function command_run
 	else
         printf "%s" "$(date +%T)" \
 		&& echo " Running Cybercafe..."
-		nohup bash $BASE_PATH/Cybercafe_daemon.sh & #run CyberCafe daemon as a seperate process
+		nohup bash "$BASE_PATH/Cybercafe_daemon.sh" & #run CyberCafe daemon as a seperate process
         printf "%s" "$(date +%T)" \
         && echo " Cybercafe started."
 		
@@ -108,7 +108,7 @@ function command_list
 }
 function command_errorlog
 {
-	cat $BASE_PATH/error.log | tail -n 30
+	cat "$BASE_PATH/error.log" | tail -n 30
 }
 
 function command_shutdown
