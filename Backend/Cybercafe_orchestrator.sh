@@ -164,9 +164,11 @@ run_status() {
     # Check for the expected "Status: Running" string.
     # If missing, warn — don't hard error, as the daemon may take
     # a moment to fully start on the T95.
-    echo "$STATUS_OUTPUT" | grep -q "Status: Running" \
-        && log "Confirmed: Cybercafe daemon is running." \
-        || warn "Daemon may not be running yet — review status output above."
+    if echo "$STATUS_OUTPUT" | grep -q "Status: Running"; then
+        log "Confirmed: Cybercafe daemon is running."
+    else
+        warn "Daemon may not be running yet — review status output above."
+    fi
 }
 
 # Shutdown sends graceful shutdown signal to the daemon.
