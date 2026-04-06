@@ -1,11 +1,12 @@
-#!/usr/bin/env bash
+#!/data/data/com.termux/files/usr/bin/bash
 #Organization: Grey-box
 #Project: Cybercafe
 #File: Control File
 #Description: Acts as the interface between the administrator/developer and the Cybercafe backend.
 
 ##VARIABLES##
-BASE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BASE_PATH="/data/data/com.termux/files/home/Project_Cybercafe/Backend"
+UTIL_PATH="/data/data/com.termux/files/usr/bin"
 
 ##INCLUDES##
 . "$BASE_PATH/cybercafe.conf"
@@ -17,14 +18,14 @@ function command_run
 {
 	#test to see if daemon is already running
 	# shellcheck disable=SC2009
-	ps -eo name,cmdline | grep "bash ${BASE_PATH}/Cybercafe_daemon.sh" | grep -v grep > /dev/null 2>&1 # if this returns 0 it implies that the script exists and is running
+	ps -eo name,cmdline | grep "${BASE_PATH}/Cybercafe_daemon.sh" | grep -v grep > /dev/null 2>&1 # if this returns 0 it implies that the script exists and is running
 	# shellcheck disable=SC2181
 	if [[ $? -eq 0 ]]; then
 		echo "Cybercafe infrastructure already running."
 	else
         printf "%s" "$(date +%T)" \
 		&& echo " Running Cybercafe..."
-		nohup bash $BASE_PATH/Cybercafe_daemon.sh & #run CyberCafe daemon as a seperate process
+		nohup $UTIL_PATH/bash "$BASE_PATH/Cybercafe_daemon.sh" & #run CyberCafe daemon as a seperate process
         printf "%s" "$(date +%T)" \
         && echo " Cybercafe started."
 		
@@ -43,7 +44,7 @@ function command_status
     printf "%s" "$(date '+%Y-%m-%d %H:%M:%S')"
 	echo ""
 	# shellcheck disable=SC2009
-	ps -eo name,cmdline | grep "bash ${BASE_PATH}/Cybercafe_daemon.sh" | grep -v grep > /dev/null 2>&1 # if this returns 0 it implies that the script exists and is running
+	ps -eo name,cmdline | grep "${BASE_PATH}/Cybercafe_daemon.sh" | grep -v grep > /dev/null 2>&1 # if this returns 0 it implies that the script exists and is running
 	# shellcheck disable=SC2181
 	if [[ $? -eq 0 ]]; then
 		echo "Status: Running"
@@ -52,7 +53,7 @@ function command_status
 		# shellcheck disable=SC2009
 		ps -o user,pid,ppid,uid,stime,stat,name,cmdline | head -n 1
 		# shellcheck disable=SC2009
-		ps -eo user,pid,ppid,uid,stime,stat,name,cmdline | grep "bash ${BASE_PATH}/Cybercafe_daemon.sh" | grep -v grep
+		ps -eo user,pid,ppid,uid,stime,stat,name,cmdline | grep "${BASE_PATH}/Cybercafe_daemon.sh" | grep -v grep
 	else
 		echo "Status: Stopped"
 	fi
@@ -114,7 +115,7 @@ function command_errorlog
 function command_shutdown
 {
 	# shellcheck disable=SC2009
-	ps -eo stat,name,cmdline | grep "bash ${BASE_PATH}/Cybercafe_daemon.sh" | grep -v grep > /dev/null 2>&1 # if this returns 0 it implies that the script exists and is running
+	ps -eo stat,name,cmdline | grep "${BASE_PATH}/Cybercafe_daemon.sh" | grep -v grep > /dev/null 2>&1 # if this returns 0 it implies that the script exists and is running
 	# shellcheck disable=SC2181
 	if [[ $? -eq 0 ]]; then
 		printf "%s" "$(date +%T)"
@@ -124,7 +125,7 @@ function command_shutdown
 		while true; do
 			sleep 1
 			# shellcheck disable=SC2009
-			ps -eo stat,name,cmdline | grep "bash ${BASE_PATH}/Cybercafe_daemon.sh" | grep -v grep > /dev/null 2>&1 # if this returns 1 it implies that the script has stopped
+			ps -eo stat,name,cmdline | grep "${BASE_PATH}/Cybercafe_daemon.sh" | grep -v grep > /dev/null 2>&1 # if this returns 1 it implies that the script has stopped
 			# shellcheck disable=SC2181
 			if [[ $? -eq 1 ]]; then
 				rm shutdown.confirmed
@@ -140,7 +141,7 @@ function command_shutdown
 
 function command_kill
 {
-	killall -9 Cybercafe_daemon.sh
+	pkill -f "$BASE_PATH/Cybercafe_daemon.sh"
 	clear_internet_sessions
 	shutdown_infrastructure
 }
