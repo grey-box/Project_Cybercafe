@@ -5,8 +5,9 @@
 #Description: Acts as the interface between the administrator/developer and the Cybercafe backend.
 
 ##VARIABLES##
-BASE_PATH="/data/data/com.termux/files/home/Project_Cybercafe/Backend"
+BASE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 UTIL_PATH="/data/data/com.termux/files/usr/bin"
+
 
 ##INCLUDES##
 . "$BASE_PATH/cybercafe.conf"
@@ -17,6 +18,10 @@ UTIL_PATH="/data/data/com.termux/files/usr/bin"
 function command_run
 {
 	#test to see if daemon is already running
+
+        echo "==== DEBUG PATH CHECK ===="
+        echo "Absolute path: $BASE_PATH"
+
 	# shellcheck disable=SC2009
 	ps -eo name,cmdline | grep "${BASE_PATH}/Cybercafe_daemon.sh" | grep -v grep > /dev/null 2>&1 # if this returns 0 it implies that the script exists and is running
 	# shellcheck disable=SC2181
