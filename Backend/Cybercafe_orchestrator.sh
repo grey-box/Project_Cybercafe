@@ -51,6 +51,7 @@ set -euo pipefail
 # Resolving the absolute path of the directory this scripts lives.
 # Ensures all file references work regardless of where script is called from.
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+UTIL_PATH="/data/data/com.termux/files/usr/bin"
 
 # Path to the compiled cybercafe binary produced by 'make all'.
 # Main CLI (Command Line Interface) all lifecycle commands are routed through.
@@ -96,13 +97,13 @@ preflight() {
     [[ -f "$CONF" ]]   || error "cybercafe.conf not found in $SCRIPT_DIR"
 
     # Confirm make is available — needed to compile cybercafe.sh into binary
-    command -v make    &>/dev/null || error "make is not installed"
+    command -v make || command -v "$UTIL_PATH/make" &>/dev/null || error "make is not installed"
 
     # Confirm sqlite3 is available — needed for list/user operations
-    command -v sqlite3 &>/dev/null || error "sqlite3 is not installed"
+    command -v sqlite3 || command -v "$UTIL_PATH/sqlite3" &>/dev/null || error "sqlite3 is not installed"
 
     # Confirm bash is available — all scripts in the project require bash
-    command -v bash    &>/dev/null || error "bash is not installed"
+    command -v bash || command -v "$UTIL_PATH/bash"  &>/dev/null || error "bash is not installed"
 
     log "Preflight passed."
 }
@@ -125,7 +126,7 @@ run_build() {
         warn "Binary already exists at $BINARY. Use --rebuild to force a fresh build."
     else
         # Run Makefile build target producing the cybercafe binary
-        make all || error "make all failed - check Makefile in $SCRIPT_DIR"
+        "$UTIL_PATH/make" all || error "make all failed - check Makefile in $SCRIPT_DIR"
         log "Build complete. Binary ready at $BINARY"
     fi
 }
@@ -205,7 +206,7 @@ run_all() {
     run_status
     
     log "Cybercafe is running."
-    log "To stop: bash cybercafe_orchestrator.sh shutdown"
+    log "To stop: /data/data/com.termux/files/usr/bin/bash cybercafe_orchestrator.sh shutdown"
     log "Logs:    $LOG"
 }
 
