@@ -285,13 +285,15 @@ function shutdown_infrastructure
     # Remove Cybercafe filter FORWARD rules by comment
     iptables -t filter -S FORWARD 2>> error.log | grep 'cybercafe-block-' | while read -r rule; do
         del_rule="${rule/-A/-D}"
-        iptables -t filter $del_rule > /dev/null 2>> error.log || true
+        # shellcheck disable=SC2086
+		iptables -t filter $del_rule > /dev/null 2>> error.log || true
     done
 
     # Remove Cybercafe nat PREROUTING rules by comment
     iptables -t nat -S PREROUTING 2>> error.log | grep 'cybercafe-dnat' | while read -r rule; do
         del_rule="${rule/-A/-D}"
-        iptables -t nat $del_rule > /dev/null 2>> error.log || true
+        # shellcheck disable=SC2086
+		iptables -t nat $del_rule > /dev/null 2>> error.log || true
     done
 
         # 8) Reset runtime variables to safe defaults
