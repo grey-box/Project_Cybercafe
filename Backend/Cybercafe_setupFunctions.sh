@@ -19,7 +19,7 @@ HS_STATUS_PREV='down'
 REFRESH_TIME=3600
 
 # Path to the file used to indicate the time we last did an expensive check of
-# the hotspot/CyberCafe infrastructure status. If the file doesn't exist, it's
+# the hotspot/CyberCafe infrastructure status. If the file doesnt exist, its
 # assumed we're not ready to act as a CyberCafe router.
 # Android Test
 # STATUS_PATH="/data/data/com.android.myapplication/files/tmp/cybercafe.confirmed"
@@ -93,33 +93,43 @@ function setup_infrastructure
 {
 	{
 		#trap will catch any errors that occur and write the line number to the error.log file
-		trap 'echo -e "$(date '+%Y-%m-%dT%H:%M:%S%z') Error in Cybercafe_setupFunction.sh: Line ${LINENO}\n" >> error.log' ERR
+		trap 'echo -e "$(date '+%Y-%m-%dT%H:%M:%S%z') Error in Cybercafe_setupFunctions.sh: Line ${LINENO}\n" >> error.log' ERR
 		#This will grab the ip address of the given hotspot interface so that it can be used for setup
 		LOCAL_IP=$(ifconfig "$HS_INTERFACE" | grep 'inet addr' | awk '{print $2}' | cut -d: -f2)
 	} > /dev/null 2>> error.log
 
 	#check if iptmon_tx table exists
 	#this table will be used to record all transmitted data by adding rules for each user
-	iptables -t mangle -C FORWARD -i "${HS_INTERFACE}" -j iptmon_tx > /dev/null 2>> error.log
+	iptables -t mangle -L iptmon_tx > /dev/null 2>> error.log
+        # shellcheck disable=SC2181
+        if [[ $? -ne 0 ]]; then
+                iptables -t mangle -N iptmon_tx > /dev/null 2>> error.log
+        fi
+
+        iptables -t mangle -C FORWARD -i "${HS_INTERFACE}" -j iptmon_tx > /dev/null 2>> error.log
 	# shellcheck disable=SC2181
 	if [[ $? -ne 0 ]]; then
-		create_chain "setup_infrastructure" "iptmon_tx"
 		#packets that come in on the hotspot interface (-i flag) and are destined for a different host than the hotspot host will be forwarded to iptmon_tx
 		iptables -t mangle -A FORWARD -i "${HS_INTERFACE}" -j iptmon_tx > /dev/null 2>> error.log
 	fi
 
 	#create iptmon_rx
-	iptables -t mangle -C POSTROUTING -o "${HS_INTERFACE}" -j iptmon_rx > /dev/null 2>> error.log
+	iptables -t mangle -L iptmon_rx > /dev/null 2>> error.log
 	# shellcheck disable=SC2181
 	if [[ $? -ne 0 ]]; then
 		{
 			iptables -t mangle -N iptmon_rx
 			#if data is coming from the host itself then don't count it towards the rx total
 			iptables -t mangle -I iptmon_rx 1 -s "${LOCAL_IP}" -j RETURN
-			# if data is going out the hotspot interface (-o flag) and is not from the host itself then it will be forwarded to iptmon_rx
-			iptables -t mangle -A POSTROUTING -o "${HS_INTERFACE}" -j iptmon_rx
 		} > /dev/null 2>> error.log
 	fi
+
+        iptables -t mangle -C POSTROUTING -o "${HS_INTERFACE}" -j iptmon_rx > /dev/null 2>> error.log
+        # shellcheck disable=SC2181
+        if [[ $? -ne 0 ]]; then
+                #if data is going out the hotspot interface (-o flag) and is not from the host itself then it will be forwared to iptmon_rx
+                iptables -t mangle -A POSTROUTING -o "${HS_INTERFACE}" -j iptmon_rx > /dev/null 2>> error.log
+        fi
 
 	#special rules that service the cybercafe system by blocking certain traffic over hotspot interface
 	iptables -t nat -C PREROUTING -p tcp -i "${HS_INTERFACE}" -j DNAT --to-destination "${LOCAL_IP}:80" > /dev/null 2>> error.log #checks to see that rules don't exist
@@ -129,7 +139,9 @@ function setup_infrastructure
 			#redirects all tcp traffic to captive webserver port so that 'sign-in' notification is displayed to user when device does http checks
 			#also blocks typically web navigation
 			#Note: Since the protocol is tcp it won't mess up any important DNS or other services
-			iptables -t nat -I PREROUTING 1 -p tcp -i "${HS_INTERFACE}" -j DNAT --to-destination "${LOCAL_IP}:80"
+			iptables -t nat -I PREROUTING 1 -p tcp -i "${HS_INTERFACE}" \
+                          -m comment --comment "cybercafe-dnat" \
+                          -j DNAT --to-destination "${LOCAL_IP}:80"
 		
 			#deprecated rules
 			##safeguard: allows solicitation to DNS server (note this will show up as rule #2 on PREROUTING if uncommeneted)
@@ -139,15 +151,19 @@ function setup_infrastructure
 			#
 		
 			#blocks requests incoming on the hotspot interface that is not destined for the hotspot host (exceptions will be made on a user basis once they sign in)
-			iptables -t filter -I FORWARD 1 -p all -i "${HS_INTERFACE}" -j DROP
+			iptables -t filter -I FORWARD 1 -p all -i "${HS_INTERFACE}" \
+                          -m comment --comment "cybercafe-block-in" \
+                          -j DROP
 			#in the uncommon event that traffic going out onto the hotspot interface that isn't from the host (exceptions will be made on a user basis once they sign in)
-			iptables -t filter -I FORWARD 1 -p all -o "${HS_INTERFACE}" ! -s "${LOCAL_IP}" -j DROP
+			iptables -t filter -I FORWARD 1 -p all -o "${HS_INTERFACE}" ! -s "${LOCAL_IP}" \
+                          -m comment --comment "cybercafe-block-out" \
+                          -j DROP
 		} > /dev/null 2>> error.log
 	fi
 
 	# Ensure captive portal HTTPD server is running
 	if ! start_captive_webserver; then
-		echo "$(date '+%Y-%m-%dT%H:%M:%S%z') Error in Cybercafe_setupFunction.sh: Line '${LINENO}' - Failed to start captive webserver" >> error.log
+		echo "$(date '+%Y-%m-%dT%H:%M:%S%z') Error in Cybercafe_setupFunctions.sh: Line '${LINENO}' - Failed to start captive webserver" >> error.log
 	fi
 }
 
@@ -156,7 +172,7 @@ function shutdown_infrastructure
 #remove any necessary infrastructure for running the CyberCafe system
 {
     # preserve existing trap / error logging
-	trap 'echo -e "$(date '+%Y-%m-%dT%H:%M:%S%z') Error in Cybercafe_setupFunction.sh: Line '${LINENO}' \n" >> error.log' ERR > /dev/null 2>> error.log
+	trap 'echo -e "$(date '+%Y-%m-%dT%H:%M:%S%z') Error in Cybercafe_setupFunctions.sh: Line '${LINENO}' \n" >> error.log' ERR > /dev/null 2>> error.log
 
     # dry-run support (export DRY_RUN=true to simulate)
     DRY_RUN=${DRY_RUN:-false}
@@ -265,7 +281,22 @@ function shutdown_infrastructure
       warn "tc not found; skipping qdisc cleanup"
     fi
 
-	# 7) Reset runtime variables to safe defaults
+	# 7) Remove all commented Cybercafe rules
+    # Remove Cybercafe filter FORWARD rules by comment
+    iptables -t filter -S FORWARD 2>> error.log | grep 'cybercafe-block-' | while read -r rule; do
+        del_rule="${rule/-A/-D}"
+        # shellcheck disable=SC2086
+		iptables -t filter $del_rule > /dev/null 2>> error.log || true
+    done
+
+    # Remove Cybercafe nat PREROUTING rules by comment
+    iptables -t nat -S PREROUTING 2>> error.log | grep 'cybercafe-dnat' | while read -r rule; do
+        del_rule="${rule/-A/-D}"
+        # shellcheck disable=SC2086
+		iptables -t nat $del_rule > /dev/null 2>> error.log || true
+    done
+
+        # 8) Reset runtime variables to safe defaults
     export LOCAL_IP=''
     export HS_STATUS='down'
     export HS_STATUS_PREV='down'
@@ -278,17 +309,17 @@ function start_captive_webserver
 {
 	#Make sure required variables are set
 	if [ -z "${LIGHTTPD_PATH:-}" ] || [ -z "${LIGHTTPD_CONF:-}" ]; then
-		echo "$(date '+%Y-%m-%dT%H:%M:%S%z') Error in Cybercafe_setupFunction.sh: Line ${LINENO} - LIGHTTPD_PATH or LIGHTTPD_CONF_PATH variable not set" >> error.log
+		echo "$(date '+%Y-%m-%dT%H:%M:%S%z') Error in Cybercafe_setupFunctions.sh: Line ${LINENO} - LIGHTTPD_PATH or LIGHTTPD_CONF_PATH variable not set" >> error.log
 		return 1
 	fi
 
 	#Make sure paths are valid
 	if [ ! -x "${LIGHTTPD_PATH}" ]; then
-		echo "$(date '+%Y-%m-%dT%H:%M:%S%z') Error in Cybercafe_setupFunction.sh: Line ${LINENO} - lighttpd executable not found at LIGHTTPD_PATH: ${LIGHTTPD_PATH}" >> error.log
+		echo "$(date '+%Y-%m-%dT%H:%M:%S%z') Error in Cybercafe_setupFunctions.sh: Line ${LINENO} - lighttpd executable not found at LIGHTTPD_PATH: ${LIGHTTPD_PATH}" >> error.log
 		return 1
 	fi
 	if [ ! -f "${LIGHTTPD_CONF}" ]; then
-		echo "$(date '+%Y-%m-%dT%H:%M:%S%z') Error in Cybercafe_setupFunction.sh: Line ${LINENO} - lighttpd configuration file not found at LIGHTTPD_CONF_PATH: ${LIGHTTPD_CONF}" >> error.log
+		echo "$(date '+%Y-%m-%dT%H:%M:%S%z') Error in Cybercafe_setupFunctions.sh: Line ${LINENO} - lighttpd configuration file not found at LIGHTTPD_CONF_PATH: ${LIGHTTPD_CONF}" >> error.log
 		return 1
 	fi
 

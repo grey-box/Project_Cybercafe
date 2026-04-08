@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/data/data/com.termux/files/usr/bin/bash
 #Organization: Grey-box
 #Project: Cybercafe
 #File: daemon
