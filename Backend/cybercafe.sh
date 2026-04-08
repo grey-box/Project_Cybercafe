@@ -110,7 +110,8 @@ function command_list
 }
 function command_errorlog
 {
-	cat $BASE_PATH/error.log | tail -n 30
+    # shellcheck disable=SC2002
+    cat "$BASE_PATH/error.log" | tail -n 30
 }
 
 function command_shutdown
