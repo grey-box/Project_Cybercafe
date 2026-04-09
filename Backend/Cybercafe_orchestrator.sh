@@ -170,6 +170,26 @@ run_status() {
     else
         warn "Daemon may not be running yet — review status output above."
     fi
+
+     --- Full Functionality Checks ---
+    # Query all core data models and log their current state.
+    # These run regardless of daemon status so we always capture
+    # what is in the database at time of test. Failures are warnings
+    # only — they do not halt the lifecycle.
+ 
+    log "--- Listing Sessions ---"
+    "$BINARY" list sessions 2>&1 | tee -a "$LOG" || warn "list sessions failed"
+ 
+    log "--- Listing Users ---"
+    "$BINARY" list users 2>&1 | tee -a "$LOG" || warn "list users failed"
+ 
+    log "--- Listing Lanes ---"
+    "$BINARY" list lanes 2>&1 | tee -a "$LOG" || warn "list lanes failed"
+ 
+    log "--- Listing Rules ---"
+    "$BINARY" list rules 2>&1 | tee -a "$LOG" || warn "list rules failed"
+ 
+    log "Full functionality check complete. Review orchestrator.log for details."
 }
 
 # Shutdown sends graceful shutdown signal to the daemon.
