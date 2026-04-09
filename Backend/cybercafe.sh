@@ -68,7 +68,8 @@ function command_list
 {
 	function command_list_sessions
 	{
-		sqlite3 "${DATABASE_PATH}" -header "SELECT * FROM internet_sessions"
+		echo "${DATABASE_PATH}"
+                sqlite3 "${DATABASE_PATH}" -header "SELECT * FROM internet_sessions"
 	}
 	function command_list_users
 	{

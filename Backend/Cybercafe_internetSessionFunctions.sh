@@ -277,7 +277,7 @@ function check_internet_sessions
 			#Calculate what entry number this will be saved under in user_data_usage for this user on this session
 			RESPONSE=$(sqlite3 "${DATABASE_PATH}" "SELECT MAX(session_entry_index) FROM user_data_usage WHERE user_id='${USER_ID}' AND session_number=${SESSION_NUMBER}") > /dev/null 2>> error.log
 			ENTRY_INDEX=$((RESPONSE + 1))
-			RESPONSE=$(sqlite3 "${DATABASE_PATH}" "SELECT SUM(interval_bytes_tx) FROM user_data_usage WHERE user_id='${USER_ID}' AND session_number='${SESSION_NUMBER}')") > /dev/null 2>> error.log
+			RESPONSE=$(sqlite3 "${DATABASE_PATH}" "SELECT SUM(interval_bytes_tx) FROM user_data_usage WHERE user_id='${USER_ID}' AND session_number='${SESSION_NUMBER}'") > /dev/null 2>> error.log
 			INTERVAL_TX=$((SESSION_TX - RESPONSE)) #The next interval entry is [total usage for this session - sum of previous entries associated with this user's session]
 			RESPONSE=$(sqlite3 "${DATABASE_PATH}" "SELECT SUM(interval_bytes_rx) FROM user_data_usage WHERE user_id='${USER_ID}' AND session_number='${SESSION_NUMBER}'") > /dev/null 2>> error.log
 			INTERVAL_RX=$((SESSION_RX - RESPONSE)) #same as above
@@ -293,11 +293,11 @@ function check_internet_sessions
 			else
 				# 7. If session age or session idle time becomes to great then save that sessions data and delete the session
 				#Note: if the previous if statment triggers then we can assume it isn't idle or aged out because it was just updated
-				RESPONSE=$(sqlite3 "${DATABASE_PATH}" "SELECT timediff((SELECT datetime_created FROM internet_sessions WHERE table_index=${I}),datetime(datetime(),'localtime'))") > /dev/null 2>> error.log
-				RESPONSE2=$(sqlite3 "${DATABASE_PATH}" "SELECT timediff((SELECT datetime_sinceLastRequest FROM internet_sessions WHERE table_index=${I}),datetime(datetime(),'localtime'))")
+				RESPONSE=$(sqlite3 "${DATABASE_PATH}" "SELECT strftime('%s','now') - strftime('%s',(SELECT datetime_created FROM internet_sessions WHERE table_index=${I}))")
+				RESPONSE2=$(sqlite3 "${DATABASE_PATH}" "SELECT strftime('%s','now') - strftime('%s',(SELECT datetime_sinceLastRequest FROM internet_sessions WHERE table_index=${I}))")
 				if [[ "$RESPONSE" != '' && "$RESPONSE2" != '' ]]; then
-					SESSION_AGE=$((86400 * 10#$(echo "$RESPONSE" | awk '{print $1}' | cut -f 4 -d '-') + 3600 * 10#$(echo "$RESPONSE" | awk '{print $2}' | cut -f 1 -d ':') + 60 * 10#$(echo "$RESPONSE" | awk '{print $2}' | cut -f 2 -d ':') + 10#$(echo "$RESPONSE" | awk '{print $2}' | cut -f 3 -d ':' | cut -f 1 -d '.')))
-					SESSION_IDLETIME=$((86400 * 10#$(echo "$RESPONSE2" | awk '{print $1}' | cut -f 4 -d '-') + 3600 * 10#$(echo "$RESPONSE2" | awk '{print $2}' | cut -f 1 -d ':') + 60 * 10#$(echo "$RESPONSE2" | awk '{print $2}' | cut -f 2 -d ':') + 10#$(echo "$RESPONSE2" | awk '{print $2}' | cut -f 3 -d ':' | cut -f 1 -d '.')))
+					SESSION_AGE=$RESPONSE
+					SESSION_IDLETIME=$RESPONSE2
 					if [[ "$SESSION_AGE" -gt "$SESSION_MAX_AGE" ]] || [[ "$SESSION_IDLETIME" -gt "$SESSION_MAX_IDLETIME" ]]; then #if session is older than 12 hours or has been idle for more than 1hr then delete session
 						remove_session $I #session has aged or idled out
 					fi
