@@ -1,8 +1,8 @@
 <?php
 $timezone=date_default_timezone_get();
 date_default_timezone_set($timezone);
-$GLOBALS['database_path']='/data/data/com.termux/files/usr/var/www/database/CyberCafe_Database.db';
-$GLOBALS['internetSessionFunctionsShellScript_path']='/data/data/com.termux/files/usr/var/www/backend/Cybercafe_internetSessionFunctions.sh';
+$GLOBALS['database_path']='/data/data/com.termux/files/home/Project_Cybercafe/Database/CyberCafe_Database.db';
+$GLOBALS['internetSessionFunctionsShellScript_path']='/data/data/com.termux/files/home/Project_Cybercafe/Backend/Cybercafe_internetSessionFunctions.sh';
 $GLOBALS['adminNavHTML']='
 		<ul>
 			<li><a href="/home">Home</a></li>
