@@ -51,11 +51,19 @@ else
     fi
     # Find tests named *_test.sh under Backend/test/
     # mapfile reads lines into an array without splitting on spaces
-    mapfile -t TESTS < <(
+    TESTS=()
+    TMP_FILE="$(mktemp)"
+
     {
     find "$TEST_DIR" -type f -name "*_test.sh"
-    find "$TEST_DIR" -type f -name "*.bats" 
-    } | sort)
+    find "$TEST_DIR" -type f -name "*.bats"
+    } | sort > "$TMP_FILE"
+
+    while IFS= read -r file; do
+    TESTS+=("$file")
+    done < "$TMP_FILE"
+
+    rm -f "$TMP_FILE"
 fi
 
 # Optional filter (still safe: operates line-by-line)
