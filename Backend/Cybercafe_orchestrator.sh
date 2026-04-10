@@ -171,7 +171,7 @@ run_status() {
         warn "Daemon may not be running yet — review status output above."
     fi
 
-     --- Full Functionality Checks ---
+    # --- Full Functionality Checks ---
     # Query all core data models and log their current state.
     # These run regardless of daemon status so we always capture
     # what is in the database at time of test. Failures are warnings
