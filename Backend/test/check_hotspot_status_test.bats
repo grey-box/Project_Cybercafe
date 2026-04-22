@@ -1,4 +1,4 @@
-#!/usr/bin/env bats
+#!/data/data/com.termux/files/usr/bin/bats
 
 # Automated testing for check_hotspot_status function, where test cases consider state tracking, transition detection
 # and timestamp guard logic. 

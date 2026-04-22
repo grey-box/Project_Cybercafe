@@ -1,138 +1,160 @@
 #!/usr/bin/env bash
-set -Eeuo pipefail
-# -E: The ERR trap is inherited by shell functions.
-# -e: Exit immediately if a command exits with a non-zero status.
-# -u: Treat unset variables as an error when substituting.
-# -o pipefail: the return value of a pipeline is the status of
+set -uo pipefail
 
-# Resovle repo root (Backend/) regardless of where this script is called from
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-TEST_DIR="$ROOT_DIR/test"
+# Resolve Backend/ and test/ regardless of current working directory
+TEST_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(cd -- "$TEST_DIR/.." && pwd)"
 
-usage() {
-    cat << 'EOF'
-Usage:
-    test/run.sh                    Run all tests
-    test/run.sh path/to/test.sh    Run a specific test script
-    test/run.sh --filter text      Run tests whose path contains 'text'
-EOF
-}
-
-FILTER=""
-SINGLE_FILE=""
-
-# Minimal argument parsing
-while [[ $# -gt 0 ]]; do
-    case "$1" in
-        -h|--help) usage; exit 0;;
-        --filter) FILTER="${2:-}"; shift 2;; # next argument is the filter string
-        *) SINGLE_FILE="$1"; shift;;         # treat any other arg as a file path
-    esac
+# Normalize PATH so the runner works on:
+# - laptops
+# - Android emulators with Termux
+# - T95 boxes after entering `su`
+for d in \
+  /data/data/com.termux/files/usr/bin \
+  /data/data/com.termux/files/bin \
+  /system/bin \
+  /system/xbin \
+  /usr/bin \
+  /bin
+do
+  [[ -d "$d" ]] && PATH="$d:$PATH"
 done
+export PATH
 
-# Collect tests into an array safely (handles spaces in paths)
-declare -a TESTS=()
-
-# If a file is specified, run only that file
-if [[ -n "$SINGLE_FILE" ]]; then
-    # Allow file path relative to repo root or absolute
-    if [[ -f "$SINGLE_FILE" ]]; then
-        TESTS+=("$SINGLE_FILE")
-    elif [[ -f "$ROOT_DIR/$SINGLE_FILE" ]]; then
-        TESTS+=("$ROOT_DIR/$SINGLE_FILE")  
-    else
-        echo "ERROR: Test file not found: $SINGLE_FILE" >&2
-        exit 2
-    fi
+# Pick a writable temp base that works in su on Android
+if [[ -d /tmp && -w /tmp ]]; then
+  TMP_BASE="/tmp"
+elif [[ -d /data/local/tmp && -w /data/local/tmp ]]; then
+  TMP_BASE="/data/local/tmp"
 else
-    if [[ ! -d "$TEST_DIR" ]]; then
-        echo "ERROR: Test directory not found: $TEST_DIR" >&2
-        exit 2
-    fi
-    # Find tests named *_test.sh under Backend/test/
-    # mapfile reads lines into an array without splitting on spaces
-    TESTS=()
-    TMP_FILE="$(mktemp)"
-
-    {
-    find "$TEST_DIR" -type f -name "*_test.sh"
-    find "$TEST_DIR" -type f -name "*.bats"
-    } | sort > "$TMP_FILE"
-
-    while IFS= read -r file; do
-    TESTS+=("$file")
-    done < "$TMP_FILE"
-
-    rm -f "$TMP_FILE"
+  TMP_BASE="$ROOT_DIR/.tmp"
+  mkdir -p "$TMP_BASE"
 fi
 
-# Optional filter (still safe: operates line-by-line)
-if [[ -n "$FILTER" ]]; then
-    declare -a FILTERED=()
-    for t in "${TESTS[@]}"; do
-        if [[ "$t" == *"$FILTER"* ]]; then
-            FILTERED+=("$t")
-        fi
-    done
-    TESTS=("${FILTERED[@]}")
+# Bats uses TMPDIR as the base temp dir
+export TMPDIR="$TMP_BASE"
+export BATS_TMPDIR="$TMP_BASE"
+
+# Resolve tools after PATH normalization
+BASH_BIN="$(command -v bash || true)"
+BATS_BIN="$(command -v bats || true)"
+
+if [[ -z "$BASH_BIN" ]]; then
+  echo "ERROR: bash not found in PATH=$PATH" >&2
+  exit 2
 fi
 
-if (( ${#TESTS[@]} == 0 )); then
-    echo "No tests found."
-    exit 0
-fi
+total_tests=0
+passed_tests=0
+failed_tests=0
+declare -a passed_names=()
+declare -a failed_names=()
 
-# run a single test based on file type
-run_one_test() {
-    local t="$1"
-    case "$t" in
-        *.bats)
-            if command -v bats >/dev/null 2>&1; then
-                bats "$t"
-            else
-                echo "ERROR: Found .bats test but bats is not installed:" >&2
-                echo "  ${t#"$ROOT_DIR"/}" >&2
-                echo "Install bats or convert this test to *_test.sh" >&2
-                return 2
-            fi
-            ;;
-        *)
-            bash "$t"
-            ;;
-    esac
+run_one() {
+  local t="$1"
+  local rc=0
+
+  echo "==> $t"
+
+  case "$t" in
+    *.bats)
+      if [[ -z "$BATS_BIN" ]]; then
+        echo "ERROR: bats not found in PATH=$PATH" >&2
+        rc=2
+      else
+        TMPDIR="$TMPDIR" "$BATS_BIN" "$t" || rc=$?
+      fi
+      ;;
+    *)
+      TMPDIR="$TMPDIR" "$BASH_BIN" "$t" || rc=$?
+      ;;
+  esac
+
+  total_tests=$((total_tests + 1))
+
+  if [[ "$rc" -eq 0 ]]; then
+    passed_tests=$((passed_tests + 1))
+    passed_names+=("$(basename "$t")")
+    echo "PASS: $(basename "$t")"
+  else
+    failed_tests=$((failed_tests + 1))
+    failed_names+=("$(basename "$t")")
+    echo "FAIL: $(basename "$t") (exit $rc)"
+  fi
+
+  echo
 }
 
-pass=0
-fail=0
-failures=()
+print_summary() {
+  echo "===================="
+  echo "Test File Summary"
+  echo "===================="
+  echo "Total:  $total_tests"
+  echo "Passed: $passed_tests"
+  echo "Failed: $failed_tests"
+  echo
 
-echo "Running tests..."
-echo "================"
-
-# Run each test script in its own Bash process
-# Pass/fail is determined by the script's exit code (0=pass, non-0=fail)
-for t in "${TESTS[@]}"; do
-    echo "Running test: $t"
-    if run_one_test "$t"; then
-        echo "PASS: ${t#"$ROOT_DIR"/}"
-        pass=$((pass + 1))
-    else
-        rc=$?
-        echo "FAIL: ${t#"$ROOT_DIR"/} (exit=$rc)"
-        fail=$((fail + 1))
-        failures+=("${t#"$ROOT_DIR"/}")
-    fi
-    echo "----------------"
-done
-
-echo
-echo "Summary: $pass passed, $fail failed."
-
-# If anything failed, exit non-zero so CI fails
-if (( fail > 0 )); then
-    echo "Failed tests:"
-    for f in "${failures[@]}"; do
-        echo " - $f"
+  echo "Passed files:"
+  if [[ "${#passed_names[@]}" -eq 0 ]]; then
+    echo "  (none)"
+  else
+    local name
+    for name in "${passed_names[@]}"; do
+      echo "  - $name"
     done
+  fi
+  echo
+
+  echo "Failed files:"
+  if [[ "${#failed_names[@]}" -eq 0 ]]; then
+    echo "  (none)"
+  else
+    local name
+    for name in "${failed_names[@]}"; do
+      echo "  - $name"
+    done
+  fi
+}
+
+main() {
+  cd "$ROOT_DIR"
+
+  local found=0
+  local t
+
+  if [[ "$#" -gt 0 ]]; then
+    for t in "$@"; do
+      if [[ -f "$t" ]]; then
+        found=1
+        run_one "$t"
+      elif [[ -f "$TEST_DIR/$t" ]]; then
+        found=1
+        run_one "$TEST_DIR/$t"
+      else
+        echo "ERROR: test file not found: $t" >&2
+        failed_tests=$((failed_tests + 1))
+        total_tests=$((total_tests + 1))
+        failed_names+=("$t")
+      fi
+    done
+  else
+    for t in "$TEST_DIR"/*_test.bats "$TEST_DIR"/*_test.sh; do
+      [[ -e "$t" ]] || continue
+      found=1
+      run_one "$t"
+    done
+  fi
+
+  if [[ "$found" -eq 0 ]]; then
+    echo "No test files found in $TEST_DIR" >&2
     exit 1
-fi
+  fi
+
+  print_summary
+
+  if [[ "$failed_tests" -ne 0 ]]; then
+    exit 1
+  fi
+}
+
+main "$@"

@@ -29,21 +29,21 @@ export PATH="$FAKEBIN:$PATH"
 # Create lightweight mocks so the test never touches real system state
 # The mock commands log what was called and what succeed
 cat > "$FAKEBIN/iptables" <<'EOF'
-#!/usr/bin/env bash
+#!/data/data/com.termux/files/usr/bin/bash
 echo "iptables $*" >> "$MOCK_CALL_LOG"
 exit 0
 EOF
 chmod +x "$FAKEBIN/iptables"
 
 cat > "$FAKEBIN/tc" <<'EOF'
-#!/usr/bin/env bash
+#!/data/data/com.termux/files/usr/bin/bash
 echo "tc $*" >> "$MOCK_CALL_LOG"
 exit 0
 EOF
 chmod +x "$FAKEBIN/tc"
 
 cat > "$FAKEBIN/ip" <<'EOF'
-#!/usr/bin/env bash
+#!/data/data/com.termux/files/usr/bin/bash
 echo "ip $*" >> "$MOCK_CALL_LOG"
 # Pretend interface exists so step 6 doesn't log "Device does not exist"
 exit 0
@@ -51,14 +51,14 @@ EOF
 chmod +x "$FAKEBIN/ip"
 
 cat > "$FAKEBIN/pkill" <<'EOF'
-#!/usr/bin/env bash
+#!/data/data/com.termux/files/usr/bin/bash
 echo "pkill $*" >> "$MOCK_CALL_LOG"
 exit 0
 EOF
 chmod +x "$FAKEBIN/pkill"
 
 cat > "$FAKEBIN/ifconfig" <<'EOF'
-#!/usr/bin/env bash
+#!/data/data/com.termux/files/usr/bin/bash
 echo "ifconfig $*" >> "$MOCK_CALL_LOG"
 # Output that matches the grep/awk pipeline in shutdown_infrastructure
 echo "inet addr:192.168.1.50  Bcast:192.168.1.255  Mask:255.255.255.0"

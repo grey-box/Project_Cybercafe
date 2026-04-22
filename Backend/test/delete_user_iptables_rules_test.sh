@@ -13,7 +13,7 @@ setup_mocks() {
     
     # Create a mock iptables that logs all calls
     cat > "$MOCK_DIR/iptables" <<'EOT'
-#!/usr/bin/env bash
+#!/data/data/com.termux/files/usr/bin/bash
 # Log the call for verification
 echo "$*" >> "${MOCK_DIR}/iptables_calls.log"
 # Simulate behavior based on arguments
