@@ -1,0 +1,14 @@
+Tue Apr 21 22:49:55 EDT 2026 Error in Cybercafe_internetSessionFunctions.sh: Line 24
+
+iptables v1.6.1: Couldn't find target `iptmon_tx'
+
+Try `iptables -h' or 'iptables --help' for more information.
+iptables v1.6.1: Couldn't find target `iptmon_rx'
+
+Try `iptables -h' or 'iptables --help' for more information.
+iptables: No chain/target/match by that name.
+iptables: No chain/target/match by that name.
+iptables: No chain/target/match by that name.
+iptables: Bad rule (does a matching rule exist in that chain?).
+iptables: Bad rule (does a matching rule exist in that chain?).
+RTNETLINK answers: No such file or directory

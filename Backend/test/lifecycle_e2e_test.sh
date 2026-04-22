@@ -1,11 +1,25 @@
 #!/usr/bin/env bash
 set -e
 
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(cd -- "$SCRIPT_DIR/.." && pwd)"
+CYBERCAFE_SH="$ROOT_DIR/cybercafe.sh"
+
 echo "======================================="
 echo "CyberCafe Lifecycle E2E Test"
 echo "======================================="
 
-LOG_DIR="/tmp/cybercafe_logs"
+if [[ -n "${TMPDIR:-}" && -d "${TMPDIR}" && -w "${TMPDIR}" ]]; then
+  TMP_BASE="$TMPDIR"
+elif [[ -d /data/local/tmp && -w /data/local/tmp ]]; then
+  TMP_BASE="/data/local/tmp"
+elif [[ -d /tmp && -w /tmp ]]; then
+  TMP_BASE="/tmp"
+else
+  TMP_BASE="./.tmp"
+fi
+
+LOG_DIR="$TMP_BASE/cybercafe_logs"
 mkdir -p "$LOG_DIR"
 
 # ---------------------------------------
@@ -13,7 +27,7 @@ mkdir -p "$LOG_DIR"
 # ---------------------------------------
 echo "[STEP 1] Starting infrastructure..."
 
-bash Backend/cybercafe.sh run > "$LOG_DIR/run.log" 2>&1 &
+/data/data/com.termux/files/usr/bin/bash "$CYBERCAFE_SH" run > "$LOG_DIR/run.log" 2>&1 &
 CYBER_PID=$!
 
 sleep 3
@@ -33,7 +47,7 @@ fi
 # ---------------------------------------
 echo "[STEP 2] Checking system status..."
 
-STATUS_OUTPUT=$(bash Backend/cybercafe.sh status 2>&1 || true)
+STATUS_OUTPUT=$(/data/data/com.termux/files/usr/bin/bash "$CYBERCAFE_SH" status 2>&1 || true)
 echo "$STATUS_OUTPUT"
 
 if echo "$STATUS_OUTPUT" | grep -q "Status"; then
@@ -47,7 +61,7 @@ fi
 # ---------------------------------------
 echo "[STEP 3] Validating system interaction..."
 
-LIST_OUTPUT=$(bash Backend/cybercafe.sh list users 2>&1 || true)
+LIST_OUTPUT=$(/data/data/com.termux/files/usr/bin/bash "$CYBERCAFE_SH" list users 2>&1 || true)
 echo "$LIST_OUTPUT"
 
 if echo "$LIST_OUTPUT" | grep -qi "no such table"; then
@@ -63,7 +77,7 @@ fi
 # ---------------------------------------
 echo "[STEP 4] Shutting down infrastructure..."
 
-bash Backend/cybercafe.sh shutdown > "$LOG_DIR/shutdown.log" 2>&1 || true
+/data/data/com.termux/files/usr/bin/bash "$CYBERCAFE_SH" shutdown > "$LOG_DIR/shutdown.log" 2>&1 || true
 
 kill $CYBER_PID 2>/dev/null || true
 

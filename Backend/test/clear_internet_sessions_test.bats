@@ -26,7 +26,7 @@ setup() {
     mkdir -p "$MOCKBIN" "$TMPDIR_TEST"
 
     cat > "$MOCKBIN/iptables" <<'EOT'
-#!/usr/bin/env bash
+#!/data/data/com.termux/files/usr/bin/bash
 echo "$*" >> "${MOCKBIN}/iptables.log"
 exit 0
 EOT

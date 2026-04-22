@@ -38,7 +38,7 @@ setup_env() {
 
     # 2. Setup Mock iptables
     cat > "$MOCK_DIR/iptables" <<'EOT'
-#!/usr/bin/env bash
+#!/data/data/com.termux/files/usr/bin/bash
 echo "iptables $*" >> "${MOCK_DIR}/iptables_calls.log"
 exit 0
 EOT

@@ -44,7 +44,7 @@ setup() {
     # by full path for idempotency tests.
     export LIGHTTPD_PATH="${TEST_DIR}/lighttpd"
     cat > "${LIGHTTPD_PATH}" <<'EOF'
-#!/bin/bash
+#!/data/data/com.termux/files/usr/bin/bash
 while true; do sleep 1; done
 EOF
     chmod +x "${LIGHTTPD_PATH}"
@@ -88,7 +88,7 @@ teardown() {
 make_lighttpd_stub() {
     local exit_code="${1:-0}"
     cat > "${LIGHTTPD_PATH}" <<EOF
-#!/bin/bash
+#!/data/data/com.termux/files/usr/bin/bash
 sleep 30 &
 exit ${exit_code}
 EOF
@@ -248,7 +248,7 @@ EOF
     local invocation_log="${TEST_DIR}/invocation.log"
 
     cat > "${LIGHTTPD_PATH}" <<EOF
-#!/bin/bash
+#!/data/data/com.termux/files/usr/bin/bash
 echo "ARGS: \$@" >> "${invocation_log}"
 exit 0
 EOF
@@ -283,7 +283,7 @@ EOF
 @test "[TEST 18] Logs 'already running' message on second call" {
     # Stub loops forever so pgrep -f can find it by full path
     cat > "${LIGHTTPD_PATH}" <<'EOF'
-#!/bin/bash
+#!/data/data/com.termux/files/usr/bin/bash
 while true; do sleep 1; done
 EOF
     chmod +x "${LIGHTTPD_PATH}"
@@ -312,7 +312,7 @@ EOF
 # assert there is exactly 1.
 @test "[TEST 19] Does not spawn a second lighttpd process on second call" {
     cat > "${LIGHTTPD_PATH}" <<'EOF'
-#!/bin/bash
+#!/data/data/com.termux/files/usr/bin/bash
 while true; do sleep 1; done
 EOF
     chmod +x "${LIGHTTPD_PATH}"
@@ -403,7 +403,7 @@ EOF
 
     LIGHTTPD_PATH="${SPACE_DIR}/lighttpd"
     cat > "${LIGHTTPD_PATH}" <<'EOF'
-#!/bin/bash
+#!/data/data/com.termux/files/usr/bin/bash
 exit 0
 EOF
     chmod +x "${LIGHTTPD_PATH}"

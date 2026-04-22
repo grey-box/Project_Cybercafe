@@ -14,7 +14,7 @@ setup() {
     mkdir -p "$MOCKBIN"
 
     cat > "$MOCKBIN/iptables" <<'EOT'
-#!/usr/bin/env bash
+#!/data/data/com.termux/files/usr/bin/bash
 echo "$*" >> "$MOCKBIN/iptables.log"
 if [[ "$*" == *"10.0.0.999"* ]]; then
     echo "iptables: Rule does not exist." >&2
